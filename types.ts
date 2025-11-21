@@ -18,11 +18,11 @@ export interface Tool {
   description: string;
   keywords?: string[];
   icon: React.ReactNode;
-  category: 'math' | 'text' | 'security' | 'dev';
+  category: 'math' | 'text' | 'security' | 'dev' | 'converter' | 'electricity';
   popular?: boolean;
   component: React.ReactNode;
   details?: React.ReactNode;
   faqs?: FAQItem[];
 }
 
-export type Category = 'all' | 'math' | 'text' | 'security' | 'dev';
+export type Category = 'all' | 'math' | 'text' | 'security' | 'dev' | 'converter' | 'electricity';
