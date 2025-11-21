@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NumberInput } from '../ui/Input';
-import { ArrowRightLeft, Calculator, RefreshCw, Thermometer } from 'lucide-react';
+import { ArrowRightLeft, Thermometer, RefreshCw } from 'lucide-react';
 
 export const TemperatureConverter = () => {
   const [amount, setAmount] = useState<string>('');
@@ -81,7 +81,7 @@ export const TemperatureConverter = () => {
           <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-red-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
           {result !== null ? (
             <div className="text-center animate-in fade-in zoom-in duration-300 relative z-10">
-              <span className="text-slate-500 text-sm font-medium mb-2 block uppercase tracking-wider">Nhiệt độ</span>
+              <span className="text-slate-500 text-sm font-medium mb-2 block uppercase tracking-wider">Kết quả</span>
               <div className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-red-400 mb-3">
                 {formatNumber(result)}°{toUnit}
               </div>

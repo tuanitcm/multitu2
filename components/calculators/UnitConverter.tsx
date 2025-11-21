@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { NumberInput } from '../ui/Input';
 import { ArrowRightLeft, Calculator, RefreshCw } from 'lucide-react';
 
@@ -9,14 +9,15 @@ export type UnitDefinition = {
 };
 
 interface UnitConverterProps {
-  labelFrom: string;
-  labelTo: string;
+  labelFrom?: string;
+  labelTo?: string;
   units: UnitDefinition[];
   formatDecimals?: number;
   helpText?: string;
 }
 
 const formatNumber = (num: number, decimals: number = 6) => {
+  if (num === 0) return '0';
   // Prevent scientific notation for common numbers, handle very small/large numbers
   if (Math.abs(num) < 0.000001 || Math.abs(num) > 1000000000) {
       return num.toExponential(4);
@@ -25,15 +26,26 @@ const formatNumber = (num: number, decimals: number = 6) => {
 };
 
 export const UnitConverter: React.FC<UnitConverterProps> = ({ 
-  labelFrom, 
-  labelTo, 
+  labelFrom = "Từ", 
+  labelTo = "Sang", 
   units, 
   formatDecimals = 6,
   helpText 
 }) => {
+  // Safety check
+  if (!units || units.length === 0) {
+    return <div className="text-red-400">Lỗi: Không có dữ liệu đơn vị.</div>;
+  }
+
   const [amount, setAmount] = useState<string>('');
-  const [fromUnit, setFromUnit] = useState<string>(units[0].id);
-  const [toUnit, setToUnit] = useState<string>(units[1]?.id || units[0].id);
+  const [fromUnit, setFromUnit] = useState<string>(units[0]?.id);
+  const [toUnit, setToUnit] = useState<string>(units[1]?.id || units[0]?.id);
+
+  // Ensure selected units exist in the list (useful when switching tools reusing this component)
+  useEffect(() => {
+    if (!units.find(u => u.id === fromUnit)) setFromUnit(units[0].id);
+    if (!units.find(u => u.id === toUnit)) setToUnit(units[1]?.id || units[0].id);
+  }, [units, fromUnit, toUnit]);
 
   const result = useMemo(() => {
     const val = parseFloat(amount);
@@ -62,6 +74,9 @@ export const UnitConverter: React.FC<UnitConverterProps> = ({
 
   const fromLabel = units.find(u => u.id === fromUnit)?.label;
   const toLabel = units.find(u => u.id === toUnit)?.label;
+  const ratioDisplay = units.find(u => u.id === fromUnit) && units.find(u => u.id === toUnit)
+    ? units.find(u => u.id === fromUnit)!.ratio / units.find(u => u.id === toUnit)!.ratio
+    : 1;
 
   return (
     <div className="space-y-6">
@@ -77,7 +92,7 @@ export const UnitConverter: React.FC<UnitConverterProps> = ({
            <select 
              value={fromUnit}
              onChange={(e) => setFromUnit(e.target.value)}
-             className="w-full bg-[#0f172a] border border-slate-700 rounded-xl px-4 py-3 text-slate-100 focus:border-indigo-500 outline-none"
+             className="w-full bg-[#0f172a] border border-slate-700 rounded-xl px-4 py-3 text-slate-100 focus:border-indigo-500 outline-none text-sm md:text-base"
            >
              {units.map(u => <option key={u.id} value={u.id}>{u.label}</option>)}
            </select>
@@ -98,7 +113,7 @@ export const UnitConverter: React.FC<UnitConverterProps> = ({
            <select 
              value={toUnit}
              onChange={(e) => setToUnit(e.target.value)}
-             className="w-full bg-[#0f172a] border border-slate-700 rounded-xl px-4 py-3 text-slate-100 focus:border-indigo-500 outline-none"
+             className="w-full bg-[#0f172a] border border-slate-700 rounded-xl px-4 py-3 text-slate-100 focus:border-indigo-500 outline-none text-sm md:text-base"
            >
              {units.map(u => <option key={u.id} value={u.id}>{u.label}</option>)}
            </select>
@@ -109,7 +124,7 @@ export const UnitConverter: React.FC<UnitConverterProps> = ({
          <NumberInput 
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            placeholder="Nhập giá trị cần đổi..."
+            placeholder="Nhập giá trị..."
             className="text-center text-lg"
          />
       </div>
@@ -120,10 +135,10 @@ export const UnitConverter: React.FC<UnitConverterProps> = ({
             <div className="text-center animate-in fade-in zoom-in duration-300 relative z-10">
               <span className="text-slate-500 text-sm font-medium mb-2 block uppercase tracking-wider">Kết quả</span>
               <div className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-400 mb-3 break-words">
-                {formatNumber(result, formatDecimals)} <span className="text-lg text-slate-500 font-normal">{toLabel}</span>
+                {formatNumber(result, formatDecimals)} <span className="text-lg text-slate-500 font-normal">{toLabel?.split('(')[0]}</span>
               </div>
               <div className="text-xs text-slate-400 bg-slate-800/50 px-4 py-1.5 rounded-full border border-slate-700 inline-block font-mono">
-                1 {fromLabel} ≈ {formatNumber(units.find(u => u.id === fromUnit)!.ratio / units.find(u => u.id === toUnit)!.ratio, 6)} {toLabel}
+                1 {fromLabel?.split('(')[0]} ≈ {formatNumber(ratioDisplay, 6)} {toLabel?.split('(')[0]}
               </div>
             </div>
           ) : (

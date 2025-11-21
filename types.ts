@@ -13,7 +13,7 @@ export interface FAQItem {
 
 export interface Tool {
   id: string;
-  slug: string; // Added for SEO friendly URLs (e.g., 'tinh-phan-tram')
+  slug: string; // Added for SEO friendly URLs
   title: string;
   description: string;
   keywords?: string[];
