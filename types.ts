@@ -13,15 +13,16 @@ export interface FAQItem {
 
 export interface Tool {
   id: string;
+  slug: string; // Added for SEO friendly URLs (e.g., 'tinh-phan-tram')
   title: string;
   description: string;
-  keywords?: string[]; // Added for SEO
+  keywords?: string[];
   icon: React.ReactNode;
   category: 'math' | 'text' | 'security' | 'dev';
   popular?: boolean;
   component: React.ReactNode;
   details?: React.ReactNode;
-  faqs?: FAQItem[]; // Added for FAQ Schema
+  faqs?: FAQItem[];
 }
 
 export type Category = 'all' | 'math' | 'text' | 'security' | 'dev';
