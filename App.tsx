@@ -6,7 +6,7 @@ import {
   Scale, Zap, Activity, Timer, Database, Gauge, Sun, 
   Wind, DollarSign, PenTool, BookOpen, Move, Droplets,
   Waves, Lightbulb, Disc, CreditCard, Anchor, ThermometerSun,
-  Lock, Key, TrendingUp, Hammer
+  Lock, Key, TrendingUp, Hammer, Triangle, Square, Circle, Cylinder, Globe, Cone, RectangleHorizontal, Diamond, Component
 } from 'lucide-react';
 import { Tool, Category, FAQItem } from './types';
 
@@ -15,7 +15,13 @@ import { BasicPercentage } from './components/calculators/BasicPercentage';
 import { RatioPercentage } from './components/calculators/RatioPercentage';
 import { PercentageChange } from './components/calculators/PercentageChange';
 import { FindWhole } from './components/calculators/FindWhole';
-import { GeometryCalculator } from './components/calculators/GeometryCalculator';
+// Geometry Imports
+import { 
+  CircleCalculator, TriangleCalculator, SquareCalculator, RectangleCalculator, 
+  TrapezoidCalculator, RhombusCalculator, CubeCalculator, SphereCalculator, 
+  CylinderCalculator, ConeCalculator 
+} from './components/calculators/GeometryCalculator';
+
 import { UnitConverter, UnitDefinition } from './components/calculators/UnitConverter';
 import { TemperatureConverter } from './components/calculators/TemperatureConverter';
 import { WordCounter } from './components/tools/WordCounter';
@@ -147,24 +153,15 @@ const generateMathContent = (title: string, specificDesc: string) => {
   return { details, faqs };
 };
 
-const generateGeometryContent = (type: string = 'general') => {
+const generateGeometryContent = (type: string) => {
   const details = (
     <div className="space-y-8 text-slate-300 leading-relaxed text-justify">
       <section>
-        <h3 className="text-xl font-bold text-white mb-3">Công cụ tính Hình học trực tuyến</h3>
+        <h3 className="text-xl font-bold text-white mb-3">Công cụ tính {type} trực tuyến</h3>
         <p>
-          Công cụ này giúp bạn tính toán nhanh chóng <strong>Diện tích (S)</strong>, <strong>Chu vi (P)</strong> và <strong>Thể tích (V)</strong> cho đa dạng các hình học 2D và 3D: 
-          Hình vuông, Chữ nhật, Tròn, Tam giác, Hình hộp, Hình cầu...
+          Công cụ này giúp bạn tính toán nhanh chóng các thông số hình học như <strong>Diện tích</strong>, <strong>Chu vi</strong>, <strong>Thể tích</strong>, <strong>Đường chéo</strong>...
+          Chỉ cần nhập các thông số đầu vào, hệ thống sẽ tự động áp dụng các công thức toán học chuẩn để đưa ra kết quả chính xác nhất.
         </p>
-      </section>
-      <section>
-        <h3 className="text-xl font-bold text-white mb-3">Các công thức phổ biến</h3>
-        <ul className="list-disc list-inside space-y-2 ml-2">
-          <li><strong>Tam giác:</strong> S = ½ × đáy × cao</li>
-          <li><strong>Hình tròn:</strong> S = πr²; C = 2πr</li>
-          <li><strong>Hình trụ:</strong> V = πr²h</li>
-          <li><strong>Hình cầu:</strong> V = ⁴⁄₃πr³</li>
-        </ul>
       </section>
     </div>
   );
@@ -507,46 +504,109 @@ const TOOLS: Tool[] = [
     component: <FindWhole />,
     ...generateMathContent('Tìm Số Gốc', 'bài toán ngược: tìm tổng thể khi biết một phần')
   },
+  
+  // --- GEOMETRY (SPLIT) ---
   {
-    id: 'geometry-calc',
-    slug: 'tinh-chu-vi-dien-tich',
-    title: 'Tính Hình Học',
-    description: 'Tính chu vi, diện tích, thể tích các hình: Vuông, Tròn, Tam giác, Hình hộp, Hình cầu...',
-    icon: <Ruler size={24} />,
+    id: 'circle-calc',
+    slug: 'tinh-hinh-tron',
+    title: 'Hình Tròn',
+    description: 'Tính Diện tích (S), Chu vi (C) và Đường kính (d) từ Bán kính.',
+    icon: <Circle size={24} />,
     category: 'math',
-    component: <GeometryCalculator />,
-    ...generateGeometryContent()
+    component: <CircleCalculator />,
+    ...generateGeometryContent('Hình Tròn')
   },
   {
     id: 'triangle-calc',
-    slug: 'tinh-dien-tich-tam-giac',
-    title: 'Tính Diện Tích Tam Giác',
-    description: 'Công cụ tính nhanh diện tích và chu vi hình tam giác.',
-    icon: <Ruler size={24} />,
+    slug: 'tinh-hinh-tam-giac',
+    title: 'Hình Tam Giác',
+    description: 'Tính Diện tích và Chu vi. Hỗ trợ tính theo chiều cao hoặc công thức Heron (3 cạnh).',
+    icon: <Triangle size={24} />,
     category: 'math',
-    component: <GeometryCalculator defaultShape="triangle" />,
-    ...generateGeometryContent('triangle')
-  },
-   {
-    id: 'circle-calc',
-    slug: 'tinh-dien-tich-hinh-tron',
-    title: 'Tính Hình Tròn',
-    description: 'Tính diện tích và chu vi hình tròn chính xác với số Pi.',
-    icon: <Disc size={24} />,
-    category: 'math',
-    component: <GeometryCalculator defaultShape="circle" />,
-    ...generateGeometryContent('circle')
+    component: <TriangleCalculator />,
+    ...generateGeometryContent('Hình Tam Giác')
   },
   {
-    id: 'volume-calc',
-    slug: 'tinh-the-tich',
-    title: 'Tính Thể Tích',
-    description: 'Tính thể tích các khối hình học không gian: Lập phương, Hình hộp, Hình trụ, Hình cầu.',
+    id: 'square-calc',
+    slug: 'tinh-hinh-vuong',
+    title: 'Hình Vuông',
+    description: 'Tính Diện tích, Chu vi và Đường chéo của hình vuông.',
+    icon: <Square size={24} />,
+    category: 'math',
+    component: <SquareCalculator />,
+    ...generateGeometryContent('Hình Vuông')
+  },
+  {
+    id: 'rect-calc',
+    slug: 'tinh-hinh-chu-nhat',
+    title: 'Hình Chữ Nhật',
+    description: 'Tính Diện tích, Chu vi và Đường chéo hình chữ nhật.',
+    icon: <RectangleHorizontal size={24} />,
+    category: 'math',
+    component: <RectangleCalculator />,
+    ...generateGeometryContent('Hình Chữ Nhật')
+  },
+  {
+    id: 'trap-calc',
+    slug: 'tinh-hinh-thang',
+    title: 'Hình Thang',
+    description: 'Tính Diện tích và Chu vi hình thang thường, hình thang cân.',
+    icon: <Component size={24} />,
+    category: 'math',
+    component: <TrapezoidCalculator />,
+    ...generateGeometryContent('Hình Thang')
+  },
+  {
+    id: 'rhom-calc',
+    slug: 'tinh-hinh-thoi',
+    title: 'Hình Thoi',
+    description: 'Tính toán hình thoi dựa trên độ dài đường chéo hoặc cạnh.',
+    icon: <Diamond size={24} />,
+    category: 'math',
+    component: <RhombusCalculator />,
+    ...generateGeometryContent('Hình Thoi')
+  },
+  {
+    id: 'cube-calc',
+    slug: 'tinh-hinh-lap-phuong',
+    title: 'Hình Lập Phương',
+    description: 'Tính Thể tích, Diện tích toàn phần và đường chéo khối lập phương.',
     icon: <Box size={24} />,
     category: 'math',
-    component: <GeometryCalculator defaultShape="box" defaultMode="volume" />,
-    ...generateGeometryContent('volume')
+    component: <CubeCalculator />,
+    ...generateGeometryContent('Hình Lập Phương')
   },
+  {
+    id: 'sphere-calc',
+    slug: 'tinh-hinh-cau',
+    title: 'Hình Cầu',
+    description: 'Tính Thể tích và Diện tích mặt cầu.',
+    icon: <Globe size={24} />,
+    category: 'math',
+    component: <SphereCalculator />,
+    ...generateGeometryContent('Hình Cầu')
+  },
+  {
+    id: 'cylinder-calc',
+    slug: 'tinh-hinh-tru',
+    title: 'Hình Trụ',
+    description: 'Tính Thể tích, Diện tích xung quanh và toàn phần hình trụ.',
+    icon: <Cylinder size={24} />,
+    category: 'math',
+    component: <CylinderCalculator />,
+    ...generateGeometryContent('Hình Trụ')
+  },
+  {
+    id: 'cone-calc',
+    slug: 'tinh-hinh-non',
+    title: 'Hình Nón',
+    description: 'Tính Thể tích, Đường sinh và Diện tích hình nón.',
+    icon: <Cone size={24} />,
+    category: 'math',
+    component: <ConeCalculator />,
+    ...generateGeometryContent('Hình Nón')
+  },
+
   {
     id: 'sequence-calc',
     slug: 'tinh-cap-so-cong-nhan',
