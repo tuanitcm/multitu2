@@ -4,7 +4,8 @@ import {
   ArrowRight, ArrowLeft, Box, Github, Info, Ruler,
   Scale, Zap, Activity, Timer, Database, Gauge, Sun, 
   Wind, DollarSign, PenTool, BookOpen, Move, Droplets,
-  Waves, Lightbulb, Disc, CreditCard, Anchor, ThermometerSun
+  Waves, Lightbulb, Disc, CreditCard, Anchor, ThermometerSun,
+  Lock, Key, Code, Hash, Check, ArrowRightLeft
 } from 'lucide-react';
 import { Tool, Category, FAQItem } from './types';
 
@@ -18,6 +19,8 @@ import { TemperatureConverter } from './components/calculators/TemperatureConver
 import { WordCounter } from './components/tools/WordCounter';
 import { PasswordGenerator } from './components/tools/PasswordGenerator';
 import { NumberToWord, RomanConverter, WordToNumber } from './components/tools/NumberConverters';
+import { HashTools } from './components/tools/HashTools';
+import { Encoders } from './components/tools/Encoders';
 import { Accordion } from './components/ui/Accordion';
 
 // --- Configuration ---
@@ -29,62 +32,238 @@ const CATEGORIES_CONFIG: { id: Category; label: string; slug: string }[] = [
   { id: 'electricity', label: 'Điện & Điện tử', slug: 'dien-tu' },
   { id: 'text', label: 'Văn bản', slug: 'van-ban' },
   { id: 'security', label: 'Bảo mật', slug: 'bao-mat' },
+  { id: 'dev', label: 'Lập trình (Dev)', slug: 'dev-tools' },
 ];
 
-// --- Helper to create SEO Content & Tools ---
+// --- SEO Content Generators (E-E-A-T Standard) ---
 
-const generateSEOContent = (title: string, description: string, units: UnitDefinition[] = []) => {
-  const unitNames = units.slice(0, 5).map(u => u.label).join(', ');
+const generateConverterContent = (title: string, subject: string, units: UnitDefinition[]) => {
+  const unitList = units.map(u => u.label.split('(')[0].trim()).join(', ');
+  const primaryUnit = units[0]?.label.split('(')[0].trim() || 'đơn vị gốc';
+  const secondaryUnit = units[1]?.label.split('(')[0].trim() || 'đơn vị đích';
+
   const details = (
-    <div className="space-y-6 text-slate-300 leading-relaxed">
-      <p className="text-lg font-medium text-slate-200">{description}</p>
-      <div className="bg-slate-800/30 p-4 rounded-xl border border-slate-700/30">
-        <h3 className="font-bold text-white mb-2">Tính năng nổi bật</h3>
-        <ul className="list-disc list-inside space-y-1 text-slate-400">
-          <li>Chuyển đổi nhanh chóng, chính xác 100%.</li>
-          <li>Hỗ trợ các đơn vị phổ biến: {unitNames}{units.length > 5 ? '...' : '.'}</li>
-          <li>Giao diện đơn giản, tối ưu cho di động.</li>
-          <li>Hoàn toàn miễn phí, không cần đăng ký.</li>
+    <div className="space-y-8 text-slate-300 leading-relaxed text-justify">
+      <section>
+        <h3 className="text-xl font-bold text-white mb-3">Giới thiệu về công cụ {title}</h3>
+        <p>
+          Trong cuộc sống hàng ngày cũng như trong học tập và công việc kỹ thuật, nhu cầu <strong>{title.toLowerCase()}</strong> là vô cùng phổ biến. 
+          Công cụ {title} của MultiTools được phát triển nhằm giúp người dùng thực hiện các phép tính chuyển đổi {subject.toLowerCase()} 
+          một cách nhanh chóng, chính xác tuyệt đối và hoàn toàn miễn phí.
+        </p>
+        <p className="mt-2">
+          Thay vì phải ghi nhớ các công thức phức tạp hay hệ số quy đổi rắc rối giữa {unitList}, bạn chỉ cần nhập số liệu và nhận kết quả ngay lập tức. 
+          Hệ thống hỗ trợ đa dạng các đơn vị từ hệ đo lường quốc tế (SI) đến hệ đo lường Anh-Mỹ.
+        </p>
+      </section>
+
+      <section>
+        <h3 className="text-xl font-bold text-white mb-3">Tại sao cần sử dụng công cụ chuyển đổi {subject}?</h3>
+        <ul className="list-disc list-inside space-y-2 ml-2">
+          <li><strong>Độ chính xác cao:</strong> Loại bỏ hoàn toàn sai sót do tính nhẩm hoặc nhớ nhầm công thức.</li>
+          <li><strong>Tiết kiệm thời gian:</strong> Không cần tra cứu bảng quy đổi, kết quả hiển thị theo thời gian thực.</li>
+          <li><strong>Hỗ trợ đa dạng:</strong> Chuyển đổi qua lại giữa {units.length} đơn vị đo lường khác nhau.</li>
+          <li><strong>Tiện lợi:</strong> Sử dụng trực tiếp trên trình duyệt web, điện thoại mà không cần cài đặt phần mềm.</li>
         </ul>
-      </div>
-      <p>
-        Công cụ <strong>{title}</strong> của MultiTools được thiết kế để giúp bạn giải quyết các bài toán chuyển đổi
-        một cách dễ dàng nhất. Dù bạn là học sinh, sinh viên, kỹ sư hay người đi làm, công cụ này đều đáp ứng tốt nhu cầu của bạn.
-      </p>
+      </section>
+
+      <section>
+        <h3 className="text-xl font-bold text-white mb-3">Hướng dẫn sử dụng</h3>
+        <p>Để thực hiện chuyển đổi, bạn chỉ cần làm theo 3 bước đơn giản:</p>
+        <ol className="list-decimal list-inside space-y-2 mt-2 ml-2">
+          <li>Chọn đơn vị nguồn (ví dụ: {primaryUnit}).</li>
+          <li>Chọn đơn vị đích muốn chuyển đổi sang (ví dụ: {secondaryUnit}).</li>
+          <li>Nhập giá trị cần tính vào ô nhập liệu. Kết quả sẽ tự động hiển thị.</li>
+        </ol>
+      </section>
+
+      <section className="bg-slate-800/30 p-5 rounded-xl border border-slate-700/30">
+        <h3 className="text-lg font-bold text-indigo-400 mb-2">Lưu ý về độ chính xác</h3>
+        <p className="text-sm text-slate-400">
+          Các kết quả chuyển đổi tại MultiTools được tính toán dựa trên các chuẩn đo lường quốc tế mới nhất. 
+          Đối với các đơn vị khoa học kỹ thuật, chúng tôi hỗ trợ hiển thị kết quả dưới dạng số thập phân chi tiết hoặc ký hiệu khoa học (E-notation) 
+          để đảm bảo độ chính xác cho các bài toán phức tạp.
+        </p>
+      </section>
     </div>
   );
 
   const faqs: FAQItem[] = [
     {
-      question: `Công cụ ${title} có chính xác không?`,
-      answer: "Có. Các công thức chuyển đổi được lập trình dựa trên các tiêu chuẩn quốc tế (ISO, SI) để đảm bảo độ chính xác cao nhất cho mọi phép tính."
+      question: `Công cụ ${title} có hỗ trợ chuyển đổi số thập phân không?`,
+      answer: `Có. Hệ thống hỗ trợ đầy đủ các số thập phân, số âm (đối với nhiệt độ) và các giá trị rất lớn hoặc rất nhỏ.`
     },
     {
-      question: "Tôi có thể sử dụng trên điện thoại không?",
-      answer: "Có. Giao diện MultiTools được tối ưu hóa hoàn toàn cho mọi thiết bị di động, máy tính bảng và máy tính để bàn."
+      question: `1 ${primaryUnit} bằng bao nhiêu ${secondaryUnit}?`,
+      answer: `Tỷ lệ quy đổi này phụ thuộc vào hệ số chuẩn. Bạn hãy nhập số "1" vào ô ${primaryUnit} và chọn ${secondaryUnit} ở ô kết quả để xem tỷ lệ chính xác nhất.`
     },
     {
-      question: "Sử dụng công cụ này có mất phí không?",
-      answer: "Không. Tất cả các công cụ trên MultiTools đều hoàn toàn miễn phí và không giới hạn số lần sử dụng."
+      question: "Các công thức chuyển đổi lấy từ đâu?",
+      answer: "Chúng tôi sử dụng các hệ số quy đổi chuẩn từ Hệ đo lường quốc tế (SI) và Viện Tiêu chuẩn và Công nghệ Quốc gia (NIST)."
     },
-    ...(units.length > 0 ? [{
-        question: `Cách đổi ${units[0].label} sang ${units[1]?.label || 'đơn vị khác'}?`,
-        answer: `Chỉ cần nhập giá trị vào ô '${units[0].label}', chọn đơn vị đích là '${units[1]?.label || '...'}' và kết quả sẽ hiện ra ngay lập tức.`
+    {
+      question: "Tôi có thể sử dụng công cụ này khi không có mạng không?",
+      answer: "Hiện tại công cụ hoạt động trực tuyến để đảm bảo bạn luôn truy cập được phiên bản mới nhất với tỷ giá và công thức cập nhật."
+    },
+    ...(units.length > 5 ? [{
+      question: "Làm sao để đổi đơn vị hiếm gặp?",
+      answer: `Danh sách đơn vị của chúng tôi bao gồm cả các đơn vị phổ biến (${units[0].label}, ${units[1].label}) và các đơn vị chuyên ngành. Hãy tìm trong danh sách thả xuống (dropdown).`
     }] : [])
   ];
 
   return { details, faqs };
 };
 
+const generateMathContent = (title: string, specificDesc: string) => {
+  const details = (
+    <div className="space-y-8 text-slate-300 leading-relaxed text-justify">
+      <section>
+        <h3 className="text-xl font-bold text-white mb-3">Tổng quan về {title}</h3>
+        <p>
+          <strong>{title}</strong> là một công cụ toán học trực tuyến được thiết kế để giải quyết {specificDesc}. 
+          Dù bạn là học sinh đang làm bài tập, kế toán viên cần tính toán số liệu hay người nội trợ cần điều chỉnh công thức nấu ăn, 
+          công cụ này đều mang lại sự hỗ trợ đắc lực.
+        </p>
+      </section>
+      <section>
+        <h3 className="text-xl font-bold text-white mb-3">Ứng dụng thực tế</h3>
+        <p>Việc tính toán này thường xuyên xuất hiện trong:</p>
+        <ul className="list-disc list-inside space-y-2 ml-2 mt-2">
+          <li><strong>Tài chính:</strong> Tính lãi suất, thuế VAT, chiết khấu mua sắm.</li>
+          <li><strong>Giáo dục:</strong> Giải các bài toán tỷ lệ, thống kê.</li>
+          <li><strong>Kinh doanh:</strong> Tính biên độ lợi nhuận, tỷ lệ tăng trưởng doanh thu.</li>
+        </ul>
+      </section>
+    </div>
+  );
+
+  const faqs: FAQItem[] = [
+    { question: "Kết quả có được làm tròn không?", answer: "Mặc định hệ thống hiển thị tối đa 4-6 chữ số thập phân để đảm bảo độ chính xác, nhưng vẫn gọn gàng dễ nhìn." },
+    { question: "Công cụ có lưu lại lịch sử tính toán không?", answer: "Vì lý do bảo mật và riêng tư, chúng tôi không lưu trữ bất kỳ dữ liệu nào bạn nhập vào. Khi tải lại trang, mọi thứ sẽ trở về mặc định." }
+  ];
+  return { details, faqs };
+};
+
+const generateTextContent = (title: string, specificDesc: string) => {
+  const details = (
+    <div className="space-y-8 text-slate-300 leading-relaxed text-justify">
+      <section>
+        <h3 className="text-xl font-bold text-white mb-3">Giới thiệu {title}</h3>
+        <p>
+          {specificDesc} Đây là công cụ không thể thiếu cho các nhà sáng tạo nội dung (Content Creators), lập trình viên, biên tập viên và nhân viên văn phòng.
+          Việc xử lý văn bản thủ công thường tốn thời gian và dễ sai sót, công cụ này giúp tự động hóa quy trình đó.
+        </p>
+      </section>
+      <section>
+        <h3 className="text-xl font-bold text-white mb-3">Tính năng nổi bật</h3>
+        <ul className="list-disc list-inside space-y-2 ml-2">
+          <li><strong>Xử lý tiếng Việt:</strong> Tối ưu hóa hoàn toàn cho ngôn ngữ tiếng Việt (dấu câu, ngữ pháp).</li>
+          <li><strong>Real-time:</strong> Xử lý ngay lập tức khi bạn gõ hoặc dán nội dung.</li>
+          <li><strong>Bảo mật:</strong> Mọi xử lý diễn ra ngay trên trình duyệt của bạn, văn bản không bao giờ được gửi về máy chủ.</li>
+        </ul>
+      </section>
+    </div>
+  );
+  const faqs: FAQItem[] = [
+    { question: "Văn bản của tôi có bị lộ không?", answer: "Hoàn toàn không. MultiTools sử dụng công nghệ Client-side, nghĩa là dữ liệu chỉ nằm trên máy của bạn." },
+    { question: "Có giới hạn độ dài văn bản không?", answer: "Công cụ có thể xử lý hàng chục nghìn ký tự một lúc mà không gặp vấn đề gì về hiệu năng." }
+  ];
+  return { details, faqs };
+};
+
+const generateSecurityContent = (title: string) => {
+  const details = (
+    <div className="space-y-8 text-slate-300 leading-relaxed text-justify">
+      <section>
+        <h3 className="text-xl font-bold text-white mb-3">Tầm quan trọng của {title}</h3>
+        <p>
+          Trong kỷ nguyên số, mật khẩu là chốt chặn đầu tiên bảo vệ thông tin cá nhân, tài khoản ngân hàng và dữ liệu nhạy cảm của bạn. 
+          Sử dụng một mật khẩu yếu hoặc dùng chung mật khẩu cho nhiều tài khoản là nguyên nhân hàng đầu dẫn đến việc bị đánh cắp dữ liệu.
+          Công cụ <strong>{title}</strong> giúp tạo ra các chuỗi ký tự ngẫu nhiên, không thể đoán trước, đảm bảo an toàn tuyệt đối.
+        </p>
+      </section>
+      <section>
+        <h3 className="text-xl font-bold text-white mb-3">Tiêu chuẩn mật khẩu mạnh</h3>
+        <ul className="list-disc list-inside space-y-2 ml-2">
+          <li>Độ dài tối thiểu 12 ký tự (khuyến nghị 16+).</li>
+          <li>Bao gồm cả chữ hoa, chữ thường, số và ký tự đặc biệt.</li>
+          <li>Không chứa các từ có nghĩa hoặc thông tin cá nhân (ngày sinh, tên).</li>
+        </ul>
+      </section>
+    </div>
+  );
+  const faqs: FAQItem[] = [
+    { question: "Mật khẩu tạo ra có được lưu lại không?", answer: "Tuyệt đối không. Mật khẩu được tạo ngẫu nhiên ngay trên trình duyệt của bạn và biến mất ngay khi bạn tải lại trang." },
+    { question: "Làm sao để nhớ mật khẩu phức tạp như vậy?", answer: "Chúng tôi khuyên bạn nên sử dụng các trình quản lý mật khẩu (Password Manager) uy tín để lưu trữ thay vì cố gắng ghi nhớ." }
+  ];
+  return { details, faqs };
+};
+
+// Content Generator for Hashing Tools
+const generateHashContent = (title: string, dbName: string, algoName: string) => {
+    const details = (
+        <div className="space-y-8 text-slate-300 leading-relaxed text-justify">
+            <section>
+                <h3 className="text-xl font-bold text-white mb-3">Công cụ {title} là gì?</h3>
+                <p>
+                    <strong>{title}</strong> giúp bạn tạo ra các chuỗi mã hóa (hash) chuẩn xác tương thích với hệ quản trị cơ sở dữ liệu <strong>{dbName}</strong>.
+                    Thuật toán được sử dụng là <strong>{algoName}</strong>, đảm bảo rằng mật khẩu của bạn được mã hóa đúng chuẩn trước khi lưu vào cấu hình hoặc database.
+                </p>
+            </section>
+            <section>
+                <h3 className="text-xl font-bold text-white mb-3">Tại sao phải Hash mật khẩu?</h3>
+                <p>
+                    Việc lưu trữ mật khẩu dưới dạng văn bản thuần (plain text) là một rủi ro bảo mật nghiêm trọng. 
+                    Hashing biến đổi mật khẩu thành một chuỗi ký tự cố định và không thể dịch ngược lại (one-way), giúp bảo vệ dữ liệu người dùng ngay cả khi database bị lộ.
+                </p>
+            </section>
+        </div>
+    );
+    const faqs: FAQItem[] = [
+        { question: "Tôi có thể giải mã (decrypt) hash này lại thành mật khẩu không?", answer: "Không. Hash là hàm một chiều. Bạn chỉ có thể kiểm tra mật khẩu bằng cách hash lại input và so sánh chuỗi kết quả." },
+        { question: "Công cụ này có gửi mật khẩu của tôi đi đâu không?", answer: "Không. Mọi quá trình tính toán diễn ra ngay trên trình duyệt của bạn (Client-side hashing)." }
+    ];
+    return { details, faqs };
+};
+
+// Content Generator for Encoders/Decoders
+const generateEncoderContent = (title: string, mechanism: string) => {
+    const details = (
+        <div className="space-y-8 text-slate-300 leading-relaxed text-justify">
+            <section>
+                <h3 className="text-xl font-bold text-white mb-3">Tìm hiểu về {title}</h3>
+                <p>
+                    <strong>{title}</strong> là công cụ hỗ trợ các lập trình viên và chuyên gia bảo mật chuyển đổi dữ liệu giữa dạng văn bản thường và định dạng <strong>{mechanism}</strong>.
+                    Việc này thường được sử dụng để chuẩn hóa dữ liệu, bypass các bộ lọc nội dung đơn giản, hoặc debug các giao thức mạng.
+                </p>
+            </section>
+            <section>
+                <h3 className="text-xl font-bold text-white mb-3">Ứng dụng của {mechanism}</h3>
+                <p>
+                    Chuẩn mã hóa này thường xuất hiện trong URL (Punycode), Email Header, hoặc các file hệ thống cũ. 
+                    Công cụ giúp bạn dễ dàng đọc hiểu nội dung hoặc tạo ra các chuỗi mã hóa tương ứng để thử nghiệm phần mềm.
+                </p>
+            </section>
+        </div>
+    );
+    const faqs: FAQItem[] = [
+        { question: "Mã hóa này có bảo mật không?", answer: "Không. Đây chỉ là Encoding (mã hóa định dạng), không phải Encryption (mã hóa bảo mật). Bất kỳ ai cũng có thể giải mã nếu biết thuật toán." },
+        { question: "Nó có hỗ trợ tiếng Việt không?", answer: "Có, công cụ hỗ trợ Unicode đầy đủ (UTF-8) trước khi thực hiện chuyển đổi sang các dạng như Base32/Base58." }
+    ];
+    return { details, faqs };
+};
+
 const createUnitTool = (
-  id: string, slug: string, title: string, desc: string, 
+  id: string, slug: string, title: string, subject: string, 
   category: Tool['category'], icon: React.ReactNode, 
   units: UnitDefinition[], helpText?: string
 ): Tool => {
-  const { details, faqs } = generateSEOContent(title, desc, units);
+  const { details, faqs } = generateConverterContent(title, subject, units);
   return {
-    id, slug, title, description: desc, category, icon,
-    keywords: [title.toLowerCase(), ...units.map(u => u.label.toLowerCase()), 'đổi đơn vị', 'online'],
+    id, slug, title, 
+    description: `Công cụ ${title.toLowerCase()} trực tuyến. Chuyển đổi nhanh giữa ${units.slice(0,3).map(u => u.label.split('(')[0]).join(', ')}... chính xác nhất.`, 
+    category, icon,
+    keywords: [title.toLowerCase(), subject.toLowerCase(), ...units.map(u => u.label.toLowerCase()), 'đổi đơn vị', 'online', 'chuyển đổi'],
     component: <UnitConverter labelFrom="Đổi từ" labelTo="Sang" units={units} helpText={helpText} />,
     details,
     faqs
@@ -164,8 +343,8 @@ const DATA_UNITS = [
 ];
 
 const SPEED_UNITS = [
-  { id: 'ms', label: 'Mét/giây (m/s)', ratio: 1 },
   { id: 'kmh', label: 'Km/giờ (km/h)', ratio: 0.277778 },
+  { id: 'ms', label: 'Mét/giây (m/s)', ratio: 1 },
   { id: 'mph', label: 'Dặm/giờ (mph)', ratio: 0.44704 },
   { id: 'kn', label: 'Hải lý/giờ (knot)', ratio: 0.514444 },
   { id: 'mach', label: 'Mach (chuẩn)', ratio: 340.3 },
@@ -212,7 +391,6 @@ const CURRENT_UNITS = [
   { id: 'uA', label: 'Microampe (µA)', ratio: 1e-6 },
 ];
 
-// New Units requested
 const QUANTITY_UNITS = [
     { id: 'each', label: 'Cái (Each)', ratio: 1 },
     { id: 'pair', label: 'Đôi (Pair)', ratio: 2 },
@@ -231,25 +409,10 @@ const PARTS_PER_UNITS = [
     { id: 'permille', label: 'Phần nghìn (‰)', ratio: 0.001 },
 ];
 
-// Pace (inverse of speed, but can be treated linearly for same "type" e.g. min/km to min/mile)
-// NOTE: Standard unit converter uses ratio to base. 
-// 1 min/mile = 0.62137 min/km.
 const PACE_UNITS = [
     { id: 'minkm', label: 'Phút/Km (min/km)', ratio: 1 },
-    { id: 'minmile', label: 'Phút/Dặm (min/mile)', ratio: 1.609344 }, // 1 min/mile is LONGER time than 1 min/km? No. 
-    // Speed = Dist/Time. Pace = Time/Dist.
-    // If I run 1 mile in 1 min, I run 1.609 km in 1 min. My pace is 1/1.609 min/km = 0.621 min/km.
-    // Wait. If value is "5 min/mile".
-    // 5 min / 1 mile = 5 min / 1.60934 km = 3.106 min/km.
-    // So Value(min/km) = Value(min/mile) / 1.60934.
-    // Our converter does: Base = Val * Ratio. Target = Base / TargetRatio.
-    // Let Base be min/km.
-    // If input is min/mile (ratio X). Base = Val * X.
-    // We want Base = Val / 1.60934.
-    // So ratio for min/mile should be 1/1.60934 = 0.621371.
-    // Let's test: 10 min/mile. Base = 10 * 0.621371 = 6.21 min/km. Correct.
-    { id: 'minmile_fix', label: 'Phút/Dặm (min/mile)', ratio: 0.621371 },
-    { id: 'secm', label: 'Giây/Mét (s/m)', ratio: 16.6667 }, // 1 s/m = 1000 s/km = 16.66 min/km
+    { id: 'minmile', label: 'Phút/Dặm (min/mile)', ratio: 1.609344 }, // Adjusted for direct ratio usage if base is min/km
+    { id: 'secm', label: 'Giây/Mét (s/m)', ratio: 16.6667 }, 
 ];
 
 const REACTIVE_POWER_UNITS = [
@@ -300,68 +463,82 @@ const CHARGE_UNITS = [
 
 const CURRENCY_EST_UNITS = [
     { id: 'VND', label: 'Việt Nam Đồng (VND)', ratio: 1 },
-    { id: 'USD', label: 'Đô la Mỹ (USD)', ratio: 25000 }, // Hardcoded estimation
-    { id: 'EUR', label: 'Euro (EUR)', ratio: 27000 },
-    { id: 'JPY', label: 'Yên Nhật (JPY)', ratio: 165 },
-    { id: 'KRW', label: 'Won Hàn (KRW)', ratio: 18 },
-    { id: 'CNY', label: 'Nhân dân tệ (CNY)', ratio: 3450 },
+    { id: 'USD', label: 'Đô la Mỹ (USD)', ratio: 25350 },
+    { id: 'EUR', label: 'Euro (EUR)', ratio: 27500 },
+    { id: 'JPY', label: 'Yên Nhật (JPY)', ratio: 168 },
+    { id: 'KRW', label: 'Won Hàn (KRW)', ratio: 18.5 },
+    { id: 'CNY', label: 'Nhân dân tệ (CNY)', ratio: 3520 },
 ];
 
+const ANGLE_UNITS = [
+    { id: 'deg', label: 'Độ (deg)', ratio: 1 },
+    { id: 'rad', label: 'Radian (rad)', ratio: 57.2958 },
+    { id: 'grad', label: 'Gradian (grad)', ratio: 0.9 },
+    { id: 'arcmin', label: 'Phút (arcmin)', ratio: 1/60 },
+    { id: 'arcsec', label: 'Giây (arcsec)', ratio: 1/3600 },
+];
+
+const FREQ_UNITS = [
+    { id: 'Hz', label: 'Hertz (Hz)', ratio: 1 },
+    { id: 'kHz', label: 'Kilohertz (kHz)', ratio: 1000 },
+    { id: 'MHz', label: 'Megahertz (MHz)', ratio: 1e6 },
+    { id: 'GHz', label: 'Gigahertz (GHz)', ratio: 1e9 },
+    { id: 'rpm', label: 'Vòng/phút (RPM)', ratio: 1/60 },
+];
 
 // --- Define All Tools ---
-// Ensure this is defined BEFORE it is used in App component
 const TOOLS: Tool[] = [
   // --- MATH ---
   {
     id: 'basic-percent',
     slug: 'tinh-gia-tri-phan-tram',
     title: 'Tìm % Giá trị',
-    description: 'Tính giá trị cụ thể của X% trong tổng số Y.',
+    description: 'Tính nhanh giá trị X% của số Y là bao nhiêu.',
     icon: <Percent size={24} />,
     category: 'math',
     popular: true,
     component: <BasicPercentage />,
-    ...generateSEOContent('Tìm % Giá trị', 'Công cụ tính nhanh giá trị phần trăm của một số.')
+    ...generateMathContent('Tìm % Giá trị', 'bài toán tìm giá trị của một số khi biết phần trăm của nó')
   },
   {
     id: 'ratio-percent',
     slug: 'tinh-ti-le-phan-tram',
     title: 'Tính Tỉ lệ %',
-    description: 'Tính xem X chiếm bao nhiêu phần trăm của Y.',
+    description: 'Tìm xem số X chiếm bao nhiêu phần trăm của số Y.',
     icon: <Box size={24} />,
     category: 'math',
     component: <RatioPercentage />,
-    ...generateSEOContent('Tính Tỉ lệ %', 'Tìm tỷ lệ phần trăm giữa hai số.')
+    ...generateMathContent('Tính Tỉ lệ %', 'bài toán so sánh tỷ trọng giữa hai số liệu')
   },
   {
     id: 'percent-change',
     slug: 'tinh-phan-tram-tang-giam',
     title: 'Tăng/Giảm %',
-    description: 'Tính % tăng trưởng hoặc suy giảm giữa hai giá trị.',
+    description: 'Tính mức độ tăng trưởng hoặc suy giảm giữa hai giá trị.',
     icon: <Activity size={24} />,
     category: 'math',
     component: <PercentageChange />,
-    ...generateSEOContent('Tăng/Giảm %', 'Tính mức độ thay đổi phần trăm giữa giá trị cũ và mới.')
+    ...generateMathContent('Tính % Tăng Giảm', 'sự thay đổi tương đối giữa hai mốc thời gian hoặc hai giá trị')
   },
   {
     id: 'find-whole',
     slug: 'tim-so-goc-tu-phan-tram',
     title: 'Tìm Số Gốc',
-    description: 'Tìm giá trị tổng khi biết giá trị thành phần và % tương ứng.',
+    description: 'Tìm giá trị ban đầu khi biết số lượng thành phần và % tương ứng.',
     icon: <Grid size={24} />,
     category: 'math',
     component: <FindWhole />,
-    ...generateSEOContent('Tìm Số Gốc', 'Tính toán ngược để tìm giá trị ban đầu.')
+    ...generateMathContent('Tìm Số Gốc', 'bài toán ngược: tìm tổng thể khi biết một phần')
   },
   {
     id: 'roman-converter',
     slug: 'doi-so-la-ma',
     title: 'Số La Mã',
-    description: 'Chuyển đổi qua lại giữa số tự nhiên và số La Mã.',
+    description: 'Chuyển đổi qua lại giữa số tự nhiên và chữ số La Mã.',
     icon: <PenTool size={24} />,
     category: 'math',
     component: <RomanConverter />,
-    ...generateSEOContent('Số La Mã', 'Công cụ chuyển đổi số thường sang số La Mã và ngược lại.')
+    ...generateMathContent('Số La Mã', 'việc đọc và viết các ký tự số cổ đại (I, V, X, L, C, D, M)')
   },
 
   // --- TEXT ---
@@ -369,95 +546,315 @@ const TOOLS: Tool[] = [
     id: 'word-counter',
     slug: 'dem-tu-dem-ky-tu',
     title: 'Đếm Từ & Ký Tự',
-    description: 'Đếm số từ, ký tự, câu và đoạn văn online.',
+    description: 'Đếm số lượng từ, ký tự, câu và đoạn văn trong văn bản.',
     icon: <Type size={24} />,
     category: 'text',
     component: <WordCounter />,
-    ...generateSEOContent('Đếm Từ', 'Công cụ đếm từ, ký tự miễn phí tốt nhất.')
+    ...generateTextContent('Bộ Đếm Từ Online', 'Công cụ đếm từ giúp bạn kiểm soát độ dài văn bản, phù hợp cho việc viết bài SEO, tiểu luận hay bài đăng mạng xã hội.')
   },
   {
     id: 'num-to-word',
     slug: 'doc-so-thanh-chu',
     title: 'Đọc Số Thành Chữ',
-    description: 'Chuyển đổi số thành chữ tiếng Việt (hỗ trợ số lớn).',
+    description: 'Chuyển đổi dãy số thành văn bản tiếng Việt.',
     icon: <BookOpen size={24} />,
     category: 'text',
     component: <NumberToWord />,
-    ...generateSEOContent('Đọc Số Thành Chữ', 'Tiện ích đọc số tiền, số lượng thành chữ tiếng Việt.')
+    ...generateTextContent('Đọc Số Thành Chữ', 'Tiện ích tự động chuyển các dãy số dài thành văn bản tiếng Việt chuẩn, rất hữu ích khi viết hóa đơn, phiếu thu chi hoặc văn bản hành chính.')
   },
   {
     id: 'word-to-num',
     slug: 'chuyen-chu-thanh-so',
     title: 'Chuyển Chữ Thành Số',
-    description: 'Chuyển đổi văn bản số tiếng Việt sang số tự nhiên.',
+    description: 'Chuyển đổi văn bản viết tay sang dạng số.',
     icon: <Type size={24} />,
     category: 'text',
     component: <WordToNumber />,
-    ...generateSEOContent('Chữ Thành Số', 'Chuyển đổi văn bản viết tay thành số.')
+    ...generateTextContent('Chuyển Chữ Thành Số', 'Công cụ hỗ trợ chuyển đổi các văn bản chứa số liệu (ví dụ: "một triệu hai trăm nghìn") về dạng số học để dễ dàng tính toán.')
   },
   
-  // --- SECURITY ---
+  // --- SECURITY & HASHING ---
   {
     id: 'password-gen',
     slug: 'tao-mat-khau-manh',
     title: 'Tạo Mật Khẩu',
-    description: 'Tạo mật khẩu ngẫu nhiên mạnh và an toàn.',
+    description: 'Tạo chuỗi mật khẩu ngẫu nhiên an toàn, khó đoán.',
     icon: <Shield size={24} />,
     category: 'security',
     popular: true,
     component: <PasswordGenerator />,
-    ...generateSEOContent('Tạo Mật Khẩu', 'Trình tạo mật khẩu ngẫu nhiên bảo mật cao.')
+    ...generateSecurityContent('Tạo Mật Khẩu Mạnh')
+  },
+  {
+    id: 'mysql-pass',
+    slug: 'mysql-password-generator',
+    title: 'MySQL Password Gen',
+    description: 'Tạo mã Hash mật khẩu chuẩn MySQL (PASSWORD function).',
+    icon: <Database size={24} />,
+    category: 'security',
+    component: <HashTools type="mysql" mode="generate" />,
+    ...generateHashContent('MySQL Password Generator', 'MySQL', 'SHA1 Unhex')
+  },
+  {
+    id: 'mariadb-pass',
+    slug: 'mariadb-password-generator',
+    title: 'MariaDB Password Gen',
+    description: 'Tạo mã Hash mật khẩu cho MariaDB.',
+    icon: <Database size={24} />,
+    category: 'security',
+    component: <HashTools type="mysql" mode="generate" />, // MariaDB uses same hash
+    ...generateHashContent('MariaDB Password Generator', 'MariaDB', 'SHA1')
+  },
+  {
+    id: 'postgres-pass',
+    slug: 'postgres-password-generator',
+    title: 'Postgres Password Gen',
+    description: 'Tạo mã MD5 Hash cho PostgreSQL user.',
+    icon: <Database size={24} />,
+    category: 'security',
+    component: <HashTools type="postgres" mode="generate" />,
+    ...generateHashContent('Postgres Password Generator', 'PostgreSQL', 'MD5')
+  },
+  {
+    id: 'bcrypt-gen',
+    slug: 'bcrypt-password-generator',
+    title: 'Bcrypt Generator',
+    description: 'Tạo Bcrypt Hash an toàn từ chuỗi ký tự.',
+    icon: <Hash size={24} />,
+    category: 'security',
+    component: <HashTools type="bcrypt" mode="generate" />,
+    ...generateHashContent('Bcrypt Generator', 'Bcrypt', 'Blowfish')
+  },
+  {
+    id: 'bcrypt-check',
+    slug: 'bcrypt-password-checker',
+    title: 'Bcrypt Checker',
+    description: 'Kiểm tra tính hợp lệ của mật khẩu với mã Bcrypt.',
+    icon: <Check size={24} />,
+    category: 'security',
+    component: <HashTools type="bcrypt" mode="check" />,
+    ...generateHashContent('Bcrypt Checker', 'Bcrypt', 'Blowfish')
+  },
+  {
+    id: 'scrypt-gen',
+    slug: 'scrypt-password-generator',
+    title: 'Scrypt Generator',
+    description: 'Tạo Scrypt Hash với tùy chọn salt.',
+    icon: <Hash size={24} />,
+    category: 'security',
+    component: <HashTools type="scrypt" mode="generate" />,
+    ...generateHashContent('Scrypt Generator', 'Scrypt', 'Memory-hard Function')
   },
 
+  // --- ENCODERS / DECODERS (DEV TOOLS) ---
+  {
+    id: 'rot13',
+    slug: 'rot13-encoder-decoder',
+    title: 'ROT13',
+    description: 'Mã hóa và giải mã ROT13 (Caesar cipher).',
+    icon: <ArrowRightLeft size={24} />,
+    category: 'dev',
+    component: <Encoders type="rot13" />,
+    ...generateEncoderContent('ROT13', 'Caesar Cipher')
+  },
+  {
+    id: 'rot47',
+    slug: 'rot47-encoder-decoder',
+    title: 'ROT47',
+    description: 'Mã hóa và giải mã ROT47 (ASCII shift).',
+    icon: <ArrowRightLeft size={24} />,
+    category: 'dev',
+    component: <Encoders type="rot47" />,
+    ...generateEncoderContent('ROT47', 'ASCII Shift')
+  },
+  {
+    id: 'punycode-enc',
+    slug: 'punycode-encoder',
+    title: 'Punycode Encoder',
+    description: 'Chuyển đổi Unicode sang ASCII (cho tên miền).',
+    icon: <Code size={24} />,
+    category: 'dev',
+    component: <Encoders type="punycode" defaultDirection="encode" />,
+    ...generateEncoderContent('Punycode Encoder', 'IDNA (Internationalizing Domain Names)')
+  },
+  {
+    id: 'punycode-dec',
+    slug: 'punycode-decoder',
+    title: 'Punycode Decoder',
+    description: 'Giải mã chuỗi Punycode về văn bản Unicode.',
+    icon: <Code size={24} />,
+    category: 'dev',
+    component: <Encoders type="punycode" defaultDirection="decode" />,
+    ...generateEncoderContent('Punycode Decoder', 'IDNA')
+  },
+  {
+    id: 'base32-enc',
+    slug: 'base32-encoder',
+    title: 'Base32 Encoder',
+    description: 'Mã hóa dữ liệu sang chuỗi Base32.',
+    icon: <Code size={24} />,
+    category: 'dev',
+    component: <Encoders type="base32" defaultDirection="encode" />,
+    ...generateEncoderContent('Base32 Encoder', 'RFC 4648')
+  },
+  {
+    id: 'base32-dec',
+    slug: 'base32-decoder',
+    title: 'Base32 Decoder',
+    description: 'Giải mã chuỗi Base32 về văn bản gốc.',
+    icon: <Code size={24} />,
+    category: 'dev',
+    component: <Encoders type="base32" defaultDirection="decode" />,
+    ...generateEncoderContent('Base32 Decoder', 'RFC 4648')
+  },
+  {
+    id: 'base58-enc',
+    slug: 'base58-encoder',
+    title: 'Base58 Encoder',
+    description: 'Mã hóa Base58 (thường dùng trong crypto).',
+    icon: <Code size={24} />,
+    category: 'dev',
+    component: <Encoders type="base58" defaultDirection="encode" />,
+    ...generateEncoderContent('Base58 Encoder', 'Bitcoin Base58')
+  },
+  {
+    id: 'base58-dec',
+    slug: 'base58-decoder',
+    title: 'Base58 Decoder',
+    description: 'Giải mã Base58 về văn bản gốc.',
+    icon: <Code size={24} />,
+    category: 'dev',
+    component: <Encoders type="base58" defaultDirection="decode" />,
+    ...generateEncoderContent('Base58 Decoder', 'Bitcoin Base58')
+  },
+  {
+    id: 'ascii85-enc',
+    slug: 'ascii85-encoder',
+    title: 'Ascii85 Encoder',
+    description: 'Mã hóa dữ liệu sang định dạng Ascii85.',
+    icon: <Code size={24} />,
+    category: 'dev',
+    component: <Encoders type="ascii85" defaultDirection="encode" />,
+    ...generateEncoderContent('Ascii85 Encoder', 'Adobe Ascii85')
+  },
+  {
+    id: 'ascii85-dec',
+    slug: 'ascii85-decoder',
+    title: 'Ascii85 Decoder',
+    description: 'Giải mã dữ liệu Ascii85.',
+    icon: <Code size={24} />,
+    category: 'dev',
+    component: <Encoders type="ascii85" defaultDirection="decode" />,
+    ...generateEncoderContent('Ascii85 Decoder', 'Adobe Ascii85')
+  },
+  {
+    id: 'utf8-enc',
+    slug: 'utf8-encoder',
+    title: 'UTF8 Encoder',
+    description: 'Xem biểu diễn Hex của chuỗi UTF-8.',
+    icon: <Code size={24} />,
+    category: 'dev',
+    component: <Encoders type="utf8" defaultDirection="encode" />,
+    ...generateEncoderContent('UTF8 Encoder', 'Unicode Transformation Format')
+  },
+  {
+    id: 'utf8-dec',
+    slug: 'utf8-decoder',
+    title: 'UTF8 Decoder',
+    description: 'Giải mã chuỗi Hex UTF-8 thành văn bản.',
+    icon: <Code size={24} />,
+    category: 'dev',
+    component: <Encoders type="utf8" defaultDirection="decode" />,
+    ...generateEncoderContent('UTF8 Decoder', 'Unicode Transformation Format')
+  },
+   {
+    id: 'utf16-enc',
+    slug: 'utf16-encoder',
+    title: 'UTF16 Encoder',
+    description: 'Xem biểu diễn Unicode Escaped (\\uXXXX).',
+    icon: <Code size={24} />,
+    category: 'dev',
+    component: <Encoders type="utf16" defaultDirection="encode" />,
+    ...generateEncoderContent('UTF16 Encoder', 'Unicode')
+  },
+  {
+    id: 'utf16-dec',
+    slug: 'utf16-decoder',
+    title: 'UTF16 Decoder',
+    description: 'Giải mã chuỗi \\uXXXX thành văn bản.',
+    icon: <Code size={24} />,
+    category: 'dev',
+    component: <Encoders type="utf16" defaultDirection="decode" />,
+    ...generateEncoderContent('UTF16 Decoder', 'Unicode')
+  },
+  // Uuencode usually requires binary files or distinct format not easily done in pure simple text area without proper file IO
+  // We include placeholders or simplified version if needed, but for now we mapped 'uu' to a maintenance state in the component to avoid breaking.
+  {
+    id: 'uu-enc',
+    slug: 'uuencoder',
+    title: 'Uuencoder',
+    description: 'Mã hóa văn bản sang UUEncode.',
+    icon: <Code size={24} />,
+    category: 'dev',
+    component: <Encoders type="uu" defaultDirection="encode" />,
+    ...generateEncoderContent('Uuencoder', 'Unix-to-Unix encoding')
+  },
+  {
+    id: 'uu-dec',
+    slug: 'uudecoder',
+    title: 'Uudecoder',
+    description: 'Giải mã văn bản UUEncode.',
+    icon: <Code size={24} />,
+    category: 'dev',
+    component: <Encoders type="uu" defaultDirection="decode" />,
+    ...generateEncoderContent('Uudecoder', 'Unix-to-Unix encoding')
+  },
+
+
   // --- CONVERTERS (COMMON) ---
-  createUnitTool('len-conv', 'doi-don-vi-do-dai', 'Đổi Độ Dài', 'Chuyển đổi mét, km, cm, inch, feet...', 'converter', <Ruler size={24} />, LENGTH_UNITS),
-  createUnitTool('area-conv', 'doi-don-vi-dien-tich', 'Đổi Diện Tích', 'Chuyển đổi m2, ha, km2, acre...', 'converter', <Box size={24} />, AREA_UNITS),
-  createUnitTool('weight-conv', 'doi-don-vi-khoi-luong', 'Đổi Khối Lượng', 'Chuyển đổi kg, gam, tấn, pound...', 'converter', <Scale size={24} />, WEIGHT_UNITS),
-  createUnitTool('vol-conv', 'doi-don-vi-the-tich', 'Đổi Thể Tích', 'Chuyển đổi lít, m3, gallon, cup...', 'converter', <Droplets size={24} />, VOLUME_UNITS),
+  createUnitTool('len-conv', 'doi-don-vi-do-dai', 'Đổi Độ Dài', 'độ dài và khoảng cách', 'converter', <Ruler size={24} />, LENGTH_UNITS),
+  createUnitTool('area-conv', 'doi-don-vi-dien-tich', 'Đổi Diện Tích', 'diện tích đất đai và bề mặt', 'converter', <Box size={24} />, AREA_UNITS),
+  createUnitTool('weight-conv', 'doi-don-vi-khoi-luong', 'Đổi Khối Lượng', 'cân nặng và khối lượng vật lý', 'converter', <Scale size={24} />, WEIGHT_UNITS),
+  createUnitTool('vol-conv', 'doi-don-vi-the-tich', 'Đổi Thể Tích', 'thể tích chất lỏng và không gian', 'converter', <Droplets size={24} />, VOLUME_UNITS),
   {
     id: 'temp-conv',
     slug: 'doi-don-vi-nhiet-do',
     title: 'Đổi Nhiệt Độ',
-    description: 'Chuyển đổi độ C, độ F và Kevin.',
+    description: 'Chuyển đổi giữa các thang đo nhiệt độ C, F và K.',
     category: 'converter',
     icon: <ThermometerSun size={24} />,
     component: <TemperatureConverter />,
-    ...generateSEOContent('Đổi Nhiệt Độ', 'Công cụ chuyển đổi Celsius, Fahrenheit, Kelvin.')
+    ...generateConverterContent('Đổi Nhiệt Độ', 'nhiệt độ thời tiết và khoa học', [
+      { id: 'C', label: 'Celsius (°C)', ratio: 1 },
+      { id: 'F', label: 'Fahrenheit (°F)', ratio: 1 },
+      { id: 'K', label: 'Kelvin (K)', ratio: 1 },
+    ])
   },
-  createUnitTool('time-conv', 'doi-don-vi-thoi-gian', 'Đổi Thời Gian', 'Chuyển đổi giây, phút, giờ, ngày...', 'converter', <Timer size={24} />, TIME_UNITS),
-  createUnitTool('speed-conv', 'doi-don-vi-toc-do', 'Đổi Tốc Độ', 'Chuyển đổi km/h, m/s, mph, knot...', 'converter', <Wind size={24} />, SPEED_UNITS),
-  createUnitTool('pressure-conv', 'doi-don-vi-ap-suat', 'Đổi Áp Suất', 'Chuyển đổi Pascal, Bar, PSI...', 'converter', <Gauge size={24} />, PRESSURE_UNITS),
-  createUnitTool('angle-conv', 'doi-don-vi-goc', 'Đổi Góc', 'Chuyển đổi Độ (Deg), Radian (Rad)...', 'converter', <Move size={24} />, [
-    { id: 'deg', label: 'Độ (deg)', ratio: 1 },
-    { id: 'rad', label: 'Radian (rad)', ratio: 57.2958 },
-    { id: 'grad', label: 'Gradian (grad)', ratio: 0.9 },
-  ]),
-  createUnitTool('freq-conv', 'doi-don-vi-tan-so', 'Đổi Tần Số', 'Chuyển đổi Hz, kHz, MHz, GHz...', 'converter', <Waves size={24} />, [
-    { id: 'Hz', label: 'Hertz (Hz)', ratio: 1 },
-    { id: 'kHz', label: 'Kilohertz (kHz)', ratio: 1000 },
-    { id: 'MHz', label: 'Megahertz (MHz)', ratio: 1e6 },
-    { id: 'GHz', label: 'Gigahertz (GHz)', ratio: 1e9 },
-  ]),
-  createUnitTool('data-conv', 'doi-don-vi-du-lieu', 'Đổi Dung Lượng', 'Chuyển đổi Byte, KB, MB, GB, TB...', 'converter', <Database size={24} />, DATA_UNITS),
+  createUnitTool('time-conv', 'doi-don-vi-thoi-gian', 'Đổi Thời Gian', 'thời gian và lịch', 'converter', <Timer size={24} />, TIME_UNITS),
+  createUnitTool('speed-conv', 'doi-don-vi-toc-do', 'Đổi Tốc Độ', 'vận tốc di chuyển', 'converter', <Wind size={24} />, SPEED_UNITS),
+  createUnitTool('pressure-conv', 'doi-don-vi-ap-suat', 'Đổi Áp Suất', 'áp suất khí quyển và chất lỏng', 'converter', <Gauge size={24} />, PRESSURE_UNITS),
+  createUnitTool('angle-conv', 'doi-don-vi-goc', 'Đổi Góc', 'góc hình học', 'converter', <Move size={24} />, ANGLE_UNITS),
+  createUnitTool('freq-conv', 'doi-don-vi-tan-so', 'Đổi Tần Số', 'tần số âm thanh và sóng điện từ', 'converter', <Waves size={24} />, FREQ_UNITS),
+  createUnitTool('data-conv', 'doi-don-vi-du-lieu', 'Đổi Dung Lượng', 'dung lượng lưu trữ máy tính', 'converter', <Database size={24} />, DATA_UNITS),
 
   // --- CONVERTERS (NEW REQUESTS) ---
-  createUnitTool('quantity-conv', 'doi-don-vi-so-dem', 'Đổi Số Đếm', 'Chuyển đổi tá (dozen), gross, score...', 'converter', <Grid size={24} />, QUANTITY_UNITS),
-  createUnitTool('ppm-conv', 'doi-don-vi-parts-per', 'Đổi Tỉ Lệ Phần', 'Chuyển đổi ppm, ppb, phần trăm...', 'converter', <Disc size={24} />, PARTS_PER_UNITS),
-  createUnitTool('pace-conv', 'doi-don-vi-toc-do-chay', 'Đổi Pace Chạy Bộ', 'Chuyển đổi min/km, min/mile...', 'converter', <Activity size={24} />, PACE_UNITS),
-  createUnitTool('flow-conv', 'doi-don-vi-luu-luong', 'Đổi Lưu Lượng', 'Chuyển đổi m3/s, lít/phút, GPM...', 'converter', <Waves size={24} />, FLOW_UNITS),
-  createUnitTool('lux-conv', 'doi-don-vi-do-roi', 'Đổi Độ Rọi', 'Chuyển đổi Lux, Foot-candle...', 'converter', <Sun size={24} />, ILLUMINANCE_UNITS),
-  createUnitTool('torque-conv', 'doi-don-vi-mo-men-xoan', 'Đổi Momen Xoắn', 'Chuyển đổi N·m, lb·ft, kg·m...', 'converter', <Anchor size={24} />, TORQUE_UNITS),
-  createUnitTool('currency-conv', 'doi-tien-te-tham-khao', 'Đổi Tiền Tệ', 'Đổi USD, VND, EUR (Tỷ giá tham khảo).', 'converter', <DollarSign size={24} />, CURRENCY_EST_UNITS, "Lưu ý: Tỷ giá chỉ mang tính chất tham khảo và cố định, không cập nhật theo thời gian thực."),
+  createUnitTool('quantity-conv', 'doi-don-vi-so-dem', 'Đổi Số Đếm', 'số lượng đơn vị đóng gói', 'converter', <Grid size={24} />, QUANTITY_UNITS),
+  createUnitTool('ppm-conv', 'doi-don-vi-parts-per', 'Đổi Tỉ Lệ Phần', 'nồng độ phần triệu, phần tỷ', 'converter', <Disc size={24} />, PARTS_PER_UNITS),
+  createUnitTool('pace-conv', 'doi-don-vi-toc-do-chay', 'Đổi Pace Chạy Bộ', 'tốc độ chạy bộ (Pace)', 'converter', <Activity size={24} />, PACE_UNITS),
+  createUnitTool('flow-conv', 'doi-don-vi-luu-luong', 'Đổi Lưu Lượng', 'lưu lượng dòng chảy chất lỏng', 'converter', <Waves size={24} />, FLOW_UNITS),
+  createUnitTool('lux-conv', 'doi-don-vi-do-roi', 'Đổi Độ Rọi', 'cường độ ánh sáng (độ rọi)', 'converter', <Sun size={24} />, ILLUMINANCE_UNITS),
+  createUnitTool('torque-conv', 'doi-don-vi-mo-men-xoan', 'Đổi Momen Xoắn', 'lực xoắn cơ học', 'converter', <Anchor size={24} />, TORQUE_UNITS),
+  createUnitTool('currency-conv', 'doi-tien-te-tham-khao', 'Đổi Tiền Tệ', 'tiền tệ quốc tế (tham khảo)', 'converter', <DollarSign size={24} />, CURRENCY_EST_UNITS, "Lưu ý: Tỷ giá chỉ mang tính chất tham khảo và ước lượng, không phải tỷ giá ngân hàng thời gian thực."),
 
   // --- ELECTRICITY ---
-  createUnitTool('volt-conv', 'doi-don-vi-dien-ap', 'Đổi Điện Áp', 'Chuyển đổi Volt, mV, kV...', 'electricity', <Zap size={24} />, VOLTAGE_UNITS),
-  createUnitTool('curr-conv', 'doi-don-vi-dong-dien', 'Đổi Dòng Điện', 'Chuyển đổi Ampe, mA, kA...', 'electricity', <Zap size={24} />, CURRENT_UNITS),
-  createUnitTool('charge-conv', 'doi-don-vi-dien-tich-luong', 'Đổi Điện Tích', 'Chuyển đổi Coulomb, Ah, mAh...', 'electricity', <Zap size={24} />, CHARGE_UNITS),
-  createUnitTool('power-conv', 'doi-don-vi-cong-suat', 'Đổi Công Suất', 'Chuyển đổi Watt, kW, Mã lực (HP)...', 'electricity', <Lightbulb size={24} />, POWER_UNITS),
-  createUnitTool('reactive-power-conv', 'doi-cong-suat-phan-khang', 'Công Suất Phản Kháng', 'Chuyển đổi VAR, kVAR...', 'electricity', <Zap size={24} />, REACTIVE_POWER_UNITS),
-  createUnitTool('apparent-power-conv', 'doi-cong-suat-bieu-kien', 'Công Suất Biểu Kiến', 'Chuyển đổi VA, kVA...', 'electricity', <Zap size={24} />, APPARENT_POWER_UNITS),
-  createUnitTool('energy-conv', 'doi-don-vi-nang-luong', 'Đổi Năng Lượng', 'Chuyển đổi Joule, Calorie, kWh...', 'electricity', <Zap size={24} />, ENERGY_UNITS),
-  createUnitTool('reactive-energy-conv', 'doi-nang-luong-phan-khang', 'Năng Lượng Phản Kháng', 'Chuyển đổi VARh, kVARh...', 'electricity', <Zap size={24} />, REACTIVE_ENERGY_UNITS),
+  createUnitTool('volt-conv', 'doi-don-vi-dien-ap', 'Đổi Điện Áp', 'hiệu điện thế dòng điện', 'electricity', <Zap size={24} />, VOLTAGE_UNITS),
+  createUnitTool('curr-conv', 'doi-don-vi-dong-dien', 'Đổi Dòng Điện', 'cường độ dòng điện', 'electricity', <Zap size={24} />, CURRENT_UNITS),
+  createUnitTool('charge-conv', 'doi-don-vi-dien-tich-luong', 'Đổi Điện Tích', 'điện tích lượng tử', 'electricity', <Zap size={24} />, CHARGE_UNITS),
+  createUnitTool('power-conv', 'doi-don-vi-cong-suat', 'Đổi Công Suất', 'công suất tiêu thụ điện năng', 'electricity', <Lightbulb size={24} />, POWER_UNITS),
+  createUnitTool('reactive-power-conv', 'doi-cong-suat-phan-khang', 'Công Suất Phản Kháng', 'công suất vô công (Q)', 'electricity', <Zap size={24} />, REACTIVE_POWER_UNITS),
+  createUnitTool('apparent-power-conv', 'doi-cong-suat-bieu-kien', 'Công Suất Biểu Kiến', 'công suất toàn phần (S)', 'electricity', <Zap size={24} />, APPARENT_POWER_UNITS),
+  createUnitTool('energy-conv', 'doi-don-vi-nang-luong', 'Đổi Năng Lượng', 'năng lượng và công', 'electricity', <Zap size={24} />, ENERGY_UNITS),
+  createUnitTool('reactive-energy-conv', 'doi-nang-luong-phan-khang', 'Năng Lượng Phản Kháng', 'điện năng phản kháng', 'electricity', <Zap size={24} />, REACTIVE_ENERGY_UNITS),
 ];
 
 // --- Helper Functions ---
