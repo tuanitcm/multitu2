@@ -57,8 +57,9 @@ export const HashTools: React.FC<HashToolsProps> = ({ type, mode }) => {
           const password = new TextEncoder().encode(input);
           const salt = new TextEncoder().encode(extraInput || 'salt');
           const N = 16384, r = 8, p = 1, dkLen = 64;
-          const key = await scrypt(password, salt, N, r, p, dkLen);
-          setResult(Array.from(key).map(b => b.toString(16).padStart(2, '0')).join(''));
+          // Cast scrypt to any to avoid TS mismatch errors in some environments
+          const key = await (scrypt as any)(password, salt, N, r, p, dkLen);
+          setResult(Array.from(key as Uint8Array).map(b => b.toString(16).padStart(2, '0')).join(''));
         }
       } else if (mode === 'check') {
         if (type === 'bcrypt') {
@@ -71,8 +72,9 @@ export const HashTools: React.FC<HashToolsProps> = ({ type, mode }) => {
             const password = new TextEncoder().encode(input);
             const salt = new TextEncoder().encode(extraInput || 'salt');
             const N = 16384, r = 8, p = 1, dkLen = 64;
-            const key = await scrypt(password, salt, N, r, p, dkLen);
-            const computed = Array.from(key).map(b => b.toString(16).padStart(2, '0')).join('');
+            // Cast scrypt to any to avoid TS mismatch errors in some environments
+            const key = await (scrypt as any)(password, salt, N, r, p, dkLen);
+            const computed = Array.from(key as Uint8Array).map(b => b.toString(16).padStart(2, '0')).join('');
             setIsValid(computed === compareHash);
         }
       }

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { 
   Percent, Search, Grid, Shield, Type, Calculator, 
@@ -5,7 +6,8 @@ import {
   Scale, Zap, Activity, Timer, Database, Gauge, Sun, 
   Wind, DollarSign, PenTool, BookOpen, Move, Droplets,
   Waves, Lightbulb, Disc, CreditCard, Anchor, ThermometerSun,
-  Lock, Key, Code, Hash, Check, ArrowRightLeft
+  Lock, Key, Code, Hash, Check, ArrowRightLeft, FunctionSquare,
+  TrendingUp, Hammer
 } from 'lucide-react';
 import { Tool, Category, FAQItem } from './types';
 
@@ -14,6 +16,7 @@ import { BasicPercentage } from './components/calculators/BasicPercentage';
 import { RatioPercentage } from './components/calculators/RatioPercentage';
 import { PercentageChange } from './components/calculators/PercentageChange';
 import { FindWhole } from './components/calculators/FindWhole';
+import { GeometryCalculator } from './components/calculators/GeometryCalculator';
 import { UnitConverter, UnitDefinition } from './components/calculators/UnitConverter';
 import { TemperatureConverter } from './components/calculators/TemperatureConverter';
 import { WordCounter } from './components/tools/WordCounter';
@@ -22,6 +25,10 @@ import { NumberToWord, RomanConverter, WordToNumber } from './components/tools/N
 import { HashTools } from './components/tools/HashTools';
 import { Encoders } from './components/tools/Encoders';
 import { Accordion } from './components/ui/Accordion';
+import { SequenceCalculator } from './components/calculators/SequenceCalculator';
+import { LogarithmCalculator, TrigCalculator, CalculusCalculator } from './components/calculators/AdvancedMath';
+import { PhysicsCalculator } from './components/calculators/PhysicsCalculator';
+import { FinanceCalculator } from './components/calculators/FinanceCalculator';
 
 // --- Configuration ---
 
@@ -140,6 +147,34 @@ const generateMathContent = (title: string, specificDesc: string) => {
   const faqs: FAQItem[] = [
     { question: "Kết quả có được làm tròn không?", answer: "Mặc định hệ thống hiển thị tối đa 4-6 chữ số thập phân để đảm bảo độ chính xác, nhưng vẫn gọn gàng dễ nhìn." },
     { question: "Công cụ có lưu lại lịch sử tính toán không?", answer: "Vì lý do bảo mật và riêng tư, chúng tôi không lưu trữ bất kỳ dữ liệu nào bạn nhập vào. Khi tải lại trang, mọi thứ sẽ trở về mặc định." }
+  ];
+  return { details, faqs };
+};
+
+const generateGeometryContent = (type: string = 'general') => {
+  const details = (
+    <div className="space-y-8 text-slate-300 leading-relaxed text-justify">
+      <section>
+        <h3 className="text-xl font-bold text-white mb-3">Công cụ tính Hình học trực tuyến</h3>
+        <p>
+          Công cụ này giúp bạn tính toán nhanh chóng <strong>Diện tích (S)</strong>, <strong>Chu vi (P)</strong> và <strong>Thể tích (V)</strong> cho đa dạng các hình học 2D và 3D: 
+          Hình vuông, Chữ nhật, Tròn, Tam giác, Hình hộp, Hình cầu...
+        </p>
+      </section>
+      <section>
+        <h3 className="text-xl font-bold text-white mb-3">Các công thức phổ biến</h3>
+        <ul className="list-disc list-inside space-y-2 ml-2">
+          <li><strong>Tam giác:</strong> S = ½ × đáy × cao</li>
+          <li><strong>Hình tròn:</strong> S = πr²; C = 2πr</li>
+          <li><strong>Hình trụ:</strong> V = πr²h</li>
+          <li><strong>Hình cầu:</strong> V = ⁴⁄₃πr³</li>
+        </ul>
+      </section>
+    </div>
+  );
+  const faqs: FAQItem[] = [
+    { question: "Số Pi (π) được lấy giá trị bao nhiêu?", answer: "Hệ thống sử dụng hằng số chính xác của máy tính (3.14159...) để đảm bảo sai số thấp nhất." },
+    { question: "Tôi có cần đổi đơn vị trước khi nhập không?", answer: "Bạn nên nhập cùng một đơn vị cho tất cả các cạnh. Ví dụ: nếu cạnh a là mét, cạnh b cũng phải là mét." },
   ];
   return { details, faqs };
 };
@@ -411,7 +446,7 @@ const PARTS_PER_UNITS = [
 
 const PACE_UNITS = [
     { id: 'minkm', label: 'Phút/Km (min/km)', ratio: 1 },
-    { id: 'minmile', label: 'Phút/Dặm (min/mile)', ratio: 1.609344 }, // Adjusted for direct ratio usage if base is min/km
+    { id: 'minmile', label: 'Phút/Dặm (min/mile)', ratio: 1.609344 }, 
     { id: 'secm', label: 'Giây/Mét (s/m)', ratio: 16.6667 }, 
 ];
 
@@ -531,6 +566,86 @@ const TOOLS: Tool[] = [
     ...generateMathContent('Tìm Số Gốc', 'bài toán ngược: tìm tổng thể khi biết một phần')
   },
   {
+    id: 'geometry-calc',
+    slug: 'tinh-chu-vi-dien-tich',
+    title: 'Tính Hình Học',
+    description: 'Tính chu vi, diện tích, thể tích các hình: Vuông, Tròn, Tam giác, Hình hộp, Hình cầu...',
+    icon: <Ruler size={24} />,
+    category: 'math',
+    component: <GeometryCalculator />,
+    ...generateGeometryContent()
+  },
+  {
+    id: 'triangle-calc',
+    slug: 'tinh-dien-tich-tam-giac',
+    title: 'Tính Diện Tích Tam Giác',
+    description: 'Công cụ tính nhanh diện tích và chu vi hình tam giác.',
+    icon: <Ruler size={24} />,
+    category: 'math',
+    component: <GeometryCalculator defaultShape="triangle" />,
+    ...generateGeometryContent('triangle')
+  },
+   {
+    id: 'circle-calc',
+    slug: 'tinh-dien-tich-hinh-tron',
+    title: 'Tính Hình Tròn',
+    description: 'Tính diện tích và chu vi hình tròn chính xác với số Pi.',
+    icon: <Disc size={24} />,
+    category: 'math',
+    component: <GeometryCalculator defaultShape="circle" />,
+    ...generateGeometryContent('circle')
+  },
+  {
+    id: 'volume-calc',
+    slug: 'tinh-the-tich',
+    title: 'Tính Thể Tích',
+    description: 'Tính thể tích các khối hình học không gian: Lập phương, Hình hộp, Hình trụ, Hình cầu.',
+    icon: <Box size={24} />,
+    category: 'math',
+    component: <GeometryCalculator defaultShape="box" defaultMode="volume" />,
+    ...generateGeometryContent('volume')
+  },
+  {
+    id: 'sequence-calc',
+    slug: 'tinh-cap-so-cong-nhan',
+    title: 'Cấp Số Cộng/Nhân',
+    description: 'Tính số hạng tổng quát và tổng n số hạng của cấp số cộng và cấp số nhân.',
+    icon: <TrendingUp size={24} />,
+    category: 'math',
+    component: <SequenceCalculator />,
+    ...generateMathContent('Cấp số cộng & nhân', 'các bài toán về dãy số có quy luật')
+  },
+  {
+    id: 'log-calc',
+    slug: 'tinh-logarit',
+    title: 'Tính Logarit',
+    description: 'Tính giá trị Logarit với cơ số bất kỳ.',
+    icon: <FunctionSquare size={24} />,
+    category: 'math',
+    component: <LogarithmCalculator />,
+    ...generateMathContent('Logarit', 'phép toán ngược của lũy thừa')
+  },
+  {
+    id: 'trig-calc',
+    slug: 'cong-cu-luong-giac',
+    title: 'Lượng Giác (Sin/Cos/Tan)',
+    description: 'Tính giá trị lượng giác Sin, Cos, Tan của một góc (Độ hoặc Radian).',
+    icon: <Waves size={24} />,
+    category: 'math',
+    component: <TrigCalculator />,
+    ...generateMathContent('Lượng giác', 'tỷ số lượng giác trong tam giác vuông và đường tròn đơn vị')
+  },
+  {
+    id: 'calculus-calc',
+    slug: 'tinh-dao-ham-nguyen-ham',
+    title: 'Đạo Hàm & Nguyên Hàm',
+    description: 'Tính đạo hàm và nguyên hàm cơ bản của hàm đa thức (f(x) = ax^n).',
+    icon: <FunctionSquare size={24} />,
+    category: 'math',
+    component: <CalculusCalculator />,
+    ...generateMathContent('Giải tích', 'phép tính vi phân và tích phân cơ bản cho đa thức')
+  },
+  {
     id: 'roman-converter',
     slug: 'doi-so-la-ma',
     title: 'Số La Mã',
@@ -539,6 +654,38 @@ const TOOLS: Tool[] = [
     category: 'math',
     component: <RomanConverter />,
     ...generateMathContent('Số La Mã', 'việc đọc và viết các ký tự số cổ đại (I, V, X, L, C, D, M)')
+  },
+  {
+      id: 'compound-interest',
+      slug: 'tinh-lai-kep',
+      title: 'Tính Lãi Kép',
+      description: 'Công cụ tính lãi suất kép gửi tiết kiệm ngân hàng, đầu tư.',
+      icon: <TrendingUp size={24} />,
+      category: 'math',
+      component: <FinanceCalculator />,
+      ...generateMathContent('Lãi kép', 'sức mạnh của lãi suất trong đầu tư tài chính')
+  },
+
+  // --- PHYSICS (Calculators) ---
+  {
+      id: 'physics-motion',
+      slug: 'tinh-van-toc-quang-duong',
+      title: 'Tính Vận Tốc/Quãng Đường',
+      description: 'Tính toán các đại lượng trong chuyển động đều: Vận tốc (v), Quãng đường (s), Thời gian (t).',
+      icon: <Wind size={24} />,
+      category: 'math',
+      component: <PhysicsCalculator defaultMode="motion" />,
+      ...generateMathContent('Chuyển động cơ học', 'các bài toán vật lý lớp 8, lớp 10 về chuyển động')
+  },
+  {
+      id: 'physics-work',
+      slug: 'tinh-cong-cong-suat',
+      title: 'Tính Công & Công Suất',
+      description: 'Tính Công cơ học (A) và Công suất (P) thực hiện được trong một khoảng thời gian.',
+      icon: <Hammer size={24} />,
+      category: 'math',
+      component: <PhysicsCalculator defaultMode="work" />,
+      ...generateMathContent('Công và Công suất', 'hiệu suất làm việc của máy móc và con người')
   },
 
   // --- TEXT ---
@@ -728,6 +875,16 @@ const TOOLS: Tool[] = [
     ...generateEncoderContent('Base58 Decoder', 'Bitcoin Base58')
   },
   {
+    id: 'base64-tool',
+    slug: 'base64-encoder-decoder',
+    title: 'Base64 Encoder/Decoder',
+    description: 'Mã hóa và giải mã Base64 trực tuyến, hỗ trợ UTF-8.',
+    icon: <Code size={24} />,
+    category: 'dev',
+    component: <Encoders type="base64" defaultDirection="encode" />,
+    ...generateEncoderContent('Base64 Encoder/Decoder', 'Base64 Standard')
+  },
+  {
     id: 'ascii85-enc',
     slug: 'ascii85-encoder',
     title: 'Ascii85 Encoder',
@@ -787,8 +944,6 @@ const TOOLS: Tool[] = [
     component: <Encoders type="utf16" defaultDirection="decode" />,
     ...generateEncoderContent('UTF16 Decoder', 'Unicode')
   },
-  // Uuencode usually requires binary files or distinct format not easily done in pure simple text area without proper file IO
-  // We include placeholders or simplified version if needed, but for now we mapped 'uu' to a maintenance state in the component to avoid breaking.
   {
     id: 'uu-enc',
     slug: 'uuencoder',
@@ -815,7 +970,7 @@ const TOOLS: Tool[] = [
   createUnitTool('len-conv', 'doi-don-vi-do-dai', 'Đổi Độ Dài', 'độ dài và khoảng cách', 'converter', <Ruler size={24} />, LENGTH_UNITS),
   createUnitTool('area-conv', 'doi-don-vi-dien-tich', 'Đổi Diện Tích', 'diện tích đất đai và bề mặt', 'converter', <Box size={24} />, AREA_UNITS),
   createUnitTool('weight-conv', 'doi-don-vi-khoi-luong', 'Đổi Khối Lượng', 'cân nặng và khối lượng vật lý', 'converter', <Scale size={24} />, WEIGHT_UNITS),
-  createUnitTool('vol-conv', 'doi-don-vi-the-tich', 'Đổi Thể Tích', 'thể tích chất lỏng và không gian', 'converter', <Droplets size={24} />, VOLUME_UNITS),
+  createUnitTool('vol-conv-unit', 'doi-don-vi-the-tich', 'Đổi Đơn Vị Thể Tích', 'thể tích chất lỏng và không gian', 'converter', <Droplets size={24} />, VOLUME_UNITS),
   {
     id: 'temp-conv',
     slug: 'doi-don-vi-nhiet-do',
@@ -834,8 +989,77 @@ const TOOLS: Tool[] = [
   createUnitTool('speed-conv', 'doi-don-vi-toc-do', 'Đổi Tốc Độ', 'vận tốc di chuyển', 'converter', <Wind size={24} />, SPEED_UNITS),
   createUnitTool('pressure-conv', 'doi-don-vi-ap-suat', 'Đổi Áp Suất', 'áp suất khí quyển và chất lỏng', 'converter', <Gauge size={24} />, PRESSURE_UNITS),
   createUnitTool('angle-conv', 'doi-don-vi-goc', 'Đổi Góc', 'góc hình học', 'converter', <Move size={24} />, ANGLE_UNITS),
-  createUnitTool('freq-conv', 'doi-don-vi-tan-so', 'Đổi Tần Số', 'tần số âm thanh và sóng điện từ', 'converter', <Waves size={24} />, FREQ_UNITS),
-  createUnitTool('data-conv', 'doi-don-vi-du-lieu', 'Đổi Dung Lượng', 'dung lượng lưu trữ máy tính', 'converter', <Database size={24} />, DATA_UNITS),
+  {
+    id: 'freq-conv',
+    slug: 'doi-don-vi-tan-so',
+    title: 'Đổi Đơn Vị Tần Số',
+    description: 'Chuyển đổi đơn vị tần số: Hz, kHz, MHz, GHz và RPM. Công cụ chính xác cho kỹ thuật âm thanh, điện tử và cơ khí.',
+    category: 'converter',
+    icon: <Waves size={24} />,
+    component: <UnitConverter labelFrom="Đổi từ" labelTo="Sang" units={FREQ_UNITS} helpText="Công thức: 1 Hz = 60 RPM (Vòng/phút)." />,
+    details: (
+      <div className="space-y-8 text-slate-300 leading-relaxed text-justify">
+        <section>
+          <h3 className="text-xl font-bold text-white mb-3">Kiến thức về Tần số (Frequency)</h3>
+          <p>
+            <strong>Tần số</strong> phản ánh số lần lặp lại của một hiện tượng trong một giây. 
+            Đây là thông số quan trọng trong nhiều lĩnh vực như âm thanh (Audio), sóng vô tuyến (Radio/Wifi) và cơ khí động lực (Động cơ).
+          </p>
+        </section>
+        <section>
+          <h3 className="text-xl font-bold text-white mb-3">Cách đổi Hz sang RPM</h3>
+          <p>
+            <strong>Hz (Hertz)</strong> là số dao động mỗi giây.<br/>
+            <strong>RPM (Revolutions Per Minute)</strong> là số vòng quay mỗi phút.<br/>
+            Do 1 phút có 60 giây, ta có mối liên hệ:
+          </p>
+          <ul className="list-disc list-inside ml-4 mt-2 space-y-1">
+             <li>1 Hz = 60 RPM</li>
+             <li>1 RPM = 1/60 Hz ≈ 0.01667 Hz</li>
+             <li>1 kHz = 1000 Hz = 60,000 RPM</li>
+          </ul>
+        </section>
+      </div>
+    ),
+    faqs: [
+       { question: "1 Hz bằng bao nhiêu RPM?", answer: "1 Hz bằng đúng 60 RPM (Vòng/phút)." },
+       { question: "Tần số 50Hz và 60Hz điện lưới khác nhau thế nào?", answer: "Đây là tần số dòng điện xoay chiều. 50Hz đổi chiều 100 lần/giây, 60Hz đổi chiều 120 lần/giây. Thiết bị dùng động cơ (như quạt, máy bơm) thiết kế cho 60Hz sẽ chạy chậm và nóng hơn nếu dùng ở 50Hz." },
+       { question: "GHz trong CPU máy tính là gì?", answer: "Đó là tốc độ xung nhịp của bộ vi xử lý. 3.5 GHz nghĩa là CPU thực hiện 3.5 tỷ chu kỳ xử lý mỗi giây." }
+    ]
+  },
+  {
+    id: 'data-conv',
+    slug: 'doi-don-vi-du-lieu',
+    title: 'Đổi Đơn Vị Dữ Liệu',
+    description: 'Công cụ chuyển đổi đơn vị lưu trữ máy tính: Byte, KB, MB, GB, TB, PB. Chính xác theo chuẩn nhị phân (1024).',
+    category: 'converter',
+    icon: <Database size={24} />,
+    component: <UnitConverter labelFrom="Đổi từ" labelTo="Sang" units={DATA_UNITS} helpText="Hệ thống sử dụng chuẩn nhị phân: 1 KB = 1024 Bytes." />,
+    details: (
+      <div className="space-y-8 text-slate-300 leading-relaxed text-justify">
+        <section>
+          <h3 className="text-xl font-bold text-white mb-3">Bảng đơn vị đo lường dữ liệu máy tính</h3>
+          <p>
+            Trong tin học, đơn vị cơ bản nhất là <strong>Bit</strong> (binary digit), nhưng đơn vị thường dùng để đo dung lượng tệp tin là <strong>Byte</strong> (1 Byte = 8 bits).
+            Các đơn vị lớn hơn như Kilobyte (KB), Megabyte (MB), Gigabyte (GB) thường được tính theo lũy thừa của 2 (hệ nhị phân).
+          </p>
+        </section>
+        <section>
+          <h3 className="text-xl font-bold text-white mb-3">Tại sao 1KB = 1024 Bytes?</h3>
+          <p>
+            Máy tính hoạt động dựa trên hệ nhị phân (0 và 1). Do đó, các bội số của đơn vị cũng tuân theo quy luật 2^n.
+            1 KB = 2^10 Bytes = 1024 Bytes.
+            Tuy nhiên, trong thương mại (ổ cứng, thẻ nhớ), nhà sản xuất thường dùng hệ thập phân (1 KB = 1000 Bytes), đó là lý do dung lượng thực tế thường thấp hơn thông số trên bao bì.
+          </p>
+        </section>
+      </div>
+    ),
+    faqs: [
+       { question: "1 GB bằng bao nhiêu MB?", answer: "Theo chuẩn nhị phân (Windows sử dụng), 1 GB = 1024 MB. Theo chuẩn thập phân (NSX ổ cứng), 1 GB = 1000 MB." },
+       { question: "Sự khác nhau giữa MB và Mb?", answer: "MB (Megabyte) thường dùng cho dung lượng lưu trữ. Mb (Megabit) thường dùng cho tốc độ mạng. 1 Byte = 8 bits, nên 1 MB ~ 8 Mb." },
+       { question: "Tại sao ổ cứng 500GB chỉ nhận được khoảng 465GB?", answer: "Do máy tính tính 1GB = 1073741824 Bytes (1024^3), còn nhà sản xuất tính 1GB = 1000000000 Bytes (1000^3). Chênh lệch này tạo ra sự thiếu hụt hiển thị." }
+    ]
+  },
 
   // --- CONVERTERS (NEW REQUESTS) ---
   createUnitTool('quantity-conv', 'doi-don-vi-so-dem', 'Đổi Số Đếm', 'số lượng đơn vị đóng gói', 'converter', <Grid size={24} />, QUANTITY_UNITS),
@@ -850,7 +1074,7 @@ const TOOLS: Tool[] = [
   createUnitTool('volt-conv', 'doi-don-vi-dien-ap', 'Đổi Điện Áp', 'hiệu điện thế dòng điện', 'electricity', <Zap size={24} />, VOLTAGE_UNITS),
   createUnitTool('curr-conv', 'doi-don-vi-dong-dien', 'Đổi Dòng Điện', 'cường độ dòng điện', 'electricity', <Zap size={24} />, CURRENT_UNITS),
   createUnitTool('charge-conv', 'doi-don-vi-dien-tich-luong', 'Đổi Điện Tích', 'điện tích lượng tử', 'electricity', <Zap size={24} />, CHARGE_UNITS),
-  createUnitTool('power-conv', 'doi-don-vi-cong-suat', 'Đổi Công Suất', 'công suất tiêu thụ điện năng', 'electricity', <Lightbulb size={24} />, POWER_UNITS),
+  createUnitTool('power-conv-unit', 'doi-don-vi-cong-suat', 'Đổi Đơn Vị Công Suất', 'công suất tiêu thụ điện năng', 'electricity', <Lightbulb size={24} />, POWER_UNITS),
   createUnitTool('reactive-power-conv', 'doi-cong-suat-phan-khang', 'Công Suất Phản Kháng', 'công suất vô công (Q)', 'electricity', <Zap size={24} />, REACTIVE_POWER_UNITS),
   createUnitTool('apparent-power-conv', 'doi-cong-suat-bieu-kien', 'Công Suất Biểu Kiến', 'công suất toàn phần (S)', 'electricity', <Zap size={24} />, APPARENT_POWER_UNITS),
   createUnitTool('energy-conv', 'doi-don-vi-nang-luong', 'Đổi Năng Lượng', 'năng lượng và công', 'electricity', <Zap size={24} />, ENERGY_UNITS),

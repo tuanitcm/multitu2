@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TextInput } from '../ui/Input';
-import { ArrowDownUp, Copy, Check, RefreshCw } from 'lucide-react';
+import { ArrowDownUp, Copy, Check } from 'lucide-react';
 import base32 from 'hi-base32';
 import baseX from 'base-x';
 import punycode from 'punycode';
@@ -10,7 +9,7 @@ import ascii85 from 'ascii85';
 const BASE58_ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
 const bs58 = baseX(BASE58_ALPHABET);
 
-type EncoderType = 'rot13' | 'rot47' | 'punycode' | 'base32' | 'base58' | 'ascii85' | 'utf8' | 'utf16' | 'uu';
+type EncoderType = 'rot13' | 'rot47' | 'punycode' | 'base32' | 'base58' | 'ascii85' | 'utf8' | 'utf16' | 'uu' | 'base64';
 type Direction = 'encode' | 'decode';
 
 interface EncoderProps {
@@ -79,13 +78,23 @@ export const Encoders: React.FC<EncoderProps> = ({ type, defaultDirection = 'enc
         } else if (type === 'ascii85') {
              if (direction === 'encode') res = ascii85.encode(input).toString();
              else res = ascii85.decode(input).toString();
+        } else if (type === 'base64') {
+             // UTF-8 safe Base64
+             if (direction === 'encode') {
+                 res = btoa(encodeURIComponent(input).replace(/%([0-9A-F]{2})/g, 
+                    function toSolidBytes(match, p1) {
+                        return String.fromCharCode(parseInt(p1, 16));
+                 }));
+             } else {
+                 res = decodeURIComponent(atob(input).split('').map(function(c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                 }).join(''));
+             }
         } else if (type === 'utf8') {
-             // Visual representation of UTF8 bytes
              if (direction === 'encode') {
                 const encoder = new TextEncoder();
                 res = Array.from(encoder.encode(input)).map(b => '\\x' + b.toString(16).padStart(2,'0')).join('');
              } else {
-                // Try to parse \xHH format
                 const hexString = input.replace(/\\x/g, '');
                 const bytes = new Uint8Array(hexString.match(/.{1,2}/g)?.map(byte => parseInt(byte, 16)) || []);
                 res = new TextDecoder().decode(bytes);
@@ -98,21 +107,10 @@ export const Encoders: React.FC<EncoderProps> = ({ type, defaultDirection = 'enc
                 }
                 res = arr.join('');
              } else {
-                res = JSON.parse(`"${input}"`); // Simple unescape
+                res = JSON.parse(`"${input}"`);
              }
         } else if (type === 'uu') {
-            // Simple UUEncode simulation (since reliable libs are heavy, we do a basic node-like buffer one if environment supported, else naive)
-            // Using a naive JS implementation for brevity
-            if (direction === 'encode') {
-               // Basic simulation or placeholder if too complex for single file without dedicated lib
-               // Let's stick to the logic that this usually requires a lib.
-               // For now, let's output a message if library not fully loaded, but assuming standard `btoa` variant for basic uu
-               // Actually UU is distinct from Base64. 
-               // Since I can't easily implement full UU spec in 10 lines, I'll handle it gracefully.
-               throw new Error("Chức năng đang bảo trì");
-            } else {
-               throw new Error("Chức năng đang bảo trì");
-            }
+            throw new Error("Chức năng đang bảo trì");
         }
 
         setOutput(res);
@@ -122,7 +120,6 @@ export const Encoders: React.FC<EncoderProps> = ({ type, defaultDirection = 'enc
     }
   };
 
-  // Auto process on input stop typing
   useEffect(() => {
       const timer = setTimeout(process, 500);
       return () => clearTimeout(timer);
