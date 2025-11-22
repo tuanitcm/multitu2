@@ -6,7 +6,7 @@ import {
   Scale, Zap, Activity, Timer, Database, Gauge, Sun, 
   Wind, DollarSign, PenTool, BookOpen, Move, Droplets,
   Waves, Lightbulb, Disc, CreditCard, Anchor, ThermometerSun,
-  Lock, Key, Code, Hash, Check, ArrowRightLeft, FunctionSquare,
+  Lock, Key, Code, Hash, Check, ArrowRightLeft, SquareFunction,
   TrendingUp, Hammer
 } from 'lucide-react';
 import { Tool, Category, FAQItem } from './types';
@@ -620,7 +620,7 @@ const TOOLS: Tool[] = [
     slug: 'tinh-logarit',
     title: 'Tính Logarit',
     description: 'Tính giá trị Logarit với cơ số bất kỳ.',
-    icon: <FunctionSquare size={24} />,
+    icon: <SquareFunction size={24} />,
     category: 'math',
     component: <LogarithmCalculator />,
     ...generateMathContent('Logarit', 'phép toán ngược của lũy thừa')
@@ -640,7 +640,7 @@ const TOOLS: Tool[] = [
     slug: 'tinh-dao-ham-nguyen-ham',
     title: 'Đạo Hàm & Nguyên Hàm',
     description: 'Tính đạo hàm và nguyên hàm cơ bản của hàm đa thức (f(x) = ax^n).',
-    icon: <FunctionSquare size={24} />,
+    icon: <SquareFunction size={24} />,
     category: 'math',
     component: <CalculusCalculator />,
     ...generateMathContent('Giải tích', 'phép tính vi phân và tích phân cơ bản cho đa thức')

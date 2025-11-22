@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { NumberInput, TextInput } from '../ui/Input';
-import { Calculator, RefreshCw, FunctionSquare, Triangle, Divide } from 'lucide-react';
+import { Calculator, RefreshCw, SquareFunction, Triangle, Divide } from 'lucide-react';
 
 // --- LOGARITHM CALCULATOR ---
 export const LogarithmCalculator = () => {
