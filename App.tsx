@@ -6,8 +6,7 @@ import {
   Scale, Zap, Activity, Timer, Database, Gauge, Sun, 
   Wind, DollarSign, PenTool, BookOpen, Move, Droplets,
   Waves, Lightbulb, Disc, CreditCard, Anchor, ThermometerSun,
-  Lock, Key, Code, Hash, Check, ArrowRightLeft, SquareFunction,
-  TrendingUp, Hammer
+  Lock, Key, TrendingUp, Hammer
 } from 'lucide-react';
 import { Tool, Category, FAQItem } from './types';
 
@@ -22,8 +21,6 @@ import { TemperatureConverter } from './components/calculators/TemperatureConver
 import { WordCounter } from './components/tools/WordCounter';
 import { PasswordGenerator } from './components/tools/PasswordGenerator';
 import { NumberToWord, RomanConverter, WordToNumber } from './components/tools/NumberConverters';
-import { HashTools } from './components/tools/HashTools';
-import { Encoders } from './components/tools/Encoders';
 import { Accordion } from './components/ui/Accordion';
 import { SequenceCalculator } from './components/calculators/SequenceCalculator';
 import { LogarithmCalculator, TrigCalculator, CalculusCalculator } from './components/calculators/AdvancedMath';
@@ -39,7 +36,6 @@ const CATEGORIES_CONFIG: { id: Category; label: string; slug: string }[] = [
   { id: 'electricity', label: 'Điện & Điện tử', slug: 'dien-tu' },
   { id: 'text', label: 'Văn bản', slug: 'van-ban' },
   { id: 'security', label: 'Bảo mật', slug: 'bao-mat' },
-  { id: 'dev', label: 'Lập trình (Dev)', slug: 'dev-tools' },
 ];
 
 // --- SEO Content Generators (E-E-A-T Standard) ---
@@ -232,60 +228,6 @@ const generateSecurityContent = (title: string) => {
     { question: "Làm sao để nhớ mật khẩu phức tạp như vậy?", answer: "Chúng tôi khuyên bạn nên sử dụng các trình quản lý mật khẩu (Password Manager) uy tín để lưu trữ thay vì cố gắng ghi nhớ." }
   ];
   return { details, faqs };
-};
-
-// Content Generator for Hashing Tools
-const generateHashContent = (title: string, dbName: string, algoName: string) => {
-    const details = (
-        <div className="space-y-8 text-slate-300 leading-relaxed text-justify">
-            <section>
-                <h3 className="text-xl font-bold text-white mb-3">Công cụ {title} là gì?</h3>
-                <p>
-                    <strong>{title}</strong> giúp bạn tạo ra các chuỗi mã hóa (hash) chuẩn xác tương thích với hệ quản trị cơ sở dữ liệu <strong>{dbName}</strong>.
-                    Thuật toán được sử dụng là <strong>{algoName}</strong>, đảm bảo rằng mật khẩu của bạn được mã hóa đúng chuẩn trước khi lưu vào cấu hình hoặc database.
-                </p>
-            </section>
-            <section>
-                <h3 className="text-xl font-bold text-white mb-3">Tại sao phải Hash mật khẩu?</h3>
-                <p>
-                    Việc lưu trữ mật khẩu dưới dạng văn bản thuần (plain text) là một rủi ro bảo mật nghiêm trọng. 
-                    Hashing biến đổi mật khẩu thành một chuỗi ký tự cố định và không thể dịch ngược lại (one-way), giúp bảo vệ dữ liệu người dùng ngay cả khi database bị lộ.
-                </p>
-            </section>
-        </div>
-    );
-    const faqs: FAQItem[] = [
-        { question: "Tôi có thể giải mã (decrypt) hash này lại thành mật khẩu không?", answer: "Không. Hash là hàm một chiều. Bạn chỉ có thể kiểm tra mật khẩu bằng cách hash lại input và so sánh chuỗi kết quả." },
-        { question: "Công cụ này có gửi mật khẩu của tôi đi đâu không?", answer: "Không. Mọi quá trình tính toán diễn ra ngay trên trình duyệt của bạn (Client-side hashing)." }
-    ];
-    return { details, faqs };
-};
-
-// Content Generator for Encoders/Decoders
-const generateEncoderContent = (title: string, mechanism: string) => {
-    const details = (
-        <div className="space-y-8 text-slate-300 leading-relaxed text-justify">
-            <section>
-                <h3 className="text-xl font-bold text-white mb-3">Tìm hiểu về {title}</h3>
-                <p>
-                    <strong>{title}</strong> là công cụ hỗ trợ các lập trình viên và chuyên gia bảo mật chuyển đổi dữ liệu giữa dạng văn bản thường và định dạng <strong>{mechanism}</strong>.
-                    Việc này thường được sử dụng để chuẩn hóa dữ liệu, bypass các bộ lọc nội dung đơn giản, hoặc debug các giao thức mạng.
-                </p>
-            </section>
-            <section>
-                <h3 className="text-xl font-bold text-white mb-3">Ứng dụng của {mechanism}</h3>
-                <p>
-                    Chuẩn mã hóa này thường xuất hiện trong URL (Punycode), Email Header, hoặc các file hệ thống cũ. 
-                    Công cụ giúp bạn dễ dàng đọc hiểu nội dung hoặc tạo ra các chuỗi mã hóa tương ứng để thử nghiệm phần mềm.
-                </p>
-            </section>
-        </div>
-    );
-    const faqs: FAQItem[] = [
-        { question: "Mã hóa này có bảo mật không?", answer: "Không. Đây chỉ là Encoding (mã hóa định dạng), không phải Encryption (mã hóa bảo mật). Bất kỳ ai cũng có thể giải mã nếu biết thuật toán." },
-        { question: "Nó có hỗ trợ tiếng Việt không?", answer: "Có, công cụ hỗ trợ Unicode đầy đủ (UTF-8) trước khi thực hiện chuyển đổi sang các dạng như Base32/Base58." }
-    ];
-    return { details, faqs };
 };
 
 const createUnitTool = (
@@ -620,7 +562,7 @@ const TOOLS: Tool[] = [
     slug: 'tinh-logarit',
     title: 'Tính Logarit',
     description: 'Tính giá trị Logarit với cơ số bất kỳ.',
-    icon: <SquareFunction size={24} />,
+    icon: <Calculator size={24} />,
     category: 'math',
     component: <LogarithmCalculator />,
     ...generateMathContent('Logarit', 'phép toán ngược của lũy thừa')
@@ -640,7 +582,7 @@ const TOOLS: Tool[] = [
     slug: 'tinh-dao-ham-nguyen-ham',
     title: 'Đạo Hàm & Nguyên Hàm',
     description: 'Tính đạo hàm và nguyên hàm cơ bản của hàm đa thức (f(x) = ax^n).',
-    icon: <SquareFunction size={24} />,
+    icon: <Calculator size={24} />,
     category: 'math',
     component: <CalculusCalculator />,
     ...generateMathContent('Giải tích', 'phép tính vi phân và tích phân cơ bản cho đa thức')
@@ -720,7 +662,7 @@ const TOOLS: Tool[] = [
     ...generateTextContent('Chuyển Chữ Thành Số', 'Công cụ hỗ trợ chuyển đổi các văn bản chứa số liệu (ví dụ: "một triệu hai trăm nghìn") về dạng số học để dễ dàng tính toán.')
   },
   
-  // --- SECURITY & HASHING ---
+  // --- SECURITY ---
   {
     id: 'password-gen',
     slug: 'tao-mat-khau-manh',
@@ -732,239 +674,6 @@ const TOOLS: Tool[] = [
     component: <PasswordGenerator />,
     ...generateSecurityContent('Tạo Mật Khẩu Mạnh')
   },
-  {
-    id: 'mysql-pass',
-    slug: 'mysql-password-generator',
-    title: 'MySQL Password Gen',
-    description: 'Tạo mã Hash mật khẩu chuẩn MySQL (PASSWORD function).',
-    icon: <Database size={24} />,
-    category: 'security',
-    component: <HashTools type="mysql" mode="generate" />,
-    ...generateHashContent('MySQL Password Generator', 'MySQL', 'SHA1 Unhex')
-  },
-  {
-    id: 'mariadb-pass',
-    slug: 'mariadb-password-generator',
-    title: 'MariaDB Password Gen',
-    description: 'Tạo mã Hash mật khẩu cho MariaDB.',
-    icon: <Database size={24} />,
-    category: 'security',
-    component: <HashTools type="mysql" mode="generate" />, // MariaDB uses same hash
-    ...generateHashContent('MariaDB Password Generator', 'MariaDB', 'SHA1')
-  },
-  {
-    id: 'postgres-pass',
-    slug: 'postgres-password-generator',
-    title: 'Postgres Password Gen',
-    description: 'Tạo mã MD5 Hash cho PostgreSQL user.',
-    icon: <Database size={24} />,
-    category: 'security',
-    component: <HashTools type="postgres" mode="generate" />,
-    ...generateHashContent('Postgres Password Generator', 'PostgreSQL', 'MD5')
-  },
-  {
-    id: 'bcrypt-gen',
-    slug: 'bcrypt-password-generator',
-    title: 'Bcrypt Generator',
-    description: 'Tạo Bcrypt Hash an toàn từ chuỗi ký tự.',
-    icon: <Hash size={24} />,
-    category: 'security',
-    component: <HashTools type="bcrypt" mode="generate" />,
-    ...generateHashContent('Bcrypt Generator', 'Bcrypt', 'Blowfish')
-  },
-  {
-    id: 'bcrypt-check',
-    slug: 'bcrypt-password-checker',
-    title: 'Bcrypt Checker',
-    description: 'Kiểm tra tính hợp lệ của mật khẩu với mã Bcrypt.',
-    icon: <Check size={24} />,
-    category: 'security',
-    component: <HashTools type="bcrypt" mode="check" />,
-    ...generateHashContent('Bcrypt Checker', 'Bcrypt', 'Blowfish')
-  },
-  {
-    id: 'scrypt-gen',
-    slug: 'scrypt-password-generator',
-    title: 'Scrypt Generator',
-    description: 'Tạo Scrypt Hash với tùy chọn salt.',
-    icon: <Hash size={24} />,
-    category: 'security',
-    component: <HashTools type="scrypt" mode="generate" />,
-    ...generateHashContent('Scrypt Generator', 'Scrypt', 'Memory-hard Function')
-  },
-
-  // --- ENCODERS / DECODERS (DEV TOOLS) ---
-  {
-    id: 'rot13',
-    slug: 'rot13-encoder-decoder',
-    title: 'ROT13',
-    description: 'Mã hóa và giải mã ROT13 (Caesar cipher).',
-    icon: <ArrowRightLeft size={24} />,
-    category: 'dev',
-    component: <Encoders type="rot13" />,
-    ...generateEncoderContent('ROT13', 'Caesar Cipher')
-  },
-  {
-    id: 'rot47',
-    slug: 'rot47-encoder-decoder',
-    title: 'ROT47',
-    description: 'Mã hóa và giải mã ROT47 (ASCII shift).',
-    icon: <ArrowRightLeft size={24} />,
-    category: 'dev',
-    component: <Encoders type="rot47" />,
-    ...generateEncoderContent('ROT47', 'ASCII Shift')
-  },
-  {
-    id: 'punycode-enc',
-    slug: 'punycode-encoder',
-    title: 'Punycode Encoder',
-    description: 'Chuyển đổi Unicode sang ASCII (cho tên miền).',
-    icon: <Code size={24} />,
-    category: 'dev',
-    component: <Encoders type="punycode" defaultDirection="encode" />,
-    ...generateEncoderContent('Punycode Encoder', 'IDNA (Internationalizing Domain Names)')
-  },
-  {
-    id: 'punycode-dec',
-    slug: 'punycode-decoder',
-    title: 'Punycode Decoder',
-    description: 'Giải mã chuỗi Punycode về văn bản Unicode.',
-    icon: <Code size={24} />,
-    category: 'dev',
-    component: <Encoders type="punycode" defaultDirection="decode" />,
-    ...generateEncoderContent('Punycode Decoder', 'IDNA')
-  },
-  {
-    id: 'base32-enc',
-    slug: 'base32-encoder',
-    title: 'Base32 Encoder',
-    description: 'Mã hóa dữ liệu sang chuỗi Base32.',
-    icon: <Code size={24} />,
-    category: 'dev',
-    component: <Encoders type="base32" defaultDirection="encode" />,
-    ...generateEncoderContent('Base32 Encoder', 'RFC 4648')
-  },
-  {
-    id: 'base32-dec',
-    slug: 'base32-decoder',
-    title: 'Base32 Decoder',
-    description: 'Giải mã chuỗi Base32 về văn bản gốc.',
-    icon: <Code size={24} />,
-    category: 'dev',
-    component: <Encoders type="base32" defaultDirection="decode" />,
-    ...generateEncoderContent('Base32 Decoder', 'RFC 4648')
-  },
-  {
-    id: 'base58-enc',
-    slug: 'base58-encoder',
-    title: 'Base58 Encoder',
-    description: 'Mã hóa Base58 (thường dùng trong crypto).',
-    icon: <Code size={24} />,
-    category: 'dev',
-    component: <Encoders type="base58" defaultDirection="encode" />,
-    ...generateEncoderContent('Base58 Encoder', 'Bitcoin Base58')
-  },
-  {
-    id: 'base58-dec',
-    slug: 'base58-decoder',
-    title: 'Base58 Decoder',
-    description: 'Giải mã Base58 về văn bản gốc.',
-    icon: <Code size={24} />,
-    category: 'dev',
-    component: <Encoders type="base58" defaultDirection="decode" />,
-    ...generateEncoderContent('Base58 Decoder', 'Bitcoin Base58')
-  },
-  {
-    id: 'base64-tool',
-    slug: 'base64-encoder-decoder',
-    title: 'Base64 Encoder/Decoder',
-    description: 'Mã hóa và giải mã Base64 trực tuyến, hỗ trợ UTF-8.',
-    icon: <Code size={24} />,
-    category: 'dev',
-    component: <Encoders type="base64" defaultDirection="encode" />,
-    ...generateEncoderContent('Base64 Encoder/Decoder', 'Base64 Standard')
-  },
-  {
-    id: 'ascii85-enc',
-    slug: 'ascii85-encoder',
-    title: 'Ascii85 Encoder',
-    description: 'Mã hóa dữ liệu sang định dạng Ascii85.',
-    icon: <Code size={24} />,
-    category: 'dev',
-    component: <Encoders type="ascii85" defaultDirection="encode" />,
-    ...generateEncoderContent('Ascii85 Encoder', 'Adobe Ascii85')
-  },
-  {
-    id: 'ascii85-dec',
-    slug: 'ascii85-decoder',
-    title: 'Ascii85 Decoder',
-    description: 'Giải mã dữ liệu Ascii85.',
-    icon: <Code size={24} />,
-    category: 'dev',
-    component: <Encoders type="ascii85" defaultDirection="decode" />,
-    ...generateEncoderContent('Ascii85 Decoder', 'Adobe Ascii85')
-  },
-  {
-    id: 'utf8-enc',
-    slug: 'utf8-encoder',
-    title: 'UTF8 Encoder',
-    description: 'Xem biểu diễn Hex của chuỗi UTF-8.',
-    icon: <Code size={24} />,
-    category: 'dev',
-    component: <Encoders type="utf8" defaultDirection="encode" />,
-    ...generateEncoderContent('UTF8 Encoder', 'Unicode Transformation Format')
-  },
-  {
-    id: 'utf8-dec',
-    slug: 'utf8-decoder',
-    title: 'UTF8 Decoder',
-    description: 'Giải mã chuỗi Hex UTF-8 thành văn bản.',
-    icon: <Code size={24} />,
-    category: 'dev',
-    component: <Encoders type="utf8" defaultDirection="decode" />,
-    ...generateEncoderContent('UTF8 Decoder', 'Unicode Transformation Format')
-  },
-   {
-    id: 'utf16-enc',
-    slug: 'utf16-encoder',
-    title: 'UTF16 Encoder',
-    description: 'Xem biểu diễn Unicode Escaped (\\uXXXX).',
-    icon: <Code size={24} />,
-    category: 'dev',
-    component: <Encoders type="utf16" defaultDirection="encode" />,
-    ...generateEncoderContent('UTF16 Encoder', 'Unicode')
-  },
-  {
-    id: 'utf16-dec',
-    slug: 'utf16-decoder',
-    title: 'UTF16 Decoder',
-    description: 'Giải mã chuỗi \\uXXXX thành văn bản.',
-    icon: <Code size={24} />,
-    category: 'dev',
-    component: <Encoders type="utf16" defaultDirection="decode" />,
-    ...generateEncoderContent('UTF16 Decoder', 'Unicode')
-  },
-  {
-    id: 'uu-enc',
-    slug: 'uuencoder',
-    title: 'Uuencoder',
-    description: 'Mã hóa văn bản sang UUEncode.',
-    icon: <Code size={24} />,
-    category: 'dev',
-    component: <Encoders type="uu" defaultDirection="encode" />,
-    ...generateEncoderContent('Uuencoder', 'Unix-to-Unix encoding')
-  },
-  {
-    id: 'uu-dec',
-    slug: 'uudecoder',
-    title: 'Uudecoder',
-    description: 'Giải mã văn bản UUEncode.',
-    icon: <Code size={24} />,
-    category: 'dev',
-    component: <Encoders type="uu" defaultDirection="decode" />,
-    ...generateEncoderContent('Uudecoder', 'Unix-to-Unix encoding')
-  },
-
 
   // --- CONVERTERS (COMMON) ---
   createUnitTool('len-conv', 'doi-don-vi-do-dai', 'Đổi Độ Dài', 'độ dài và khoảng cách', 'converter', <Ruler size={24} />, LENGTH_UNITS),
