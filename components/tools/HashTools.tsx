@@ -2,9 +2,13 @@
 import React, { useState } from 'react';
 import { TextInput, NumberInput } from '../ui/Input';
 import { RefreshCw, Check, Copy, Shield, AlertTriangle } from 'lucide-react';
-import bcrypt from 'bcryptjs';
-import md5 from 'js-md5';
+import * as bcryptPkg from 'bcryptjs';
+import * as md5Pkg from 'js-md5';
 import { scrypt } from 'scrypt-js';
+
+// Safe access to imports that might be default or named depending on CDN build
+const bcrypt = (bcryptPkg as any).default || bcryptPkg;
+const md5 = (md5Pkg as any).default || md5Pkg;
 
 type HashType = 'mysql' | 'postgres' | 'bcrypt' | 'scrypt';
 type Mode = 'generate' | 'check';
@@ -47,7 +51,9 @@ export const HashTools: React.FC<HashToolsProps> = ({ type, mode }) => {
         } else if (type === 'postgres') {
           // Postgres MD5: md5(password + username)
           const user = extraInput || 'postgres';
-          const hash = 'md5' + md5(input + user);
+          // md5 function usage might vary slightly depending on lib export
+          const hashFunc = typeof md5 === 'function' ? md5 : md5.md5 || md5;
+          const hash = 'md5' + hashFunc(input + user);
           setResult(hash);
         } else if (type === 'bcrypt') {
           const rounds = parseInt(extraInput) || 10;
@@ -81,7 +87,7 @@ export const HashTools: React.FC<HashToolsProps> = ({ type, mode }) => {
       }
     } catch (e) {
       console.error(e);
-      setResult('Lỗi trong quá trình xử lý.');
+      setResult('Lỗi trong quá trình xử lý. Hãy kiểm tra console.');
     } finally {
       setLoading(false);
     }

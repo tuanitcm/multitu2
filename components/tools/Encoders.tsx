@@ -1,10 +1,16 @@
 
 import React, { useState, useEffect } from 'react';
 import { ArrowDownUp, Copy, Check } from 'lucide-react';
-import * as base32 from 'hi-base32';
-import baseX from 'base-x';
-import punycode from 'punycode';
-import ascii85 from 'ascii85';
+import * as base32Pkg from 'hi-base32';
+import * as baseXPkg from 'base-x';
+import * as punycodePkg from 'punycode';
+import * as ascii85Pkg from 'ascii85';
+
+// Safe imports for various module formats
+const base32 = (base32Pkg as any).default || base32Pkg;
+const baseX = (baseXPkg as any).default || baseXPkg;
+const punycode = (punycodePkg as any).default || punycodePkg;
+const ascii85 = (ascii85Pkg as any).default || ascii85Pkg;
 
 // Base58 alphabet (Bitcoin standard)
 const BASE58_ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
