@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { 
-  Percent, Search, Grid, Shield, Type, Calculator, 
+  Percent, Search, LayoutGrid, Shield, Type, Calculator, 
   ArrowRight, ArrowLeft, Box, Github, Info, Ruler,
   Scale, Zap, Activity, Timer, Database, Gauge, Sun, 
   Wind, DollarSign, PenTool, BookOpen, Move, Droplets,
@@ -560,7 +560,7 @@ const TOOLS: Tool[] = [
     slug: 'tim-so-goc-tu-phan-tram',
     title: 'Tìm Số Gốc',
     description: 'Tìm giá trị ban đầu khi biết số lượng thành phần và % tương ứng.',
-    icon: <Grid size={24} />,
+    icon: <LayoutGrid size={24} />,
     category: 'math',
     component: <FindWhole />,
     ...generateMathContent('Tìm Số Gốc', 'bài toán ngược: tìm tổng thể khi biết một phần')
@@ -1062,7 +1062,7 @@ const TOOLS: Tool[] = [
   },
 
   // --- CONVERTERS (NEW REQUESTS) ---
-  createUnitTool('quantity-conv', 'doi-don-vi-so-dem', 'Đổi Số Đếm', 'số lượng đơn vị đóng gói', 'converter', <Grid size={24} />, QUANTITY_UNITS),
+  createUnitTool('quantity-conv', 'doi-don-vi-so-dem', 'Đổi Số Đếm', 'số lượng đơn vị đóng gói', 'converter', <LayoutGrid size={24} />, QUANTITY_UNITS),
   createUnitTool('ppm-conv', 'doi-don-vi-parts-per', 'Đổi Tỉ Lệ Phần', 'nồng độ phần triệu, phần tỷ', 'converter', <Disc size={24} />, PARTS_PER_UNITS),
   createUnitTool('pace-conv', 'doi-don-vi-toc-do-chay', 'Đổi Pace Chạy Bộ', 'tốc độ chạy bộ (Pace)', 'converter', <Activity size={24} />, PACE_UNITS),
   createUnitTool('flow-conv', 'doi-don-vi-luu-luong', 'Đổi Lưu Lượng', 'lưu lượng dòng chảy chất lỏng', 'converter', <Waves size={24} />, FLOW_UNITS),

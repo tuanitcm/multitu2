@@ -1,7 +1,8 @@
+
 import React, { useState } from 'react';
 import { TextInput, NumberInput } from '../ui/Input';
 import { RefreshCw, Check, Copy, Shield, AlertTriangle } from 'lucide-react';
-import * as bcrypt from 'bcryptjs';
+import bcrypt from 'bcryptjs';
 import md5 from 'js-md5';
 import { scrypt } from 'scrypt-js';
 

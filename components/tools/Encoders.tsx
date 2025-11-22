@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
 import { ArrowDownUp, Copy, Check } from 'lucide-react';
-import base32 from 'hi-base32';
+import * as base32 from 'hi-base32';
 import baseX from 'base-x';
 import punycode from 'punycode';
 import ascii85 from 'ascii85';
