@@ -6,7 +6,7 @@ import {
   Scale, Zap, Activity, Timer, Database, Gauge, Sun, 
   Wind, DollarSign, PenTool, BookOpen, Move, Droplets,
   Waves, Lightbulb, Disc, CreditCard, Anchor, ThermometerSun,
-  Lock, Key, TrendingUp, Hammer, Triangle, Square, Circle, Cylinder, Globe, Cone, RectangleHorizontal, Diamond, Component
+  Lock, Key, TrendingUp, Hammer, Triangle, Square, Circle, Cylinder, Globe, Cone, RectangleHorizontal, Diamond, Component, Layers, Package
 } from 'lucide-react';
 import { Tool, Category, FAQItem } from './types';
 
@@ -19,7 +19,7 @@ import { FindWhole } from './components/calculators/FindWhole';
 import { 
   CircleCalculator, TriangleCalculator, SquareCalculator, RectangleCalculator, 
   TrapezoidCalculator, RhombusCalculator, CubeCalculator, SphereCalculator, 
-  CylinderCalculator, ConeCalculator 
+  CylinderCalculator, ConeCalculator, ParallelogramCalculator, CuboidCalculator
 } from './components/calculators/GeometryCalculator';
 
 import { UnitConverter, UnitDefinition } from './components/calculators/UnitConverter';
@@ -76,16 +76,6 @@ const generateConverterContent = (title: string, subject: string, units: UnitDef
         </ul>
       </section>
 
-      <section>
-        <h3 className="text-xl font-bold text-white mb-3">Hướng dẫn sử dụng</h3>
-        <p>Để thực hiện chuyển đổi, bạn chỉ cần làm theo 3 bước đơn giản:</p>
-        <ol className="list-decimal list-inside space-y-2 mt-2 ml-2">
-          <li>Chọn đơn vị nguồn (ví dụ: {primaryUnit}).</li>
-          <li>Chọn đơn vị đích muốn chuyển đổi sang (ví dụ: {secondaryUnit}).</li>
-          <li>Nhập giá trị cần tính vào ô nhập liệu. Kết quả sẽ tự động hiển thị.</li>
-        </ol>
-      </section>
-
       <section className="bg-slate-800/30 p-5 rounded-xl border border-slate-700/30">
         <h3 className="text-lg font-bold text-indigo-400 mb-2">Lưu ý về độ chính xác</h3>
         <p className="text-sm text-slate-400">
@@ -100,24 +90,24 @@ const generateConverterContent = (title: string, subject: string, units: UnitDef
   const faqs: FAQItem[] = [
     {
       question: `Công cụ ${title} có hỗ trợ chuyển đổi số thập phân không?`,
-      answer: `Có. Hệ thống hỗ trợ đầy đủ các số thập phân, số âm (đối với nhiệt độ) và các giá trị rất lớn hoặc rất nhỏ.`
+      answer: `Có. Hệ thống hỗ trợ đầy đủ các số thập phân, số âm (nếu đại lượng cho phép) và các giá trị rất lớn hoặc rất nhỏ. Bạn có thể nhập dấu chấm (.) hoặc phẩy (,) tùy theo cài đặt máy.`
     },
     {
-      question: `1 ${primaryUnit} bằng bao nhiêu ${secondaryUnit}?`,
-      answer: `Tỷ lệ quy đổi này phụ thuộc vào hệ số chuẩn. Bạn hãy nhập số "1" vào ô ${primaryUnit} và chọn ${secondaryUnit} ở ô kết quả để xem tỷ lệ chính xác nhất.`
+      question: `Làm sao để đổi từ ${primaryUnit} sang ${secondaryUnit}?`,
+      answer: `Rất đơn giản. Tại ô "Từ", bạn chọn "${primaryUnit}", tại ô "Sang" bạn chọn "${secondaryUnit}". Sau đó nhập giá trị cần đổi, kết quả sẽ hiện ra ngay lập tức.`
     },
     {
-      question: "Các công thức chuyển đổi lấy từ đâu?",
-      answer: "Chúng tôi sử dụng các hệ số quy đổi chuẩn từ Hệ đo lường quốc tế (SI) và Viện Tiêu chuẩn và Công nghệ Quốc gia (NIST)."
+      question: "Kết quả chuyển đổi có chính xác tuyệt đối không?",
+      answer: "Chúng tôi sử dụng các hệ số quy đổi chuẩn quốc tế (SI/NIST) với độ chính xác lên đến 15 chữ số thập phân. Tuy nhiên, kết quả hiển thị được làm tròn để dễ đọc (thường là 6 số lẻ)."
     },
     {
-      question: "Tôi có thể sử dụng công cụ này khi không có mạng không?",
-      answer: "Hiện tại công cụ hoạt động trực tuyến để đảm bảo bạn luôn truy cập được phiên bản mới nhất với tỷ giá và công thức cập nhật."
+      question: "Tôi có thể sử dụng công cụ này trên điện thoại không?",
+      answer: "Hoàn toàn được. Giao diện của MultiTools được tối ưu hóa cho mọi thiết bị, từ máy tính để bàn, máy tính bảng đến điện thoại di động."
     },
-    ...(units.length > 5 ? [{
-      question: "Làm sao để đổi đơn vị hiếm gặp?",
-      answer: `Danh sách đơn vị của chúng tôi bao gồm cả các đơn vị phổ biến (${units[0].label}, ${units[1].label}) và các đơn vị chuyên ngành. Hãy tìm trong danh sách thả xuống (dropdown).`
-    }] : [])
+    {
+      question: `Có giới hạn về giá trị nhập vào khi đổi ${subject} không?`,
+      answer: `Về mặt kỹ thuật thì không. Tuy nhiên, hãy đảm bảo bạn nhập giá trị hợp lý (ví dụ: chiều dài hay khối lượng thì không thể là số âm).`
+    }
   ];
 
   return { details, faqs };
@@ -145,12 +135,7 @@ const generateMathContent = (title: string, specificDesc: string) => {
       </section>
     </div>
   );
-
-  const faqs: FAQItem[] = [
-    { question: "Kết quả có được làm tròn không?", answer: "Mặc định hệ thống hiển thị tối đa 4-6 chữ số thập phân để đảm bảo độ chính xác, nhưng vẫn gọn gàng dễ nhìn." },
-    { question: "Công cụ có lưu lại lịch sử tính toán không?", answer: "Vì lý do bảo mật và riêng tư, chúng tôi không lưu trữ bất kỳ dữ liệu nào bạn nhập vào. Khi tải lại trang, mọi thứ sẽ trở về mặc định." }
-  ];
-  return { details, faqs };
+  return { details };
 };
 
 const generateGeometryContent = (type: string) => {
@@ -165,9 +150,13 @@ const generateGeometryContent = (type: string) => {
       </section>
     </div>
   );
+  
   const faqs: FAQItem[] = [
-    { question: "Số Pi (π) được lấy giá trị bao nhiêu?", answer: "Hệ thống sử dụng hằng số chính xác của máy tính (3.14159...) để đảm bảo sai số thấp nhất." },
-    { question: "Tôi có cần đổi đơn vị trước khi nhập không?", answer: "Bạn nên nhập cùng một đơn vị cho tất cả các cạnh. Ví dụ: nếu cạnh a là mét, cạnh b cũng phải là mét." },
+    { question: `Công thức tính diện tích ${type} là gì?`, answer: `Công thức được hiển thị trực tiếp ngay bên dưới kết quả tính toán để bạn tiện theo dõi và học tập.` },
+    { question: "Số Pi (π) được lấy giá trị bao nhiêu?", answer: "Hệ thống sử dụng hằng số chính xác cao của máy tính (khoảng 3.14159265...) để đảm bảo sai số thấp nhất cho kết quả." },
+    { question: "Tôi có cần đổi đơn vị trước khi nhập không?", answer: "Có. Để kết quả chính xác, bạn cần đảm bảo tất cả các cạnh nhập vào đều cùng một đơn vị đo (ví dụ: cùng là cm hoặc cùng là m)." },
+    { question: "Làm sao để tính ngược từ Chu vi ra Diện tích?", answer: "Hiện tại công cụ hỗ trợ tính xuôi từ kích thước cạnh/bán kính. Để tính ngược, bạn có thể áp dụng công thức toán học biến đổi dựa trên kết quả hiển thị." },
+    { question: "Công cụ này có tính được thể tích không?", answer: type.includes('Hộp') || type.includes('Cầu') || type.includes('Trụ') || type.includes('Nón') || type.includes('Lập Phương') ? "Có. Đây là hình không gian 3D nên hệ thống hỗ trợ tính Thể tích và Diện tích bề mặt." : "Không. Đây là hình học phẳng 2D nên chỉ tính được Diện tích và Chu vi." },
   ];
   return { details, faqs };
 };
@@ -192,11 +181,7 @@ const generateTextContent = (title: string, specificDesc: string) => {
       </section>
     </div>
   );
-  const faqs: FAQItem[] = [
-    { question: "Văn bản của tôi có bị lộ không?", answer: "Hoàn toàn không. MultiTools sử dụng công nghệ Client-side, nghĩa là dữ liệu chỉ nằm trên máy của bạn." },
-    { question: "Có giới hạn độ dài văn bản không?", answer: "Công cụ có thể xử lý hàng chục nghìn ký tự một lúc mà không gặp vấn đề gì về hiệu năng." }
-  ];
-  return { details, faqs };
+  return { details };
 };
 
 const generateSecurityContent = (title: string) => {
@@ -221,8 +206,11 @@ const generateSecurityContent = (title: string) => {
     </div>
   );
   const faqs: FAQItem[] = [
-    { question: "Mật khẩu tạo ra có được lưu lại không?", answer: "Tuyệt đối không. Mật khẩu được tạo ngẫu nhiên ngay trên trình duyệt của bạn và biến mất ngay khi bạn tải lại trang." },
-    { question: "Làm sao để nhớ mật khẩu phức tạp như vậy?", answer: "Chúng tôi khuyên bạn nên sử dụng các trình quản lý mật khẩu (Password Manager) uy tín để lưu trữ thay vì cố gắng ghi nhớ." }
+    { question: "Mật khẩu tạo ra có được lưu lại không?", answer: "Tuyệt đối không. Mật khẩu được tạo ngẫu nhiên ngay trên trình duyệt của bạn (Client-side) và biến mất ngay khi bạn tải lại trang hoặc tắt tab." },
+    { question: "Độ dài mật khẩu bao nhiêu là an toàn?", answer: "Các chuyên gia bảo mật khuyến nghị mật khẩu nên dài tối thiểu 12 ký tự. Tốt nhất là từ 16 ký tự trở lên để chống lại các cuộc tấn công Brute-force." },
+    { question: "Tôi có nên dùng ký tự đặc biệt không?", answer: "Có. Việc thêm các ký tự như ! @ # $ % giúp tăng độ phức tạp của mật khẩu lên gấp nhiều lần, khiến hacker khó đoán hơn." },
+    { question: "Làm sao để nhớ mật khẩu phức tạp như vậy?", answer: "Bạn không nên cố nhớ. Hãy sử dụng các trình quản lý mật khẩu uy tín (Password Manager) như Bitwarden, 1Password hoặc tính năng lưu mật khẩu của Google/Apple." },
+    { question: "Công cụ này có tạo được mã PIN không?", answer: "Có. Bạn chỉ cần bỏ chọn 'Chữ hoa', 'Chữ thường', 'Ký tự đặc biệt' và chỉ giữ lại 'Số', sau đó chọn độ dài mong muốn (ví dụ 4 hoặc 6)." }
   ];
   return { details, faqs };
 };
@@ -472,7 +460,14 @@ const TOOLS: Tool[] = [
     category: 'math',
     popular: true,
     component: <BasicPercentage />,
-    ...generateMathContent('Tìm % Giá trị', 'bài toán tìm giá trị của một số khi biết phần trăm của nó')
+    ...generateMathContent('Tìm % Giá trị', 'bài toán tìm giá trị của một số khi biết phần trăm của nó'),
+    faqs: [
+        { question: "Công thức tính phần trăm của một số là gì?", answer: "Công thức rất đơn giản: Giá trị = (Phần trăm ÷ 100) × Tổng số. Ví dụ tìm 20% của 500: (20 ÷ 100) × 500 = 100." },
+        { question: "Tôi có thể tính phần trăm cho số tiền không?", answer: "Có. Công cụ này hoạt động hoàn hảo cho tiền tệ, số lượng hàng hóa, điểm số và bất kỳ con số nào khác." },
+        { question: "Làm sao để tính nhanh 10% của một số?", answer: "Mẹo nhỏ: Bạn chỉ cần dịch chuyển dấu phẩy sang trái 1 chữ số. Ví dụ 10% của 250 là 25." },
+        { question: "Công cụ có hỗ trợ số thập phân không?", answer: "Có. Bạn có thể nhập số lẻ như 12.5% hay 50.55. Kết quả sẽ được tính chính xác tới 4 chữ số thập phân." },
+        { question: "Tại sao kết quả của tôi bằng 0?", answer: "Hãy kiểm tra xem bạn có nhập số 0 vào ô 'Tổng số' không. Hoặc nếu bạn nhập phần trăm quá nhỏ (ví dụ 0.0001%), kết quả có thể hiển thị dạng số khoa học hoặc xấp xỉ 0." }
+    ]
   },
   {
     id: 'ratio-percent',
@@ -482,7 +477,14 @@ const TOOLS: Tool[] = [
     icon: <Box size={24} />,
     category: 'math',
     component: <RatioPercentage />,
-    ...generateMathContent('Tính Tỉ lệ %', 'bài toán so sánh tỷ trọng giữa hai số liệu')
+    ...generateMathContent('Tính Tỉ lệ %', 'bài toán so sánh tỷ trọng giữa hai số liệu'),
+    faqs: [
+        { question: "Công thức tính tỷ lệ phần trăm là gì?", answer: "Tỷ lệ % = (Số thành phần ÷ Tổng số) × 100. Ví dụ: 20 là bao nhiêu phần trăm của 50? (20 ÷ 50) × 100 = 40%." },
+        { question: "Tỷ lệ phần trăm có thể lớn hơn 100% không?", answer: "Có. Nếu số thành phần lớn hơn tổng số so sánh (ví dụ doanh thu năm nay cao hơn năm ngoái), tỷ lệ sẽ > 100%." },
+        { question: "Ứng dụng thực tế của công cụ này là gì?", answer: "Bạn có thể dùng để tính điểm số bài kiểm tra, tỷ lệ hoàn thành công việc, hoặc thị phần của một sản phẩm." },
+        { question: "Làm sao để đổi từ phân số sang phần trăm?", answer: "Bạn lấy tử số chia cho mẫu số rồi nhân với 100. Công cụ này thực hiện chính xác thao tác đó cho bạn." },
+        { question: "Số âm có tính được tỷ lệ phần trăm không?", answer: "Về mặt toán học thì có, nhưng trong thực tế (như tỷ lệ phần trăm hoàn thành), số âm thường ít có ý nghĩa trừ các trường hợp tài chính đặc biệt." }
+    ]
   },
   {
     id: 'percent-change',
@@ -492,7 +494,14 @@ const TOOLS: Tool[] = [
     icon: <Activity size={24} />,
     category: 'math',
     component: <PercentageChange />,
-    ...generateMathContent('Tính % Tăng Giảm', 'sự thay đổi tương đối giữa hai mốc thời gian hoặc hai giá trị')
+    ...generateMathContent('Tính % Tăng Giảm', 'sự thay đổi tương đối giữa hai mốc thời gian hoặc hai giá trị'),
+    faqs: [
+        { question: "Công thức tính phần trăm tăng trưởng là gì?", answer: "Công thức: ((Giá trị mới - Giá trị cũ) ÷ |Giá trị cũ|) × 100. Nếu kết quả dương là tăng, âm là giảm." },
+        { question: "Tại sao tôi nhận được kết quả số âm?", answer: "Số âm biểu thị sự suy giảm. Ví dụ: từ 100 xuống 80 là giảm 20% (kết quả -20%)." },
+        { question: "Làm sao tính % tăng lương?", answer: "Nhập lương cũ vào ô 'Giá trị cũ', lương mới vào 'Giá trị mới'. Công cụ sẽ cho biết bạn được tăng bao nhiêu phần trăm." },
+        { question: "Nếu giá trị cũ là 0 thì sao?", answer: "Trong toán học, không thể chia cho 0 nên không thể tính % tăng trưởng từ số 0. Mức tăng là vô cực hoặc không xác định." },
+        { question: "Công cụ này có dùng để tính lỗ lãi chứng khoán được không?", answer: "Rất tốt. Bạn nhập giá mua vào ô 'Cũ' và giá thị trường hiện tại vào ô 'Mới' để xem tỷ suất lợi nhuận/thua lỗ." }
+    ]
   },
   {
     id: 'find-whole',
@@ -502,7 +511,14 @@ const TOOLS: Tool[] = [
     icon: <LayoutGrid size={24} />,
     category: 'math',
     component: <FindWhole />,
-    ...generateMathContent('Tìm Số Gốc', 'bài toán ngược: tìm tổng thể khi biết một phần')
+    ...generateMathContent('Tìm Số Gốc', 'bài toán ngược: tìm tổng thể khi biết một phần'),
+    faqs: [
+        { question: "Khi nào cần dùng công cụ tìm số gốc?", answer: "Khi bạn biết giá trị đã giảm giá và % giảm, muốn tìm giá gốc. Hoặc biết số tiền thuế đã đóng và thuế suất, muốn tìm thu nhập trước thuế." },
+        { question: "Công thức toán học là gì?", answer: "Số gốc = Số giá trị ÷ (Phần trăm ÷ 100). Ví dụ: 50 là 20% của số nào? 50 ÷ 0.2 = 250." },
+        { question: "Tôi mua áo giá 200k sau khi giảm 50%, giá gốc là bao nhiêu?", answer: "Hãy nhập 200 vào 'Số giá trị' và 50 vào 'Tương ứng (%)'. Kết quả giá gốc là 400k." },
+        { question: "Kết quả có chính xác không?", answer: "Chính xác tuyệt đối về mặt toán học. Tuy nhiên trong thực tế giá tiền thường được làm tròn." },
+        { question: "Tôi có thể nhập số thập phân không?", answer: "Được. Ví dụ bạn có thể tìm số gốc khi biết 15.5 là 2.5% của nó." }
+    ]
   },
   
   // --- GEOMETRY (SPLIT) ---
@@ -567,6 +583,16 @@ const TOOLS: Tool[] = [
     ...generateGeometryContent('Hình Thoi')
   },
   {
+    id: 'para-calc',
+    slug: 'tinh-hinh-binh-hanh',
+    title: 'Hình Bình Hành',
+    description: 'Tính Diện tích và Chu vi hình bình hành.',
+    icon: <Layers size={24} />,
+    category: 'math',
+    component: <ParallelogramCalculator />,
+    ...generateGeometryContent('Hình Bình Hành')
+  },
+  {
     id: 'cube-calc',
     slug: 'tinh-hinh-lap-phuong',
     title: 'Hình Lập Phương',
@@ -575,6 +601,16 @@ const TOOLS: Tool[] = [
     category: 'math',
     component: <CubeCalculator />,
     ...generateGeometryContent('Hình Lập Phương')
+  },
+  {
+    id: 'cuboid-calc',
+    slug: 'tinh-hinh-hop-chu-nhat',
+    title: 'Hình Hộp Chữ Nhật',
+    description: 'Tính Thể tích, Diện tích xung quanh và toàn phần hình hộp chữ nhật.',
+    icon: <Package size={24} />,
+    category: 'math',
+    component: <CuboidCalculator />,
+    ...generateGeometryContent('Hình Hộp Chữ Nhật')
   },
   {
     id: 'sphere-calc',
@@ -615,7 +651,14 @@ const TOOLS: Tool[] = [
     icon: <TrendingUp size={24} />,
     category: 'math',
     component: <SequenceCalculator />,
-    ...generateMathContent('Cấp số cộng & nhân', 'các bài toán về dãy số có quy luật')
+    ...generateMathContent('Cấp số cộng & nhân', 'các bài toán về dãy số có quy luật'),
+    faqs: [
+        { question: "Sự khác biệt giữa cấp số cộng và cấp số nhân?", answer: "Cấp số cộng là dãy số mà số sau bằng số trước CỘNG với một hằng số (công sai). Cấp số nhân là dãy số mà số sau bằng số trước NHÂN với một hằng số (công bội)." },
+        { question: "Công thức tính tổng n số hạng đầu là gì?", answer: "Với cấp số cộng: Sn = n/2 * (u1 + un). Với cấp số nhân: Sn = u1 * (1 - q^n) / (1 - q)." },
+        { question: "Khi nào thì cấp số nhân là dãy lùi vô hạn?", answer: "Khi trị tuyệt đối của công bội q nhỏ hơn 1 (|q| < 1), dãy số sẽ giảm dần về 0." },
+        { question: "Tôi có thể nhập công sai/công bội là số âm không?", answer: "Được. Nếu công sai âm, dãy số cộng sẽ giảm dần. Nếu công bội âm, dãy số nhân sẽ đan dấu âm dương." },
+        { question: "Ứng dụng của cấp số nhân là gì?", answer: "Nó được dùng nhiều trong tính lãi kép ngân hàng, sự phân rã phóng xạ, hoặc sự lây lan của virus trong sinh học." }
+    ]
   },
   {
     id: 'log-calc',
@@ -625,7 +668,14 @@ const TOOLS: Tool[] = [
     icon: <Calculator size={24} />,
     category: 'math',
     component: <LogarithmCalculator />,
-    ...generateMathContent('Logarit', 'phép toán ngược của lũy thừa')
+    ...generateMathContent('Logarit', 'phép toán ngược của lũy thừa'),
+    faqs: [
+        { question: "Logarit là gì?", answer: "Logarit của một số là lũy thừa mà cơ số phải được nâng lên để tạo ra số đó. Ví dụ: log2(8) = 3 vì 2^3 = 8." },
+        { question: "Logarit tự nhiên (ln) khác gì Logarit thường?", answer: "Logarit tự nhiên (ln) có cơ số là hằng số e (khoảng 2.718). Logarit thường (log) thường có cơ số 10." },
+        { question: "Tại sao không thể tính log của số âm?", answer: "Vì không có số thực dương nào lũy thừa lên lại ra kết quả âm (trong tập số thực). Do đó cơ số và biểu thức trong log phải dương." },
+        { question: "Log(1) bằng bao nhiêu?", answer: "Logarit của 1 với bất kỳ cơ số nào (khác 0 và 1) đều bằng 0, vì số nào mũ 0 cũng bằng 1." },
+        { question: "Công cụ này hỗ trợ cơ số bao nhiêu?", answer: "Bạn có thể nhập bất kỳ cơ số dương nào khác 1 (ví dụ 2, 10, e, 0.5...)." }
+    ]
   },
   {
     id: 'trig-calc',
@@ -635,7 +685,14 @@ const TOOLS: Tool[] = [
     icon: <Waves size={24} />,
     category: 'math',
     component: <TrigCalculator />,
-    ...generateMathContent('Lượng giác', 'tỷ số lượng giác trong tam giác vuông và đường tròn đơn vị')
+    ...generateMathContent('Lượng giác', 'tỷ số lượng giác trong tam giác vuông và đường tròn đơn vị'),
+    faqs: [
+        { question: "Sự khác biệt giữa Độ (Degree) và Radian?", answer: "Độ chia đường tròn thành 360 phần. Radian dựa trên bán kính đường tròn (1 vòng = 2π rad). 180 độ = π radian." },
+        { question: "Tại sao Tan(90 độ) lại bị lỗi hoặc vô cực?", answer: "Vì Tan = Sin/Cos. Tại 90 độ, Cos = 0. Trong toán học không thể chia cho 0 nên Tan(90) không xác định." },
+        { question: "Giá trị Sin và Cos nằm trong khoảng nào?", answer: "Với góc thực bất kỳ, giá trị của Sin và Cos luôn nằm trong khoảng từ -1 đến 1." },
+        { question: "Làm sao đổi từ Độ sang Radian?", answer: "Nhân số độ với (π/180). Ví dụ 90 độ * (π/180) = π/2 radian." },
+        { question: "Công cụ này dùng cho tam giác vuông hay thường?", answer: "Giá trị lượng giác của một góc là cố định, nên nó đúng cho mọi trường hợp, kể cả trong tam giác vuông hay trên đường tròn lượng giác." }
+    ]
   },
   {
     id: 'calculus-calc',
@@ -645,7 +702,14 @@ const TOOLS: Tool[] = [
     icon: <Calculator size={24} />,
     category: 'math',
     component: <CalculusCalculator />,
-    ...generateMathContent('Giải tích', 'phép tính vi phân và tích phân cơ bản cho đa thức')
+    ...generateMathContent('Giải tích', 'phép tính vi phân và tích phân cơ bản cho đa thức'),
+    faqs: [
+        { question: "Công cụ này hỗ trợ những hàm số nào?", answer: "Hiện tại công cụ hỗ trợ tính toán cho hàm đơn thức/đa thức dạng f(x) = ax^n." },
+        { question: "Công thức tính đạo hàm là gì?", answer: "Với f(x) = ax^n, đạo hàm f'(x) = n*a*x^(n-1)." },
+        { question: "Nguyên hàm là gì?", answer: "Nguyên hàm là phép toán ngược của đạo hàm. Nếu F'(x) = f(x) thì F(x) là nguyên hàm của f(x)." },
+        { question: "Hằng số C trong nguyên hàm nghĩa là gì?", answer: "C là hằng số tích phân. Vì đạo hàm của hằng số bằng 0, nên có vô số hàm số có cùng đạo hàm, khác nhau hằng số C." },
+        { question: "Tôi có thể tính đạo hàm số âm không?", answer: "Được. Công cụ hỗ trợ đầy đủ số mũ âm và số mũ phân số (căn thức)." }
+    ]
   },
   {
     id: 'roman-converter',
@@ -655,7 +719,14 @@ const TOOLS: Tool[] = [
     icon: <PenTool size={24} />,
     category: 'math',
     component: <RomanConverter />,
-    ...generateMathContent('Số La Mã', 'việc đọc và viết các ký tự số cổ đại (I, V, X, L, C, D, M)')
+    ...generateMathContent('Số La Mã', 'việc đọc và viết các ký tự số cổ đại (I, V, X, L, C, D, M)'),
+    faqs: [
+        { question: "Số La Mã lớn nhất có thể viết là bao nhiêu?", answer: "Theo quy tắc chuẩn, số lớn nhất là 3999 (MMMCMXCIX). Các số lớn hơn cần ký hiệu đặc biệt (gạch trên đầu)." },
+        { question: "Có số 0 trong chữ số La Mã không?", answer: "Không. Người La Mã cổ đại không có ký hiệu cho số 0." },
+        { question: "Quy tắc trừ trong số La Mã là gì?", answer: "Số nhỏ đặt trước số lớn nghĩa là trừ đi (ví dụ IV = 5-1 = 4). Số nhỏ đặt sau là cộng thêm (VI = 5+1 = 6)." },
+        { question: "Năm 2024 viết thế nào?", answer: "MMXXIV (M=1000, M=1000, X=10, X=10, IV=4)." },
+        { question: "Tại sao đồng hồ hay dùng IIII thay vì IV?", answer: "Đây là truyền thống thẩm mỹ để tạo sự cân đối với số VIII ở phía đối diện mặt đồng hồ." }
+    ]
   },
   {
       id: 'compound-interest',
@@ -665,7 +736,14 @@ const TOOLS: Tool[] = [
       icon: <TrendingUp size={24} />,
       category: 'math',
       component: <FinanceCalculator />,
-      ...generateMathContent('Lãi kép', 'sức mạnh của lãi suất trong đầu tư tài chính')
+      ...generateMathContent('Lãi kép', 'sức mạnh của lãi suất trong đầu tư tài chính'),
+      faqs: [
+        { question: "Lãi kép là gì và khác gì lãi đơn?", answer: "Lãi kép là 'lãi mẹ đẻ lãi con', tiền lãi được cộng dồn vào gốc để tính lãi tiếp. Lãi đơn chỉ tính trên gốc ban đầu." },
+        { question: "Công thức tính lãi kép là gì?", answer: "A = P(1 + r/n)^(nt). Trong đó P là gốc, r là lãi suất, n là số lần ghép lãi/năm, t là số năm." },
+        { question: "Kỳ hạn ghép lãi ảnh hưởng thế nào?", answer: "Ghép lãi càng nhiều lần (hàng tháng vs hàng năm) thì số tiền nhận được càng lớn do hiệu ứng lãi kép diễn ra nhanh hơn." },
+        { question: "Quy tắc 72 trong lãi kép là gì?", answer: "Đây là mẹo nhẩm nhanh: Lấy 72 chia cho lãi suất (%) sẽ ra số năm cần thiết để tài sản nhân đôi." },
+        { question: "Công cụ này có tính được lãi gửi ngân hàng không?", answer: "Có. Đây chính là cách tính lãi sổ tiết kiệm tích lũy hoặc lãi suất tiền gửi có kỳ hạn tái tục gốc và lãi." }
+      ]
   },
 
   // --- PHYSICS (Calculators) ---
@@ -677,7 +755,14 @@ const TOOLS: Tool[] = [
       icon: <Wind size={24} />,
       category: 'math',
       component: <PhysicsCalculator defaultMode="motion" />,
-      ...generateMathContent('Chuyển động cơ học', 'các bài toán vật lý lớp 8, lớp 10 về chuyển động')
+      ...generateMathContent('Chuyển động cơ học', 'các bài toán vật lý lớp 8, lớp 10 về chuyển động'),
+      faqs: [
+        { question: "Công thức tính vận tốc là gì?", answer: "Vận tốc = Quãng đường / Thời gian (v = s/t). Đơn vị thường dùng là m/s hoặc km/h." },
+        { question: "Làm sao đổi từ km/h sang m/s?", answer: "Bạn chia giá trị km/h cho 3.6. Ví dụ: 36 km/h = 10 m/s." },
+        { question: "Nếu vận tốc thay đổi thì tính thế nào?", answer: "Công cụ này tính cho chuyển động đều (vận tốc không đổi). Với chuyển động biến đổi, bạn cần dùng công thức Vận tốc trung bình." },
+        { question: "Đơn vị chuẩn SI của thời gian là gì?", answer: "Là Giây (second - s). Trong các bài toán vật lý, bạn nên đổi thời gian về giây để tính toán chính xác." },
+        { question: "Vận tốc âm có nghĩa là gì?", answer: "Trong vật lý, vận tốc âm biểu thị vật đang chuyển động theo chiều ngược lại với chiều dương đã chọn." }
+      ]
   },
   {
       id: 'physics-work',
@@ -687,7 +772,14 @@ const TOOLS: Tool[] = [
       icon: <Hammer size={24} />,
       category: 'math',
       component: <PhysicsCalculator defaultMode="work" />,
-      ...generateMathContent('Công và Công suất', 'hiệu suất làm việc của máy móc và con người')
+      ...generateMathContent('Công và Công suất', 'hiệu suất làm việc của máy móc và con người'),
+      faqs: [
+        { question: "Khi nào thì có công cơ học?", answer: "Chỉ khi có lực tác dụng vào vật và làm vật dịch chuyển theo phương của lực thì mới sinh công." },
+        { question: "Đơn vị của Công và Công suất?", answer: "Công đo bằng Joule (J). Công suất đo bằng Watt (W). 1 W = 1 J/s." },
+        { question: "1 Mã lực (HP) bằng bao nhiêu Watt?", answer: "1 HP (Horsepower) xấp xỉ 746 Watt. Đây là đơn vị thường dùng cho động cơ ô tô, máy lạnh." },
+        { question: "Công thức tính công suất là gì?", answer: "P = A / t (Công suất = Công thực hiện / Thời gian). Hoặc P = F * v (Lực * Vận tốc)." },
+        { question: "Tại sao mang vật nặng đứng yên lại không sinh công?", answer: "Vì dù có lực nâng nhưng quãng đường dịch chuyển s = 0, nên theo công thức A = F*s thì Công bằng 0." }
+      ]
   },
 
   // --- TEXT ---
@@ -699,7 +791,14 @@ const TOOLS: Tool[] = [
     icon: <Type size={24} />,
     category: 'text',
     component: <WordCounter />,
-    ...generateTextContent('Bộ Đếm Từ Online', 'Công cụ đếm từ giúp bạn kiểm soát độ dài văn bản, phù hợp cho việc viết bài SEO, tiểu luận hay bài đăng mạng xã hội.')
+    ...generateTextContent('Bộ Đếm Từ Online', 'Công cụ đếm từ giúp bạn kiểm soát độ dài văn bản, phù hợp cho việc viết bài SEO, tiểu luận hay bài đăng mạng xã hội.'),
+    faqs: [
+        { question: "Công cụ đếm từ hoạt động như thế nào?", answer: "Hệ thống phân tích khoảng trắng và dấu câu để xác định số lượng từ. Ký tự được đếm bao gồm cả dấu cách." },
+        { question: "Tại sao số từ lại quan trọng trong SEO?", answer: "Bài viết chuẩn SEO thường cần độ dài nhất định (ví dụ >1000 từ) để Google đánh giá cao về độ chuyên sâu của nội dung." },
+        { question: "Giới hạn độ dài văn bản là bao nhiêu?", answer: "Công cụ này xử lý tốt hàng trăm nghìn từ. Tuy nhiên, nếu văn bản quá dài (như cả cuốn tiểu thuyết), trình duyệt có thể bị chậm." },
+        { question: "Công cụ có lưu văn bản của tôi không?", answer: "Không. Mọi xử lý đều diễn ra trên trình duyệt của bạn (Client-side), đảm bảo quyền riêng tư tuyệt đối." },
+        { question: "Sự khác biệt giữa 'Ký tự' và 'Ký tự không có dấu cách'?", answer: "'Ký tự' đếm mọi thứ bạn gõ. 'Ký tự không dấu cách' giúp bạn biết lượng nội dung thực tế, thường dùng để tính phí dịch thuật hoặc soạn tin nhắn." }
+    ]
   },
   {
     id: 'num-to-word',
@@ -709,7 +808,14 @@ const TOOLS: Tool[] = [
     icon: <BookOpen size={24} />,
     category: 'text',
     component: <NumberToWord />,
-    ...generateTextContent('Đọc Số Thành Chữ', 'Tiện ích tự động chuyển các dãy số dài thành văn bản tiếng Việt chuẩn, rất hữu ích khi viết hóa đơn, phiếu thu chi hoặc văn bản hành chính.')
+    ...generateTextContent('Đọc Số Thành Chữ', 'Tiện ích tự động chuyển các dãy số dài thành văn bản tiếng Việt chuẩn, rất hữu ích khi viết hóa đơn, phiếu thu chi hoặc văn bản hành chính.'),
+    faqs: [
+        { question: "Công cụ đọc được số lớn đến mức nào?", answer: "Hệ thống hỗ trợ đọc số lên tới hàng tỷ tỷ (hàng chục chữ số), đủ đáp ứng mọi nhu cầu tài chính thông thường." },
+        { question: "Cách đọc số có chuẩn ngữ pháp không?", answer: "Có. Công cụ tuân theo quy tắc đọc số chuẩn tiếng Việt (ví dụ: linh/lẻ, mốt/một, tư/bốn, lăm/năm)." },
+        { question: "Tôi có thể dùng để viết hóa đơn VAT không?", answer: "Rất tốt. Bạn chỉ cần copy kết quả và thêm chữ 'đồng' vào cuối để điền vào dòng 'Số tiền bằng chữ' trên hóa đơn." },
+        { question: "Công cụ có đọc được số âm không?", answer: "Hiện tại công cụ tập trung vào số tự nhiên dương để phục vụ ghi chép tài chính." },
+        { question: "Tại sao số 21 đọc là 'hai mươi mốt'?", answer: "Đây là quy tắc biến âm trong tiếng Việt: số 1 khi đứng sau hàng chục (từ 20 trở lên) sẽ đọc là 'mốt' để tránh nhầm lẫn." }
+    ]
   },
   {
     id: 'word-to-num',
@@ -719,7 +825,14 @@ const TOOLS: Tool[] = [
     icon: <Type size={24} />,
     category: 'text',
     component: <WordToNumber />,
-    ...generateTextContent('Chuyển Chữ Thành Số', 'Công cụ hỗ trợ chuyển đổi các văn bản chứa số liệu (ví dụ: "một triệu hai trăm nghìn") về dạng số học để dễ dàng tính toán.')
+    ...generateTextContent('Chuyển Chữ Thành Số', 'Công cụ hỗ trợ chuyển đổi các văn bản chứa số liệu (ví dụ: "một triệu hai trăm nghìn") về dạng số học để dễ dàng tính toán.'),
+    faqs: [
+        { question: "Công cụ này dùng để làm gì?", answer: "Nó giúp bạn nhanh chóng chuyển đổi số tiền bằng chữ trong hợp đồng/văn bản về dạng số để nhập vào Excel hoặc máy tính." },
+        { question: "Tôi có cần nhập đúng chính tả không?", answer: "Rất quan trọng. Bạn cần nhập đúng các từ chỉ số lượng (triệu, nghìn, trăm...) để hệ thống nhận diện chính xác." },
+        { question: "Công cụ hỗ trợ những đơn vị nào?", answer: "Hỗ trợ các đơn vị chuẩn: đơn, chục, trăm, nghìn (ngàn), triệu, tỷ." },
+        { question: "Nó có hiểu được tiếng địa phương không?", answer: "Hệ thống hiểu các từ phổ thông như 'ngàn' (nghìn), 'lẻ' (linh), 'mốt', 'tư', 'lăm'." },
+        { question: "Giới hạn của công cụ là gì?", answer: "Hiện tại công cụ đang trong giai đoạn Beta và xử lý tốt nhất các cấu trúc số chuẩn mực, các câu văn phức tạp có thể chưa chính xác 100%." }
+    ]
   },
   
   // --- SECURITY ---
@@ -752,7 +865,14 @@ const TOOLS: Tool[] = [
       { id: 'C', label: 'Celsius (°C)', ratio: 1 },
       { id: 'F', label: 'Fahrenheit (°F)', ratio: 1 },
       { id: 'K', label: 'Kelvin (K)', ratio: 1 },
-    ])
+    ]),
+    faqs: [
+        { question: "Công thức đổi từ độ C sang độ F?", answer: "F = (C × 1.8) + 32. Ví dụ: 30°C = 86°F." },
+        { question: "Độ K (Kelvin) là gì?", answer: "Kelvin là đơn vị nhiệt độ trong hệ đo lường quốc tế, dùng nhiều trong vật lý. 0K là độ không tuyệt đối (-273.15°C)." },
+        { question: "Nhiệt độ cơ thể người bình thường là bao nhiêu?", answer: "Khoảng 37°C, tương đương 98.6°F." },
+        { question: "Tại sao Mỹ dùng độ F?", answer: "Đây là thói quen lịch sử. Độ F cho phép chia nhỏ thang đo nhiệt độ thời tiết chi tiết hơn mà không cần dùng số thập phân." },
+        { question: "Có nhiệt độ âm độ K không?", answer: "Theo vật lý lý thuyết, 0K là giới hạn thấp nhất của nhiệt độ, không thể có nhiệt độ thấp hơn 0K." }
+    ]
   },
   createUnitTool('time-conv', 'doi-don-vi-thoi-gian', 'Đổi Thời Gian', 'thời gian và lịch', 'converter', <Timer size={24} />, TIME_UNITS),
   createUnitTool('speed-conv', 'doi-don-vi-toc-do', 'Đổi Tốc Độ', 'vận tốc di chuyển', 'converter', <Wind size={24} />, SPEED_UNITS),
@@ -791,9 +911,11 @@ const TOOLS: Tool[] = [
       </div>
     ),
     faqs: [
-       { question: "1 Hz bằng bao nhiêu RPM?", answer: "1 Hz bằng đúng 60 RPM (Vòng/phút)." },
-       { question: "Tần số 50Hz và 60Hz điện lưới khác nhau thế nào?", answer: "Đây là tần số dòng điện xoay chiều. 50Hz đổi chiều 100 lần/giây, 60Hz đổi chiều 120 lần/giây. Thiết bị dùng động cơ (như quạt, máy bơm) thiết kế cho 60Hz sẽ chạy chậm và nóng hơn nếu dùng ở 50Hz." },
-       { question: "GHz trong CPU máy tính là gì?", answer: "Đó là tốc độ xung nhịp của bộ vi xử lý. 3.5 GHz nghĩa là CPU thực hiện 3.5 tỷ chu kỳ xử lý mỗi giây." }
+       { question: "1 Hz bằng bao nhiêu RPM?", answer: "1 Hz bằng đúng 60 RPM (Vòng/phút). Vì 1 giây quay 1 vòng thì 1 phút (60 giây) sẽ quay 60 vòng." },
+       { question: "Tần số 50Hz và 60Hz điện lưới khác nhau thế nào?", answer: "50Hz đảo chiều 100 lần/giây, 60Hz đảo chiều 120 lần/giây. 60Hz hiệu quả hơn cho động cơ nhưng truyền tải tốn kém hơn. Việt Nam dùng chuẩn 50Hz." },
+       { question: "GHz trong máy tính nghĩa là gì?", answer: "Đó là tốc độ xung nhịp CPU. 3.0 GHz nghĩa là CPU thực hiện 3 tỷ chu kỳ tính toán mỗi giây." },
+       { question: "Tai người nghe được tần số nào?", answer: "Tai người bình thường nghe được âm thanh trong khoảng 20Hz đến 20.000Hz (20kHz). Dưới đó là hạ âm, trên đó là siêu âm." },
+       { question: "RPM quan trọng thế nào trong ô tô?", answer: "RPM hiển thị tốc độ quay của trục khuỷu động cơ. RPM quá cao (Redline) có thể làm hỏng động cơ." }
     ]
   },
   {
@@ -824,9 +946,11 @@ const TOOLS: Tool[] = [
       </div>
     ),
     faqs: [
-       { question: "1 GB bằng bao nhiêu MB?", answer: "Theo chuẩn nhị phân (Windows sử dụng), 1 GB = 1024 MB. Theo chuẩn thập phân (NSX ổ cứng), 1 GB = 1000 MB." },
-       { question: "Sự khác nhau giữa MB và Mb?", answer: "MB (Megabyte) thường dùng cho dung lượng lưu trữ. Mb (Megabit) thường dùng cho tốc độ mạng. 1 Byte = 8 bits, nên 1 MB ~ 8 Mb." },
-       { question: "Tại sao ổ cứng 500GB chỉ nhận được khoảng 465GB?", answer: "Do máy tính tính 1GB = 1073741824 Bytes (1024^3), còn nhà sản xuất tính 1GB = 1000000000 Bytes (1000^3). Chênh lệch này tạo ra sự thiếu hụt hiển thị." }
+       { question: "1 GB bằng bao nhiêu MB?", answer: "Theo chuẩn nhị phân (Windows sử dụng), 1 GB = 1024 MB. Theo chuẩn thập phân (quảng cáo), 1 GB = 1000 MB." },
+       { question: "Sự khác nhau giữa MB và Mb?", answer: "MB (Megabyte) dùng cho dung lượng lưu trữ. Mb (Megabit) dùng cho tốc độ mạng. 1 MB = 8 Mb. Mạng 100Mbps tải file tối đa 12.5 MB/s." },
+       { question: "Tại sao ổ cứng 500GB chỉ hiển thị khoảng 465GB trên Windows?", answer: "Do chênh lệch cách tính. Nhà sản xuất tính 500 tỷ byte. Windows chia cho 1024^3 (khoảng 1.07 tỷ) nên ra kết quả ~465GB." },
+       { question: "Đơn vị lớn nhất sau TB là gì?", answer: "Sau Terabyte (TB) là Petabyte (PB), Exabyte (EB), Zettabyte (ZB), Yottabyte (YB)." },
+       { question: "Một bài hát MP3 nặng bao nhiêu?", answer: "Trung bình một bài hát chất lượng cao dài 4 phút nặng khoảng 8-10 MB." }
     ]
   },
 

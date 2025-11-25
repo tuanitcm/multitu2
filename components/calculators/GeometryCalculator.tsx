@@ -1,7 +1,6 @@
 
 import React, { useState, useMemo } from 'react';
 import { NumberInput } from '../ui/Input';
-import { Box, Circle, Square, Triangle, Cylinder, Cuboid, Globe, Cone, Diamond, RectangleHorizontal, Component, Calculator, ArrowRight } from 'lucide-react';
 
 const format = (num: number) => new Intl.NumberFormat('vi-VN', { maximumFractionDigits: 4 }).format(num);
 
@@ -241,7 +240,7 @@ export const RhombusCalculator = () => {
     );
 };
 
-// --- 7. HÌNH HỘP / LẬP PHƯƠNG (Cube / Box) ---
+// --- 7. HÌNH HỘP / LẬP PHƯƠNG (Cube) ---
 export const CubeCalculator = () => {
     const [a, setA] = useState('');
     const side = parseFloat(a);
@@ -360,3 +359,76 @@ export const ConeCalculator = () => {
         </div>
     );
 };
+
+// --- 11. HÌNH BÌNH HÀNH (Parallelogram) ---
+export const ParallelogramCalculator = () => {
+    const [b, setB] = useState(''); // base
+    const [h, setH] = useState(''); // height
+    const [a, setA] = useState(''); // side
+
+    const results = useMemo(() => {
+        const base = parseFloat(b);
+        const height = parseFloat(h);
+        const side = parseFloat(a);
+        
+        let area = null;
+        let perimeter = null;
+
+        if (!isNaN(base) && !isNaN(height)) area = base * height;
+        if (!isNaN(base) && !isNaN(side)) perimeter = 2 * (base + side);
+
+        return { area, perimeter };
+    }, [b, h, a]);
+
+    return (
+        <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <NumberInput label="Cạnh đáy (b)" value={b} onChange={(e) => setB(e.target.value)} />
+                <NumberInput label="Chiều cao (h)" value={h} onChange={(e) => setH(e.target.value)} />
+                <NumberInput label="Cạnh bên (a)" value={a} onChange={(e) => setA(e.target.value)} />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <ResultCard label="Diện tích (S)" value={results.area} formula="S = b × h" />
+                <ResultCard label="Chu vi (P)" value={results.perimeter} formula="P = 2(a + b)" />
+            </div>
+        </div>
+    );
+};
+
+// --- 12. HÌNH HỘP CHỮ NHẬT (Cuboid) ---
+export const CuboidCalculator = () => {
+    const [l, setL] = useState('');
+    const [w, setW] = useState('');
+    const [h, setH] = useState('');
+
+    const results = useMemo(() => {
+        const len = parseFloat(l);
+        const wid = parseFloat(w);
+        const hei = parseFloat(h);
+
+        if (isNaN(len) || isNaN(wid) || isNaN(hei)) return null;
+
+        const area = 2 * (len*wid + len*hei + wid*hei);
+        const volume = len * wid * hei;
+        const diag = Math.sqrt(len*len + wid*wid + hei*hei);
+        const lat = 2 * (len + wid) * hei; // Lateral area
+
+        return { area, volume, diag, lat };
+    }, [l, w, h]);
+
+    return (
+        <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <NumberInput label="Chiều dài (l)" value={l} onChange={(e) => setL(e.target.value)} />
+                <NumberInput label="Chiều rộng (w)" value={w} onChange={(e) => setW(e.target.value)} />
+                <NumberInput label="Chiều cao (h)" value={h} onChange={(e) => setH(e.target.value)} />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <ResultCard label="Thể tích (V)" value={results?.volume ?? null} formula="V = l × w × h" />
+                <ResultCard label="Diện tích toàn phần" value={results?.area ?? null} formula="Stp = 2(lw + lh + wh)" />
+                <ResultCard label="Diện tích xung quanh" value={results?.lat ?? null} formula="Sxq = 2(l + w)h" />
+                <ResultCard label="Đường chéo" value={results?.diag ?? null} formula="D = √(l² + w² + h²)" />
+            </div>
+        </div>
+    );
+}
