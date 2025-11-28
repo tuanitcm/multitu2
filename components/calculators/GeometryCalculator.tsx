@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { NumberInput } from '../ui/Input';
 
@@ -6,14 +5,14 @@ const format = (num: number) => new Intl.NumberFormat('vi-VN', { maximumFraction
 
 // --- Shared Result Component ---
 const ResultCard = ({ label, value, formula, unit = '' }: { label: string, value: number | null, formula?: string, unit?: string }) => (
-  <div className="bg-[#0f172a] rounded-xl p-4 border border-slate-800 flex flex-col items-center justify-center text-center h-full relative overflow-hidden group">
-    <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+  <div className="bg-slate-50 rounded-xl p-4 border border-slate-200 flex flex-col items-center justify-center text-center h-full relative overflow-hidden group shadow-sm hover:shadow-md transition-all">
+    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
     <span className="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1 z-10">{label}</span>
-    <div className="text-2xl font-bold text-indigo-400 z-10 break-words w-full">
+    <div className="text-2xl font-bold text-slate-800 z-10 break-words w-full">
       {value !== null ? format(value) : '---'} <span className="text-sm text-slate-500 font-normal">{unit}</span>
     </div>
     {formula && value !== null && (
-       <div className="text-[10px] text-slate-500 mt-2 font-mono bg-slate-800/50 px-2 py-1 rounded z-10">{formula}</div>
+       <div className="text-[10px] text-slate-500 mt-2 font-mono bg-white px-2 py-1 rounded border border-slate-200 z-10">{formula}</div>
     )}
   </div>
 );
@@ -73,9 +72,9 @@ export const TriangleCalculator = () => {
 
   return (
     <div className="space-y-6">
-       <div className="flex bg-slate-800/50 p-1 rounded-xl">
-         <button onClick={() => setMode('basic')} className={`flex-1 py-2 rounded-lg text-sm font-bold ${mode === 'basic' ? 'bg-indigo-600 text-white' : 'text-slate-400'}`}>Cao & Đáy</button>
-         <button onClick={() => setMode('heron')} className={`flex-1 py-2 rounded-lg text-sm font-bold ${mode === 'heron' ? 'bg-indigo-600 text-white' : 'text-slate-400'}`}>3 Cạnh (Heron)</button>
+       <div className="flex bg-slate-100 p-1 rounded-xl">
+         <button onClick={() => setMode('basic')} className={`flex-1 py-2 rounded-lg text-sm font-bold ${mode === 'basic' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500'}`}>Cao & Đáy</button>
+         <button onClick={() => setMode('heron')} className={`flex-1 py-2 rounded-lg text-sm font-bold ${mode === 'heron' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500'}`}>3 Cạnh (Heron)</button>
        </div>
 
        {mode === 'basic' ? (

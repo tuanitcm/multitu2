@@ -34,7 +34,7 @@ export const UnitConverter: React.FC<UnitConverterProps> = ({
 }) => {
   // Safety check
   if (!units || units.length === 0) {
-    return <div className="text-red-400">Lỗi: Không có dữ liệu đơn vị.</div>;
+    return <div className="text-rose-500">Lỗi: Không có dữ liệu đơn vị.</div>;
   }
 
   const [amount, setAmount] = useState<string>('');
@@ -81,18 +81,18 @@ export const UnitConverter: React.FC<UnitConverterProps> = ({
   return (
     <div className="space-y-6">
       {helpText && (
-        <div className="bg-slate-800/50 border border-slate-700/50 rounded-lg p-4 text-slate-300 text-sm">
+        <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 text-slate-600 text-sm">
           {helpText}
         </div>
       )}
       
       <div className="grid grid-cols-1 md:grid-cols-7 gap-4 items-end">
         <div className="md:col-span-3 space-y-2">
-           <label className="text-sm font-medium text-slate-400">{labelFrom}</label>
+           <label className="text-sm font-semibold text-slate-700">{labelFrom}</label>
            <select 
              value={fromUnit}
              onChange={(e) => setFromUnit(e.target.value)}
-             className="w-full bg-[#0f172a] border border-slate-700 rounded-xl px-4 py-3 text-slate-100 focus:border-indigo-500 outline-none text-sm md:text-base"
+             className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-slate-900 focus:border-blue-500 outline-none text-sm md:text-base focus:ring-2 focus:ring-blue-500/20 shadow-sm"
            >
              {units.map(u => <option key={u.id} value={u.id}>{u.label}</option>)}
            </select>
@@ -101,7 +101,7 @@ export const UnitConverter: React.FC<UnitConverterProps> = ({
         <div className="md:col-span-1 flex justify-center pb-3">
            <button 
              onClick={handleSwap}
-             className="p-2 bg-slate-800 hover:bg-slate-700 rounded-full text-slate-400 hover:text-indigo-400 transition-colors border border-slate-700"
+             className="p-2 bg-slate-100 hover:bg-white hover:shadow-md rounded-full text-slate-500 hover:text-blue-600 transition-all border border-slate-200"
              title="Đổi chiều"
            >
              <ArrowRightLeft size={18} />
@@ -109,11 +109,11 @@ export const UnitConverter: React.FC<UnitConverterProps> = ({
         </div>
 
         <div className="md:col-span-3 space-y-2">
-           <label className="text-sm font-medium text-slate-400">{labelTo}</label>
+           <label className="text-sm font-semibold text-slate-700">{labelTo}</label>
            <select 
              value={toUnit}
              onChange={(e) => setToUnit(e.target.value)}
-             className="w-full bg-[#0f172a] border border-slate-700 rounded-xl px-4 py-3 text-slate-100 focus:border-indigo-500 outline-none text-sm md:text-base"
+             className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-slate-900 focus:border-blue-500 outline-none text-sm md:text-base focus:ring-2 focus:ring-blue-500/20 shadow-sm"
            >
              {units.map(u => <option key={u.id} value={u.id}>{u.label}</option>)}
            </select>
@@ -125,24 +125,24 @@ export const UnitConverter: React.FC<UnitConverterProps> = ({
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             placeholder="Nhập giá trị..."
-            className="text-center text-lg"
+            className="text-center text-lg font-bold text-blue-600"
          />
       </div>
 
-      <div className="bg-[#0f172a] rounded-2xl p-6 border border-slate-800 flex flex-col items-center justify-center min-h-[140px] relative overflow-hidden group">
-          <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+      <div className="bg-slate-50 rounded-2xl p-6 border border-slate-200 flex flex-col items-center justify-center min-h-[140px] relative overflow-hidden group shadow-inner">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
           {result !== null ? (
             <div className="text-center animate-in fade-in zoom-in duration-300 relative z-10">
-              <span className="text-slate-500 text-sm font-medium mb-2 block uppercase tracking-wider">Kết quả</span>
-              <div className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-400 mb-3 break-words">
+              <span className="text-slate-500 text-sm font-bold mb-2 block uppercase tracking-wider">Kết quả</span>
+              <div className="text-3xl md:text-4xl font-bold text-slate-800 mb-3 break-words">
                 {formatNumber(result, formatDecimals)} <span className="text-lg text-slate-500 font-normal">{toLabel?.split('(')[0]}</span>
               </div>
-              <div className="text-xs text-slate-400 bg-slate-800/50 px-4 py-1.5 rounded-full border border-slate-700 inline-block font-mono">
+              <div className="text-xs text-slate-500 bg-white px-4 py-1.5 rounded-full border border-slate-200 inline-block font-mono shadow-sm">
                 1 {fromLabel?.split('(')[0]} ≈ {formatNumber(ratioDisplay, 6)} {toLabel?.split('(')[0]}
               </div>
             </div>
           ) : (
-            <div className="flex flex-col items-center text-slate-600 gap-3 relative z-10">
+            <div className="flex flex-col items-center text-slate-400 gap-3 relative z-10">
               <Calculator size={32} className="opacity-50" />
               <span className="text-sm">Nhập số liệu để xem kết quả</span>
             </div>
@@ -152,7 +152,7 @@ export const UnitConverter: React.FC<UnitConverterProps> = ({
       <div className="flex justify-end">
          <button 
            onClick={handleReset}
-           className="text-sm font-medium text-slate-400 hover:text-white flex items-center gap-2 px-4 py-2 hover:bg-slate-800 rounded-lg transition-colors"
+           className="text-sm font-medium text-slate-500 hover:text-blue-600 flex items-center gap-2 px-4 py-2 hover:bg-slate-100 rounded-lg transition-colors"
          >
            <RefreshCw size={16} /> Làm mới
          </button>

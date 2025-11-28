@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { NumberInput } from '../ui/Input';
 import { Wind, Hammer, Zap, RefreshCw } from 'lucide-react';
@@ -58,14 +57,14 @@ export const PhysicsCalculator = ({ defaultMode = 'motion' }: { defaultMode?: Ph
 
   return (
     <div className="space-y-6">
-        <div className="grid grid-cols-3 gap-2 mb-6">
-            <button onClick={() => { setMode('motion'); reset(); }} className={`p-2 rounded-lg text-sm font-bold flex flex-col items-center gap-1 border ${mode === 'motion' ? 'bg-indigo-600 border-indigo-500 text-white' : 'bg-[#0f172a] border-slate-700 text-slate-400'}`}>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-6">
+            <button onClick={() => { setMode('motion'); reset(); }} className={`p-2 rounded-lg text-sm font-bold flex flex-row sm:flex-col justify-center items-center gap-2 border ${mode === 'motion' ? 'bg-indigo-600 border-indigo-500 text-white' : 'bg-[#0f172a] border-slate-700 text-slate-400'}`}>
                 <Wind size={18} /> Vận tốc/Q.Đường
             </button>
-            <button onClick={() => { setMode('work'); reset(); }} className={`p-2 rounded-lg text-sm font-bold flex flex-col items-center gap-1 border ${mode === 'work' ? 'bg-indigo-600 border-indigo-500 text-white' : 'bg-[#0f172a] border-slate-700 text-slate-400'}`}>
+            <button onClick={() => { setMode('work'); reset(); }} className={`p-2 rounded-lg text-sm font-bold flex flex-row sm:flex-col justify-center items-center gap-2 border ${mode === 'work' ? 'bg-indigo-600 border-indigo-500 text-white' : 'bg-[#0f172a] border-slate-700 text-slate-400'}`}>
                 <Hammer size={18} /> Công cơ học
             </button>
-            <button onClick={() => { setMode('power'); reset(); }} className={`p-2 rounded-lg text-sm font-bold flex flex-col items-center gap-1 border ${mode === 'power' ? 'bg-indigo-600 border-indigo-500 text-white' : 'bg-[#0f172a] border-slate-700 text-slate-400'}`}>
+            <button onClick={() => { setMode('power'); reset(); }} className={`p-2 rounded-lg text-sm font-bold flex flex-row sm:flex-col justify-center items-center gap-2 border ${mode === 'power' ? 'bg-indigo-600 border-indigo-500 text-white' : 'bg-[#0f172a] border-slate-700 text-slate-400'}`}>
                 <Zap size={18} /> Công suất
             </button>
         </div>
