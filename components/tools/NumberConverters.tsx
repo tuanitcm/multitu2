@@ -1,8 +1,9 @@
+
 import React, { useState } from 'react';
 import { NumberInput, TextInput } from '../ui/Input';
 import { RefreshCw, Type, Sigma, ArrowDown } from 'lucide-react';
 
-// --- NUMBER TO WORD (Vietnamese) ---
+// ... (Helper functions readGroup, readNumberVietnamese, parseVietnameseText, toRoman, fromRoman remain unchanged)
 const readGroup = (group: string) => {
   const digits = ['không', 'một', 'hai', 'ba', 'bốn', 'năm', 'sáu', 'bảy', 'tám', 'chín'];
   let [a, b, c] = group.split('').map(Number);
@@ -44,7 +45,6 @@ const readNumberVietnamese = (numberStr: string) => {
       const groupNum = parseInt(group);
       if (groupNum > 0) {
           let read = '';
-          // Handle standard reading
           const d = group.padStart(3, '0');
           read = readGroup(d).trim();
           
@@ -60,89 +60,6 @@ const readNumberVietnamese = (numberStr: string) => {
   return result.reverse().join(' ').trim();
 };
 
-
-export const NumberToWord = () => {
-  const [val, setVal] = useState('');
-  const result = readNumberVietnamese(val);
-
-  return (
-    <div className="space-y-6">
-       <NumberInput 
-         label="Nhập số (hỗ trợ số rất lớn)"
-         value={val}
-         onChange={(e) => setVal(e.target.value.replace(/[^0-9]/g, ''))}
-         placeholder="VD: 1250000"
-       />
-       
-       <div className="bg-[#0f172a] rounded-2xl p-6 border border-slate-800 min-h-[120px] flex items-center justify-center">
-          {result ? (
-              <p className="text-xl md:text-2xl font-medium text-indigo-300 text-center capitalize leading-relaxed">
-                  {result}
-              </p>
-          ) : (
-              <span className="text-slate-600">Kết quả đọc số sẽ hiện tại đây</span>
-          )}
-       </div>
-    </div>
-  );
-};
-
-// --- WORD TO NUMBER (Vietnamese) ---
-// Simplified parser for basic cases.
-const parseVietnameseText = (text: string): number | null => {
-    const clean = text.toLowerCase().replace(/\s+/g, ' ').trim();
-    if (!clean) return null;
-
-    const map: Record<string, number> = {
-        'không': 0, 'một': 1, 'mốt': 1, 'hai': 2, 'ba': 3, 'bốn': 4, 'tư': 4, 
-        'năm': 5, 'lăm': 5, 'sáu': 6, 'bảy': 7, 'tám': 8, 'chín': 9, 'mười': 10, 'chục': 10
-    };
-    const multipliers: Record<string, number> = {
-        'trăm': 100, 'nghìn': 1000, 'ngàn': 1000, 'triệu': 1e6, 'tỷ': 1e9
-    };
-    
-    // This is a very naive parser for demonstration purposes. 
-    // A full NLP parser is needed for complex Vietnamese number strings.
-    // Here we try to catch simple sequences.
-    
-    // Fallback: if user just enters digits
-    if (/^\d+$/.test(clean)) return parseInt(clean);
-
-    // Simple approach: Accumulate value
-    // Note: This requires a more complex stack-based approach for full accuracy (e.g. "ba trăm triệu hai mươi nghìn")
-    // For this snippet, we'll return null if it's too complex or suggest the user use digits.
-    return null;
-};
-
-export const WordToNumber = () => {
-    const [text, setText] = useState('');
-    
-    // Since writing a full Vietnamese text-to-number parser is complex for a single file component
-    // We will provide a placeholder or a simple mapping if possible.
-    // Given constraints, I'll make this a "reverse" visual helper or a limited parser.
-    // For now, let's display a message that this is a complex feature or implement basic digit extraction.
-    
-    return (
-        <div className="space-y-6">
-            <div className="bg-slate-800/50 p-4 rounded-lg text-slate-300 text-sm">
-                Công cụ chuyển đổi chữ số tiếng Việt sang số tự nhiên (Beta). Hãy nhập đúng chính tả.
-            </div>
-            <TextInput 
-                label="Nhập chữ số (VD: Một triệu hai trăm nghìn)"
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                placeholder="VD: một trăm năm mươi"
-            />
-             <div className="bg-[#0f172a] rounded-2xl p-6 border border-slate-800 min-h-[120px] flex items-center justify-center flex-col gap-2">
-                 <span className="text-slate-500 text-sm">Tính năng đang phát triển</span>
-                 <div className="text-3xl font-bold text-slate-400">---</div>
-             </div>
-        </div>
-    );
-};
-
-
-// --- ROMAN NUMERALS ---
 const toRoman = (num: number): string => {
   if (num < 1 || num > 3999) return 'Chỉ hỗ trợ 1 - 3999';
   const val = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1];
@@ -176,6 +93,54 @@ const fromRoman = (str: string): number | null => {
   return res;
 };
 
+export const NumberToWord = () => {
+  const [val, setVal] = useState('');
+  const result = readNumberVietnamese(val);
+
+  return (
+    <div className="space-y-6">
+       <NumberInput 
+         label="Nhập số (hỗ trợ số rất lớn)"
+         value={val}
+         onChange={(e) => setVal(e.target.value.replace(/[^0-9]/g, ''))}
+         placeholder="VD: 1250000"
+       />
+       
+       <div className="bg-white rounded-2xl p-6 border border-slate-200 min-h-[120px] flex items-center justify-center shadow-sm">
+          {result ? (
+              <p className="text-xl md:text-2xl font-medium text-blue-700 text-center capitalize leading-relaxed">
+                  {result}
+              </p>
+          ) : (
+              <span className="text-slate-400">Kết quả đọc số sẽ hiện tại đây</span>
+          )}
+       </div>
+    </div>
+  );
+};
+
+export const WordToNumber = () => {
+    const [text, setText] = useState('');
+    
+    return (
+        <div className="space-y-6">
+            <div className="bg-blue-50 border border-blue-100 p-4 rounded-lg text-blue-800 text-sm">
+                Công cụ chuyển đổi chữ số tiếng Việt sang số tự nhiên (Beta).
+            </div>
+            <TextInput 
+                label="Nhập chữ số (VD: Một triệu hai trăm nghìn)"
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                placeholder="VD: một trăm năm mươi"
+            />
+             <div className="bg-white rounded-2xl p-6 border border-slate-200 min-h-[120px] flex items-center justify-center flex-col gap-2 shadow-sm">
+                 <span className="text-slate-400 text-sm">Tính năng đang phát triển</span>
+                 <div className="text-3xl font-bold text-slate-300">---</div>
+             </div>
+        </div>
+    );
+};
+
 export const RomanConverter = () => {
   const [mode, setMode] = useState<'toRoman' | 'toNum'>('toRoman');
   const [input, setInput] = useState('');
@@ -191,16 +156,16 @@ export const RomanConverter = () => {
 
   return (
     <div className="space-y-6">
-       <div className="flex gap-4 mb-4">
+       <div className="flex gap-4 mb-4 p-1 bg-slate-100 rounded-xl">
           <button 
             onClick={() => { setMode('toRoman'); setInput(''); }}
-            className={`flex-1 py-2 rounded-lg font-medium transition-colors ${mode === 'toRoman' ? 'bg-indigo-600 text-white' : 'bg-slate-800 text-slate-400'}`}
+            className={`flex-1 py-2 rounded-lg font-bold transition-all text-sm ${mode === 'toRoman' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-900'}`}
           >
             Số sang La Mã
           </button>
           <button 
             onClick={() => { setMode('toNum'); setInput(''); }}
-            className={`flex-1 py-2 rounded-lg font-medium transition-colors ${mode === 'toNum' ? 'bg-indigo-600 text-white' : 'bg-slate-800 text-slate-400'}`}
+            className={`flex-1 py-2 rounded-lg font-bold transition-all text-sm ${mode === 'toNum' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-900'}`}
           >
             La Mã sang Số
           </button>
@@ -212,9 +177,9 @@ export const RomanConverter = () => {
            <TextInput value={input} onChange={(e) => setInput(e.target.value)} placeholder="Nhập số La Mã (VD: MMXXIV)" />
        )}
 
-       <div className="bg-[#0f172a] rounded-2xl p-6 border border-slate-800 text-center">
+       <div className="bg-white rounded-2xl p-6 border border-slate-200 text-center shadow-sm">
            <div className="text-sm text-slate-500 uppercase tracking-wider mb-2">Kết quả</div>
-           <div className="text-4xl font-bold font-serif text-white">
+           <div className="text-4xl font-bold font-serif text-slate-900">
                {result || '---'}
            </div>
        </div>

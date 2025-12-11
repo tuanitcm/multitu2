@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 interface NumberInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
@@ -8,7 +9,7 @@ interface NumberInputProps extends Omit<React.InputHTMLAttributes<HTMLInputEleme
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const NumberInput: React.FC<NumberInputProps> = ({ label, suffix, prefix, className = '', onChange, ...props }) => {
+export const NumberInput: React.FC<NumberInputProps> = ({ label, suffix, prefix, className = '', onChange, value, ...props }) => {
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
@@ -30,10 +31,11 @@ export const NumberInput: React.FC<NumberInputProps> = ({ label, suffix, prefix,
         <input
           type="text"
           inputMode="decimal"
-          pattern="[0-9]*"
           autoComplete="off"
+          autoCorrect="off"
           className={`w-full bg-white rounded-xl border border-slate-300 px-4 py-3 text-base text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all ${prefix ? 'pl-8' : ''} ${suffix ? 'pr-9' : ''} ${className}`}
           placeholder="0"
+          value={value}
           onChange={handleChange}
           {...props}
         />

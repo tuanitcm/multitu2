@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { NumberInput, TextInput } from '../ui/Input';
 import { Calculator, RefreshCw, SquareFunction, Triangle, Divide } from 'lucide-react';
 
-// --- LOGARITHM CALCULATOR ---
 export const LogarithmCalculator = () => {
     const [base, setBase] = useState('');
     const [num, setNum] = useState('');
@@ -26,9 +25,9 @@ export const LogarithmCalculator = () => {
                     <NumberInput label="Số cần tính (x)" value={num} onChange={(e) => setNum(e.target.value)} placeholder="VD: 8" />
                 </div>
             </div>
-            <div className="bg-[#0f172a] p-6 rounded-2xl border border-slate-800 text-center">
+            <div className="bg-white p-6 rounded-2xl border border-slate-200 text-center shadow-sm">
                  <div className="text-slate-500 text-xs uppercase font-bold mb-2">Kết quả Logarit</div>
-                 <div className="text-4xl font-bold text-purple-400">
+                 <div className="text-4xl font-bold text-purple-600">
                      {res !== null ? Number(res.toFixed(6)) : '---'}
                  </div>
                  <div className="text-slate-500 text-xs mt-2 font-mono">log({base}) of {num}</div>
@@ -37,7 +36,6 @@ export const LogarithmCalculator = () => {
     );
 };
 
-// --- TRIGONOMETRY CALCULATOR ---
 export const TrigCalculator = () => {
     const [angle, setAngle] = useState('');
     const [unit, setUnit] = useState<'deg' | 'rad'>('deg');
@@ -54,39 +52,40 @@ export const TrigCalculator = () => {
                 <div className="flex-grow">
                     <NumberInput label="Góc" value={angle} onChange={(e) => setAngle(e.target.value)} placeholder={unit === 'deg' ? "VD: 45" : "VD: 1.57"} />
                 </div>
-                <div className="w-24 pb-3">
-                    <select value={unit} onChange={(e) => setUnit(e.target.value as any)} className="bg-[#0f172a] border border-slate-700 text-slate-200 rounded-xl px-3 py-3 w-full outline-none">
-                        <option value="deg">Độ (°)</option>
-                        <option value="rad">Rad</option>
-                    </select>
+                <div className="w-28 pb-3">
+                    <div className="relative">
+                        <select value={unit} onChange={(e) => setUnit(e.target.value as any)} className="bg-white border border-slate-300 text-slate-800 rounded-xl px-3 py-3 w-full outline-none appearance-none font-medium">
+                            <option value="deg">Độ (°)</option>
+                            <option value="rad">Rad</option>
+                        </select>
+                        <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500">▼</div>
+                    </div>
                 </div>
             </div>
             
             <div className="grid grid-cols-3 gap-4">
-                <div className="bg-[#0f172a] p-4 rounded-xl border border-slate-800 text-center">
+                <div className="bg-white p-4 rounded-xl border border-slate-200 text-center shadow-sm">
                     <span className="text-slate-500 text-xs font-bold block mb-1">sin</span>
-                    <span className="text-xl font-bold text-indigo-400">{valid ? format(Math.sin(rad)) : '-'}</span>
+                    <span className="text-xl font-bold text-blue-600">{valid ? format(Math.sin(rad)) : '-'}</span>
                 </div>
-                <div className="bg-[#0f172a] p-4 rounded-xl border border-slate-800 text-center">
+                <div className="bg-white p-4 rounded-xl border border-slate-200 text-center shadow-sm">
                     <span className="text-slate-500 text-xs font-bold block mb-1">cos</span>
-                    <span className="text-xl font-bold text-indigo-400">{valid ? format(Math.cos(rad)) : '-'}</span>
+                    <span className="text-xl font-bold text-indigo-600">{valid ? format(Math.cos(rad)) : '-'}</span>
                 </div>
-                <div className="bg-[#0f172a] p-4 rounded-xl border border-slate-800 text-center">
+                <div className="bg-white p-4 rounded-xl border border-slate-200 text-center shadow-sm">
                     <span className="text-slate-500 text-xs font-bold block mb-1">tan</span>
-                    <span className="text-xl font-bold text-indigo-400">{valid ? (Math.abs(Math.tan(rad)) > 1e10 ? '∞' : format(Math.tan(rad))) : '-'}</span>
+                    <span className="text-xl font-bold text-violet-600">{valid ? (Math.abs(Math.tan(rad)) > 1e10 ? '∞' : format(Math.tan(rad))) : '-'}</span>
                 </div>
             </div>
         </div>
     );
 };
 
-// --- SIMPLE POLYNOMIAL CALCULUS ---
 export const CalculusCalculator = () => {
     const [mode, setMode] = useState<'derivative' | 'integral'>('derivative');
     const [a, setA] = useState('');
     const [n, setN] = useState('');
     
-    // Simple Model: y = ax^n
     const coef = parseFloat(a);
     const pow = parseFloat(n);
     const valid = !isNaN(coef) && !isNaN(pow);
@@ -94,7 +93,6 @@ export const CalculusCalculator = () => {
     let result = '';
     if (valid) {
         if (mode === 'derivative') {
-            // y' = n*a*x^(n-1)
             if (pow === 0) result = '0';
             else {
                 const newCoef = coef * pow;
@@ -104,7 +102,6 @@ export const CalculusCalculator = () => {
                 else result = `${newCoef}x^${newPow}`;
             }
         } else {
-            // I = (a/(n+1))x^(n+1) + C
             if (pow === -1) {
                 result = `${coef}ln|x| + C`;
             } else {
@@ -118,12 +115,12 @@ export const CalculusCalculator = () => {
 
     return (
          <div className="space-y-6">
-            <div className="bg-slate-800/50 p-3 rounded-lg text-sm text-slate-300">
+            <div className="bg-slate-50 p-3 rounded-lg text-sm text-slate-600 border border-slate-200">
                 Công cụ tính đơn giản cho hàm lũy thừa: <strong>f(x) = axⁿ</strong>
             </div>
-            <div className="flex bg-slate-800/50 p-1 rounded-xl mb-4">
-                <button onClick={() => setMode('derivative')} className={`flex-1 py-2 rounded-lg text-sm font-bold ${mode === 'derivative' ? 'bg-indigo-600 text-white' : 'text-slate-400'}`}>Đạo hàm</button>
-                <button onClick={() => setMode('integral')} className={`flex-1 py-2 rounded-lg text-sm font-bold ${mode === 'integral' ? 'bg-indigo-600 text-white' : 'text-slate-400'}`}>Nguyên hàm</button>
+            <div className="flex bg-slate-100 p-1 rounded-xl mb-4">
+                <button onClick={() => setMode('derivative')} className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${mode === 'derivative' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500'}`}>Đạo hàm</button>
+                <button onClick={() => setMode('integral')} className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${mode === 'integral' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500'}`}>Nguyên hàm</button>
             </div>
 
             <div className="flex gap-4">
@@ -131,9 +128,9 @@ export const CalculusCalculator = () => {
                  <NumberInput label="Số mũ (n)" value={n} onChange={(e) => setN(e.target.value)} placeholder="VD: 2" />
             </div>
 
-            <div className="bg-[#0f172a] p-6 rounded-2xl border border-slate-800 text-center">
+            <div className="bg-white p-6 rounded-2xl border border-slate-200 text-center shadow-sm">
                  <div className="text-slate-500 text-xs uppercase font-bold mb-2">Kết quả ({mode === 'derivative' ? "f'(x)" : 'F(x)'})</div>
-                 <div className="text-3xl font-bold text-amber-400 font-mono">
+                 <div className="text-3xl font-bold text-amber-500 font-mono">
                      {result || '---'}
                  </div>
                  <div className="text-slate-500 text-xs mt-2">

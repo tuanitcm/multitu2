@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { NumberInput } from '../ui/Input';
 import { Target, Calculator, RefreshCw } from 'lucide-react';
@@ -22,7 +23,7 @@ export const FindWhole = () => {
 
   return (
     <div className="space-y-6">
-      <div className="bg-orange-500/10 border border-orange-500/20 rounded-lg p-4 text-orange-200 text-sm">
+      <div className="bg-sky-50 border border-sky-100 rounded-lg p-4 text-sky-800 text-sm">
         Tìm số tổng <strong>Y</strong> khi biết <strong>X</strong> tương ứng với <strong>P%</strong>.
       </div>
       
@@ -42,20 +43,20 @@ export const FindWhole = () => {
         />
       </div>
 
-      <div className="bg-[#0f172a] rounded-2xl p-6 border border-slate-800 flex flex-col items-center justify-center min-h-[140px] relative overflow-hidden group">
-          <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-amber-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+      <div className="bg-white rounded-2xl p-6 border border-slate-200 flex flex-col items-center justify-center min-h-[140px] relative overflow-hidden group shadow-sm">
+          <div className="absolute inset-0 bg-gradient-to-br from-sky-50 to-blue-50 opacity-50 group-hover:opacity-100 transition-opacity"></div>
           {result !== null ? (
             <div className="text-center animate-in fade-in zoom-in duration-300 relative z-10">
               <span className="text-slate-500 text-sm font-medium mb-2 block uppercase tracking-wider">Số gốc cần tìm</span>
-              <div className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-amber-400 mb-3">
+              <div className="text-4xl font-bold text-sky-600 mb-3">
                 {formatNumber(result)}
               </div>
-              <div className="text-xs text-slate-400 bg-slate-800/50 px-4 py-1.5 rounded-full border border-slate-700 inline-block font-mono">
+              <div className="text-xs text-slate-500 bg-white px-4 py-1.5 rounded-full border border-slate-200 inline-block font-mono shadow-sm">
                  {formatNumber(p)} ÷ ({formatNumber(per)} ÷ 100) = {formatNumber(result)}
               </div>
             </div>
           ) : (
-            <div className="flex flex-col items-center text-slate-600 gap-3 relative z-10">
+            <div className="flex flex-col items-center text-slate-400 gap-3 relative z-10">
               <Calculator size={32} className="opacity-50" />
               <span className="text-sm">Nhập số liệu để bắt đầu tính</span>
             </div>
@@ -65,7 +66,7 @@ export const FindWhole = () => {
       <div className="flex justify-end">
          <button 
            onClick={handleReset}
-           className="text-sm font-medium text-slate-400 hover:text-white flex items-center gap-2 px-4 py-2 hover:bg-slate-800 rounded-lg transition-colors"
+           className="text-sm font-medium text-slate-500 hover:text-blue-600 flex items-center gap-2 px-4 py-2 hover:bg-slate-100 rounded-lg transition-colors"
          >
            <RefreshCw size={16} /> Làm mới
          </button>

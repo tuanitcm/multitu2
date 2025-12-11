@@ -6,13 +6,11 @@ import * as baseXPkg from 'base-x';
 import * as punycodePkg from 'punycode';
 import * as ascii85Pkg from 'ascii85';
 
-// Safe imports for various module formats
 const base32 = (base32Pkg as any).default || base32Pkg;
 const baseX = (baseXPkg as any).default || baseXPkg;
 const punycode = (punycodePkg as any).default || punycodePkg;
 const ascii85 = (ascii85Pkg as any).default || ascii85Pkg;
 
-// Base58 alphabet (Bitcoin standard)
 const BASE58_ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
 const bs58 = baseX(BASE58_ALPHABET);
 
@@ -86,7 +84,6 @@ export const Encoders: React.FC<EncoderProps> = ({ type, defaultDirection = 'enc
              if (direction === 'encode') res = ascii85.encode(input).toString();
              else res = ascii85.decode(input).toString();
         } else if (type === 'base64') {
-             // UTF-8 safe Base64
              if (direction === 'encode') {
                  res = btoa(encodeURIComponent(input).replace(/%([0-9A-F]{2})/g, 
                     function toSolidBytes(match, p1) {
@@ -140,16 +137,16 @@ export const Encoders: React.FC<EncoderProps> = ({ type, defaultDirection = 'enc
 
   return (
     <div className="space-y-6">
-       <div className="flex bg-slate-800/50 p-1 rounded-xl w-fit mx-auto mb-6">
+       <div className="flex bg-slate-100 p-1 rounded-xl w-fit mx-auto mb-6">
           <button 
              onClick={() => { setDirection('encode'); setInput(''); setOutput(''); }}
-             className={`px-6 py-2 rounded-lg text-sm font-medium transition-all ${direction === 'encode' ? 'bg-indigo-600 text-white shadow-lg' : 'text-slate-400 hover:text-white'}`}
+             className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${direction === 'encode' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-900'}`}
           >
              Mã hóa (Encode)
           </button>
           <button 
              onClick={() => { setDirection('decode'); setInput(''); setOutput(''); }}
-             className={`px-6 py-2 rounded-lg text-sm font-medium transition-all ${direction === 'decode' ? 'bg-indigo-600 text-white shadow-lg' : 'text-slate-400 hover:text-white'}`}
+             className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${direction === 'decode' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-900'}`}
           >
              Giải mã (Decode)
           </button>
@@ -157,38 +154,38 @@ export const Encoders: React.FC<EncoderProps> = ({ type, defaultDirection = 'enc
 
        <div className="grid gap-6">
           <div className="space-y-2">
-             <label className="text-sm font-medium text-slate-400">
+             <label className="text-sm font-semibold text-slate-700">
                 {direction === 'encode' ? 'Văn bản gốc' : 'Chuỗi đã mã hóa'}
              </label>
              <textarea
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                className="w-full h-32 bg-[#0f172a] rounded-xl border border-slate-700 p-4 text-slate-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/50 outline-none transition-all resize-none font-mono text-sm"
+                className="w-full h-32 bg-white rounded-xl border border-slate-300 p-4 text-slate-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all resize-none font-mono text-sm shadow-sm"
                 placeholder={direction === 'encode' ? "Nhập nội dung..." : "Dán mã vào đây..."}
              />
           </div>
 
           <div className="flex justify-center">
-             <div className="bg-slate-800 rounded-full p-2 text-slate-400">
+             <div className="bg-slate-100 rounded-full p-2 text-slate-400 border border-slate-200">
                 <ArrowDownUp size={20} />
              </div>
           </div>
 
           <div className="space-y-2">
-             <label className="text-sm font-medium text-slate-400">
+             <label className="text-sm font-semibold text-slate-700">
                 {direction === 'encode' ? 'Kết quả mã hóa' : 'Kết quả giải mã'}
              </label>
              <div className="relative group">
                 <textarea
                     readOnly
                     value={error || output}
-                    className={`w-full h-32 bg-[#0f172a] rounded-xl border p-4 outline-none transition-all resize-none font-mono text-sm ${error ? 'border-rose-500/50 text-rose-400' : 'border-slate-700 text-slate-200'}`}
+                    className={`w-full h-32 bg-slate-50 rounded-xl border p-4 outline-none transition-all resize-none font-mono text-sm ${error ? 'border-rose-300 text-rose-600 bg-rose-50' : 'border-slate-200 text-slate-800'}`}
                     placeholder="..."
                 />
                 {!error && output && (
                     <button 
                         onClick={copyToClipboard}
-                        className="absolute bottom-4 right-4 p-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-400 hover:text-white transition-colors shadow-lg"
+                        className="absolute bottom-4 right-4 p-2 bg-white hover:bg-slate-50 border border-slate-200 rounded-lg text-slate-500 hover:text-blue-600 transition-colors shadow-sm"
                     >
                         {copied ? <Check size={16} /> : <Copy size={16} />}
                     </button>

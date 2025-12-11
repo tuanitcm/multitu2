@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo } from 'react';
 import { NumberInput } from '../ui/Input';
 
@@ -185,12 +186,20 @@ export const TrapezoidCalculator = () => {
 
   return (
     <div className="space-y-6">
+       <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 text-sm text-blue-800">
+          <p className="font-bold mb-2">Chú thích & Công thức:</p>
+          <ul className="list-disc list-inside space-y-1 text-blue-700">
+             <li><strong>Diện tích (S):</strong> ½ × (Đáy lớn a + Đáy nhỏ b) × Chiều cao h</li>
+             <li><strong>Chu vi (P):</strong> Đáy lớn a + Đáy nhỏ b + Cạnh bên c + Cạnh bên d</li>
+          </ul>
+       </div>
+
        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           <NumberInput label="Đáy lớn (a)" value={a} onChange={(e) => setA(e.target.value)} />
           <NumberInput label="Đáy nhỏ (b)" value={b} onChange={(e) => setB(e.target.value)} />
           <NumberInput label="Chiều cao (h)" value={h} onChange={(e) => setH(e.target.value)} />
-          <NumberInput label="Cạnh bên 1" value={c} onChange={(e) => setC(e.target.value)} />
-          <NumberInput label="Cạnh bên 2" value={d} onChange={(e) => setD(e.target.value)} />
+          <NumberInput label="Cạnh bên 1 (c)" value={c} onChange={(e) => setC(e.target.value)} />
+          <NumberInput label="Cạnh bên 2 (d)" value={d} onChange={(e) => setD(e.target.value)} />
        </div>
        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <ResultCard label="Diện tích (S)" value={results.area} formula="S = ½(a + b)h" />
@@ -430,4 +439,4 @@ export const CuboidCalculator = () => {
             </div>
         </div>
     );
-}
+};

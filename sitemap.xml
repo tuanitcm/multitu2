@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://123maytinh.com/</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://123maytinh.com/about</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <!-- Math Tools -->
+  <url><loc>https://123maytinh.com/percentage-calculator</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://123maytinh.com/ratio-percentage</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://123maytinh.com/percentage-change</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://123maytinh.com/find-whole</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://123maytinh.com/sequence-calculator</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://123maytinh.com/logarithm</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://123maytinh.com/trigonometry</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://123maytinh.com/calculus-basic</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://123maytinh.com/random-number</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  
+  <!-- Geometry -->
+  <url><loc>https://123maytinh.com/circle</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://123maytinh.com/triangle</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://123maytinh.com/square</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://123maytinh.com/rectangle</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://123maytinh.com/trapezoid</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://123maytinh.com/rhombus</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://123maytinh.com/hinh-binh-hanh</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://123maytinh.com/cube</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://123maytinh.com/sphere</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://123maytinh.com/cylinder</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://123maytinh.com/cone</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://123maytinh.com/cuboid</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+
+  <!-- Text -->
+  <url><loc>https://123maytinh.com/icon-facebook</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://123maytinh.com/word-counter</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://123maytinh.com/number-to-word</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://123maytinh.com/word-to-number</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://123maytinh.com/doi-kieu-chu</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+
+  <!-- Security/Dev -->
+  <url><loc>https://123maytinh.com/password-generator</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://123maytinh.com/tao-ma-qr</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://123maytinh.com/doi-ma-mau</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+
+  <!-- Converters -->
+  <url><loc>https://123maytinh.com/roman-numerals</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://123maytinh.com/length-converter</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://123maytinh.com/temp-converter</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://123maytinh.com/weight-converter</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://123maytinh.com/doi-don-vi-thoi-gian</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://123maytinh.com/doi-don-vi-du-lieu</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+
+  <!-- Health -->
+  <url><loc>https://123maytinh.com/bmi-calculator</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://123maytinh.com/bmr-tdee</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://123maytinh.com/water-calculator</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://123maytinh.com/ideal-weight</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://123maytinh.com/age-calculator</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+
+  <!-- Others -->
+  <url><loc>https://123maytinh.com/discount-calculator</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://123maytinh.com/compound-interest</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://123maytinh.com/physics-calculator</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://123maytinh.com/dem-ngay</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://123maytinh.com/countdown-timer</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+</urlset>

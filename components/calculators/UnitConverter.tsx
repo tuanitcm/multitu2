@@ -1,6 +1,7 @@
+
 import React, { useState, useMemo, useEffect } from 'react';
 import { NumberInput } from '../ui/Input';
-import { ArrowRightLeft, Calculator, RefreshCw } from 'lucide-react';
+import { ArrowRightLeft, Calculator, RefreshCw, ChevronDown } from 'lucide-react';
 
 export type UnitDefinition = {
   id: string;
@@ -89,34 +90,44 @@ export const UnitConverter: React.FC<UnitConverterProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-7 gap-4 items-end">
         <div className="md:col-span-3 space-y-2">
            <label className="text-sm font-semibold text-slate-700">{labelFrom}</label>
-           <select 
-             value={fromUnit}
-             onChange={(e) => setFromUnit(e.target.value)}
-             className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-slate-900 focus:border-blue-500 outline-none text-sm md:text-base focus:ring-2 focus:ring-blue-500/20 shadow-sm"
-           >
-             {units.map(u => <option key={u.id} value={u.id}>{u.label}</option>)}
-           </select>
+           <div className="relative group">
+             <select 
+               value={fromUnit}
+               onChange={(e) => setFromUnit(e.target.value)}
+               className="w-full bg-white border border-slate-300 rounded-xl pl-4 pr-10 py-3 text-slate-900 focus:border-blue-500 outline-none text-sm md:text-base focus:ring-2 focus:ring-blue-500/20 shadow-sm appearance-none cursor-pointer transition-all hover:border-blue-400"
+             >
+               {units.map(u => <option key={u.id} value={u.id}>{u.label}</option>)}
+             </select>
+             <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 group-hover:text-blue-500 transition-colors">
+                <ChevronDown size={18} />
+             </div>
+           </div>
         </div>
 
         <div className="md:col-span-1 flex justify-center pb-3">
            <button 
              onClick={handleSwap}
-             className="p-2 bg-slate-100 hover:bg-white hover:shadow-md rounded-full text-slate-500 hover:text-blue-600 transition-all border border-slate-200"
+             className="p-2 bg-slate-100 hover:bg-blue-50 hover:border-blue-200 rounded-full text-slate-500 hover:text-blue-600 transition-all border border-slate-200 shadow-sm active:scale-95"
              title="Đổi chiều"
            >
-             <ArrowRightLeft size={18} />
+             <ArrowRightLeft size={20} />
            </button>
         </div>
 
         <div className="md:col-span-3 space-y-2">
            <label className="text-sm font-semibold text-slate-700">{labelTo}</label>
-           <select 
-             value={toUnit}
-             onChange={(e) => setToUnit(e.target.value)}
-             className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-slate-900 focus:border-blue-500 outline-none text-sm md:text-base focus:ring-2 focus:ring-blue-500/20 shadow-sm"
-           >
-             {units.map(u => <option key={u.id} value={u.id}>{u.label}</option>)}
-           </select>
+           <div className="relative group">
+             <select 
+               value={toUnit}
+               onChange={(e) => setToUnit(e.target.value)}
+               className="w-full bg-white border border-slate-300 rounded-xl pl-4 pr-10 py-3 text-slate-900 focus:border-blue-500 outline-none text-sm md:text-base focus:ring-2 focus:ring-blue-500/20 shadow-sm appearance-none cursor-pointer transition-all hover:border-blue-400"
+             >
+               {units.map(u => <option key={u.id} value={u.id}>{u.label}</option>)}
+             </select>
+             <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 group-hover:text-blue-500 transition-colors">
+                <ChevronDown size={18} />
+             </div>
+           </div>
         </div>
       </div>
 

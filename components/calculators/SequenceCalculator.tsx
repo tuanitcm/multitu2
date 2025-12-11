@@ -10,7 +10,7 @@ const formatNumber = (num: number) => new Intl.NumberFormat('vi-VN').format(num)
 export const SequenceCalculator = () => {
   const [type, setType] = useState<SeqType>('arithmetic');
   const [u1, setU1] = useState('');
-  const [d, setD] = useState(''); // d or q
+  const [d, setD] = useState('');
   const [n, setN] = useState('');
 
   const handleReset = () => { setU1(''); setD(''); setN(''); };
@@ -26,14 +26,10 @@ export const SequenceCalculator = () => {
       let sn = 0;
 
       if (type === 'arithmetic') {
-          // un = u1 + (n-1)d
           un = a + (term - 1) * step;
-          // Sn = n/2 * (u1 + un)
           sn = (term * (a + un)) / 2;
       } else {
-          // un = u1 * q^(n-1)
           un = a * Math.pow(step, term - 1);
-          // Sn = u1 * (1 - q^n) / (1-q)
           if (step === 1) sn = a * term;
           else sn = (a * (1 - Math.pow(step, term))) / (1 - step);
       }
@@ -45,16 +41,16 @@ export const SequenceCalculator = () => {
 
   return (
     <div className="space-y-6">
-        <div className="flex gap-2 bg-slate-800/50 p-1 rounded-xl">
+        <div className="flex gap-2 bg-slate-100 p-1 rounded-xl">
             <button
                 onClick={() => setType('arithmetic')}
-                className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${type === 'arithmetic' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-white'}`}
+                className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${type === 'arithmetic' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-900'}`}
             >
                 Cấp số cộng (÷)
             </button>
             <button
                 onClick={() => setType('geometric')}
-                className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${type === 'geometric' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-white'}`}
+                className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${type === 'geometric' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-900'}`}
             >
                 Cấp số nhân (×)
             </button>
@@ -82,28 +78,28 @@ export const SequenceCalculator = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-             <div className="bg-[#0f172a] rounded-2xl p-6 border border-slate-800 text-center">
+             <div className="bg-white rounded-2xl p-6 border border-slate-200 text-center shadow-sm">
                  <span className="text-slate-500 text-xs font-bold uppercase tracking-wider block mb-2">Số hạng thứ n (uₙ)</span>
-                 <div className="text-3xl font-bold text-emerald-400">
+                 <div className="text-3xl font-bold text-emerald-600">
                      {result ? formatNumber(result.un) : '---'}
                  </div>
-                 <div className="text-xs text-slate-500 mt-2 font-mono">
+                 <div className="text-xs text-slate-500 mt-2 font-mono bg-slate-50 px-2 py-1 rounded inline-block">
                      {type === 'arithmetic' ? 'uₙ = u₁ + (n-1)d' : 'uₙ = u₁ × qⁿ⁻¹'}
                  </div>
              </div>
-             <div className="bg-[#0f172a] rounded-2xl p-6 border border-slate-800 text-center">
+             <div className="bg-white rounded-2xl p-6 border border-slate-200 text-center shadow-sm">
                  <span className="text-slate-500 text-xs font-bold uppercase tracking-wider block mb-2">Tổng n số hạng (Sₙ)</span>
-                 <div className="text-3xl font-bold text-indigo-400">
+                 <div className="text-3xl font-bold text-blue-600">
                      {result ? formatNumber(result.sn) : '---'}
                  </div>
-                 <div className="text-xs text-slate-500 mt-2 font-mono">
+                 <div className="text-xs text-slate-500 mt-2 font-mono bg-slate-50 px-2 py-1 rounded inline-block">
                      {type === 'arithmetic' ? 'Sₙ = ⁿ⁄₂ (u₁ + uₙ)' : 'Sₙ = u₁(1-qⁿ)/(1-q)'}
                  </div>
              </div>
         </div>
         
         <div className="flex justify-end">
-            <button onClick={handleReset} className="text-slate-400 hover:text-white text-sm flex items-center gap-2">
+            <button onClick={handleReset} className="text-slate-500 hover:text-blue-600 text-sm flex items-center gap-2 transition-colors">
                 <RefreshCw size={16} /> Làm mới
             </button>
         </div>
